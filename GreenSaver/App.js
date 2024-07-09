@@ -8,12 +8,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 
 import Home from "./screens/HomeScreen";
+import List from "./screens/ListScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Home />
+      <List />
       <StatusBar style="auto" />
     </View>
   );
