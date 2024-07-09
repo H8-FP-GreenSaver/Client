@@ -1,40 +1,46 @@
+import React, { useState } from "react";
 import {
-  Image,
   StyleSheet,
-  TextInput,
   View,
+  Image,
   Text,
+  TextInput,
   TouchableOpacity,
 } from "react-native";
 
-export default function LoginScreen({ navigation }) {
+export default function RegisterScreen() {
+  const [checked, setChecked] = useState(false);
+
   return (
     <View style={styles.container}>
       <Image source={require("../assets/Group 11.png")} style={styles.logo} />
-      <Text style={styles.masuk}>Masuk</Text>
+      <Text style={styles.masuk}>Daftar</Text>
+      <Text style={styles.label}>Nama</Text>
+      <TextInput style={styles.input} placeholder="Nama" />
       <Text style={styles.label}>Email</Text>
       <TextInput style={styles.input} placeholder="Email" />
       <Text style={styles.label}>Password</Text>
       <TextInput style={styles.input} placeholder="Password" secureTextEntry />
-      <TouchableOpacity style={styles.lupaPassword}>
-        <Text style={styles.lupaPasswordText}>Lupa Password?</Text>
-      </TouchableOpacity>
+      <View style={styles.checkboxContainer}>
+        <TouchableOpacity
+          style={[styles.checkbox, checked && styles.checkedCheckbox]}
+          onPress={() => setChecked(!checked)}
+        />
+        <Text style={styles.checkboxLabel}>
+          Dengan mendaftar saya menyetujui syarat dan ketentuan privasi keamanan
+        </Text>
+      </View>
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Masuk</Text>
+        <Text style={styles.buttonText}>Daftar</Text>
       </TouchableOpacity>
       <Text style={styles.atau}>atau</Text>
       <TouchableOpacity style={styles.buttonGoogle}>
         <Text style={styles.buttonTextGoogle}>Masuk dengan Google</Text>
       </TouchableOpacity>
       <View style={styles.registerContainer}>
-        <Text style={styles.akun}>Belum punya akun?</Text>
-        <TouchableOpacity
-          style={styles.signIn}
-          onPress={() => {
-            navigation.navigate("Register");
-          }}
-        >
-          <Text style={styles.signInText}>Register</Text>
+        <Text style={styles.akun}>Sudah punya akun?</Text>
+        <TouchableOpacity style={styles.signIn}>
+          <Text style={styles.signInText}>Masuk</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -76,12 +82,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "#fff",
   },
-  lupaPassword: {
-    alignSelf: "flex-end",
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
   },
-  lupaPasswordText: {
-    color: "#0066cc",
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 3,
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  checkedCheckbox: {
+    backgroundColor: "#86BA85",
+  },
+  checkboxLabel: {
+    color: "black",
+    flex: 1,
+    flexWrap: "wrap",
   },
   button: {
     height: 40,
