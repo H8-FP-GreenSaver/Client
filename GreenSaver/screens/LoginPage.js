@@ -3,12 +3,8 @@ import { Image, StyleSheet, TextInput, View } from "react-native";
 export default function LoginScreen() {
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../assets/youtube-logo.png")}
-        style={styles.logo}
-      />
-      <TextInput
-      />
+      <Image source={require("../assets/Group 11.png")} style={styles.logo} />
+      <TextInput />
     </View>
   );
 }
