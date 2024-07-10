@@ -60,21 +60,21 @@ export default function Detail() {
                     </View>
                 </View>
                 <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "space-between", columnGap: 16 }}>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f7f7f7", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "45%" }}>
+                    <View style={{ flexDirection: "row", backgroundColor: "#FBFBFB", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "45%" }}>
                         <Image source={require("../assets/icon-money.png")} />
                         <View>
                             <Text>Harga (Bibit)</Text>
                             <Text style={{ fontWeight: "500", fontSize: 18 }}>Rp {new Intl.NumberFormat().format(plants[0].price)}</Text>
                         </View>
                     </View>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f7f7f7", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "45%" }}>
+                    <View style={{ flexDirection: "row", backgroundColor: "#FBFBFB", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "45%" }}>
                         <Ionicons name="water-outline" size={24} color="black" />
                         <View>
                             <Text>Harga (Bibit)</Text>
-                            <Text style={{ fontWeight: "500", fontSize: 18 }}>Rp {new Intl.NumberFormat().format(plants[0].price)}</Text>
+                            <Text style={{ fontWeight: "500", fontSize: 18 }}>{plants[0].water} ml</Text>
                         </View>
                     </View>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f7f7f7", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "48%" }}>
+                    <View style={{ flexDirection: "row", backgroundColor: "#FBFBFB", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "48%" }}>
                         <Image source={require("../assets/icon-temperature.png")} />
                         <View>
                             <Text>Suhu</Text>
@@ -87,7 +87,7 @@ export default function Detail() {
                     <Text style={{ fontSize: 16, lineHeight: 28 }}>Tanaman hias tropis dan subtropis yang berasal dari Jepang Selatan. Mawar Jambe merupakan salah satu tanaman yang saat ini sedang naik daun bagi para penggemar tanaman.</Text>
                 </View>
             </View>
-            <TouchableOpacity style={{ backgroundColor: "#86BA85", zIndex: 2, padding: 24, width: "90%", marginBottom: 24, marginHorizontal: "auto", borderRadius: 16 }}>
+            <TouchableOpacity style={{ backgroundColor: "#86BA85", zIndex: 2, padding: 20, width: "90%", marginBottom: 24, marginHorizontal: "auto", borderRadius: 16 }}>
                 <Text style={{ textAlign: "center", fontSize: 16, fontWeight: "500", color: "white" }}>Tanam</Text>
             </TouchableOpacity>
         </>

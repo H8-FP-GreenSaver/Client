@@ -4,7 +4,7 @@
 
 import { AuthProvider } from "./contexts/Auth";
 import MainStack from "./navigations/MainStack";
-import Detail from "./screens/DetailScreen";
+import PreSteps from "./screens/PreStepsScreen";
 import Steps from "./screens/StepsScreen";
 
 // import RegisterScreen from "./screens/RegisterPage";

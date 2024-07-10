@@ -1,13 +1,11 @@
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Feather } from '@expo/vector-icons';
-import { Dropdown } from "../components/Dropdown";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 export default function Steps() {
-    const [category, setCategory] = useState('Tanaman Hias');
-    const [rating, setRating] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 1;
+
     const plants = [
         {
             name: 'Plant 1',
@@ -17,7 +15,32 @@ export default function Steps() {
             price: 50000,
             water: 250,
             temperature: 26,
-            description: "Tanaman hias tropis dan subtropis yang berasal dari Jepang Selatan. Mawar Jambe merupakan salah satu tanaman yang saat ini sedang naik daun bagi para penggemar tanaman."
+            description: "Tanaman hias tropis dan subtropis yang berasal dari Jepang Selatan. Mawar Jambe merupakan salah satu tanaman yang saat ini sedang naik daun bagi para penggemar tanaman.",
+            medium: "pot bunga",
+            plantArea: "kecil",
+            steps: [
+                {
+                    name: "Siapkan media tanam",
+                    description: "Untuk media tanam dapat menggunakan pot bunga atau langsung ditanamkan ke tanah. Bila memilih menggunakan pot bunga, gunakan ukuran yang kecil sampai sedang. Kemudian isi dengan tanah.",
+                    stepNumber: 1,
+                    imageUrl: "https://png.pngtree.com/png-clipart/20230927/original/pngtree-flower-pot-with-soil-png-image_13004175.png"
+                },
+                {
+                    name: "Siapkan tunas",
+                    description: "Untuk tunas bisa membelinya dari penjual tanaman atau diambil dari batang Mawar Jambe secara langsung. Bila mengambil langsung dari batang, gunakan pisau untuk mencongkel bagian tunas-nya.",
+                    stepNumber: 2,
+                    imageUrl: "https://png.pngtree.com/png-clipart/20210627/original/pngtree-cycad-leaves-outdoor-png-image_6469890.jpg",
+                    tips: "Mencongkel tunas dari batang butuh tenaga ekstra karena cukup keras."
+                },
+                {
+                    name: "Proses menanam",
+                    description: "Kemudian tanam tunas sebelumnya ke dalam tanah sampai tertutup namun sisakan sedikit pada bagian atas",
+                    imageUrl: "https://png.pngtree.com/png-vector/20240317/ourmid/pngtree-cycad-palm-tree-png-image_11987990.png",
+                    stepNumber: 3,
+                    tips: "Lihat video teknik menanam di bawah ini agar lebih paham",
+                    videoUrl: "https://youtu.be/5_6-Oc1TQaY?si=ChX1vgfs_9-xY5T2"
+                },
+            ]
         },
         {
             name: 'Plant 2',
@@ -28,6 +51,19 @@ export default function Steps() {
             imageUrl: 'https://static.vecteezy.com/system/resources/previews/027/254/690/non_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png',
         }
     ];
+
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if ((currentPage + 1) * itemsPerPage < plants[0].steps.length) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
 
     let difficulty;
 
@@ -42,56 +78,41 @@ export default function Steps() {
     return (
         <>
             <View style={styles.mainContainer}>
-                <View style={styles.headContainer}>
-                    <Image style={{ width: 260, height: 260, flex: 1, zIndex: 0 }} source={{ uri: plants[0].imageUrl }} />
-                    <View>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Image source={require("../assets/rating-solid.png")} />
-                        </View>
-                    </View>
-
-                </View>
+                <Image style={{ width: 200, height: 200, zIndex: 0, objectFit: "cover", marginHorizontal: "auto" }} source={{ uri: plants[0].steps[currentPage].imageUrl }} />
             </View>
             <View style={{ backgroundColor: "white", flex: 4, padding: 24 }}>
-                <Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 8 }}>{plants[0].name}</Text>
-                <Text style={{ fontSize: 16, marginBottom: 16 }}>{plants[0].category}</Text>
-                <View style={{ flexDirection: "row", marginBottom: 16 }}>
-                    <Text style={{ fontSize: 16, paddingVertical: 8, paddingHorizontal: 16, backgroundColor: "#BBE7BA", color: "#3D3D3D", borderRadius: 8, width: "auto", marginRight: 12 }}>{difficulty}</Text>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Image source={require("../assets/rating-solid.png")} />
-                    </View>
-                </View>
-                <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "space-between", columnGap: 16 }}>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f7f7f7", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "45%" }}>
-                        <Image source={require("../assets/icon-money.png")} />
-                        <View>
-                            <Text>Harga (Bibit)</Text>
-                            <Text style={{ fontWeight: "500", fontSize: 18 }}>Rp {new Intl.NumberFormat().format(plants[0].price)}</Text>
+                <Text style={{ fontSize: 16, fontWeight: "500", marginBottom: 8 }}>Langkah {currentPage + 1}</Text>
+                <Text style={{ fontSize: 20, fontWeight: "500", marginBottom: 16 }}>{plants[0].steps[currentPage].name}</Text>
+                <Text style={{ fontSize: 16, lineHeight: 28 }}>{plants[0].steps[currentPage].description}</Text>
+                {plants[0].steps[currentPage].tips &&
+                    <View style={{ backgroundColor: "#EFEDED", padding: 16, borderRadius: 8, marginTop: 16 }}>
+                        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+                            <Feather name="info" size={18} color="#A5A5A5" />
+                            <Text style={{ fontSize: 16, fontWeight: "500", marginBottom: 4, color: "#A5A5A5" }}>Tips</Text>
                         </View>
+                        <Text style={{ lineHeight: 28, fontSize: 16, marginStart: 28 }}>{plants[0].steps[currentPage].tips}</Text>
                     </View>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f7f7f7", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "45%" }}>
-                        <Ionicons name="water-outline" size={24} color="black" />
-                        <View>
-                            <Text>Harga (Bibit)</Text>
-                            <Text style={{ fontWeight: "500", fontSize: 18 }}>Rp {new Intl.NumberFormat().format(plants[0].price)}</Text>
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: "row", backgroundColor: "#f7f7f7", padding: 24, gap: 8, borderRadius: 8, marginBottom: 16, minWidth: "48%" }}>
-                        <Image source={require("../assets/icon-temperature.png")} />
-                        <View>
-                            <Text>Suhu</Text>
-                            <Text style={{ fontWeight: "500", fontSize: 18 }}>{plants[0].temperature}°C</Text>
-                        </View>
-                    </View>
-                </View>
-                <View>
-                    <Text style={{ fontSize: 16, fontWeight: "500", marginVertical: 8 }}>Deskripsi</Text>
-                    <Text style={{ fontSize: 16, lineHeight: 28 }}>Tanaman hias tropis dan subtropis yang berasal dari Jepang Selatan. Mawar Jambe merupakan salah satu tanaman yang saat ini sedang naik daun bagi para penggemar tanaman.</Text>
-                </View>
+                }
             </View>
-            <TouchableOpacity style={{ backgroundColor: "#86BA85", zIndex: 2, padding: 24, width: "90%", marginBottom: 24, marginHorizontal: "auto", borderRadius: 16 }}>
-                <Text style={{ textAlign: "center", fontSize: 16, fontWeight: "500", color: "white" }}>Tanam</Text>
-            </TouchableOpacity>
+            <View style={{ padding: 24, flexDirection: "row" }}>
+                {currentPage > 0 ?
+                    <TouchableOpacity onPress={handlePrevPage} style={{ backgroundColor: "#86BA85", zIndex: 2, marginBottom: 24, marginEnd: "auto", borderRadius: 50 }}>
+                        <Feather name="chevron-left" padding={20} size={24} color="white" />
+                    </TouchableOpacity>
+                    :
+                    ""
+                }
+                {currentPage === (plants[0].steps.length - 1) ?
+                    <TouchableOpacity onPress={handleNextPage} style={{ backgroundColor: "#86BA85", zIndex: 2, marginBottom: 24, marginStart: "auto", borderRadius: 50, flexDirection: "row", alignItems: "center", padding: 20, gap: 12 }}>
+                        <Feather name="check" size={24} color="white" />
+                        <Text style={{ fontSize: 16, fontWeight: "500", color: "white" }}>Done</Text>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity onPress={handleNextPage} style={{ backgroundColor: "#86BA85", zIndex: 2, marginBottom: 24, marginStart: "auto", borderRadius: 50 }}>
+                        <Feather name="chevron-right" padding={20} size={24} color="white" />
+                    </TouchableOpacity>
+                }
+            </View>
         </>
     );
 }
@@ -99,10 +120,11 @@ export default function Steps() {
 const styles = StyleSheet.create({
     mainContainer: {
         zIndex: 1,
-        flex: 4,
+        flex: 2,
+        padding: 24,
         width: "100%",
-        paddingHorizontal: 24,
-        paddingTop: 24,
+        paddingTop: 56,
+        flexDirection: "row",
         backgroundColor: "#94C593",
     },
     backgroundImage: {
@@ -111,10 +133,6 @@ const styles = StyleSheet.create({
         height: 500,
         width: "100%",
         backgroundColor: "#E8E8E8"
-    },
-    headContainer: {
-        flexDirection: "row",
-        marginTop: 40,
     },
     containerWave: {
         marginRight: "auto",
