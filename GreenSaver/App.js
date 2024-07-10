@@ -7,7 +7,6 @@ import MainStack from "./navigations/MainStack";
 
 // import RegisterScreen from "./screens/RegisterPage";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 // import Home from "./screens/HomeScreen";
 // const Stack = createNativeStackNavigator();
 
