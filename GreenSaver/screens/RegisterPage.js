@@ -8,12 +8,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
   const [checked, setChecked] = useState(false);
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/Group 11.png")} style={styles.logo} />
+      <Image
+        source={require("../assets/GreenSaver-logo.png")}
+        style={styles.logo}
+      />
       <Text style={styles.masuk}>Daftar</Text>
       <Text style={styles.label}>Nama</Text>
       <TextInput style={styles.input} placeholder="Nama" />
@@ -39,7 +42,12 @@ export default function RegisterScreen() {
       </TouchableOpacity>
       <View style={styles.registerContainer}>
         <Text style={styles.akun}>Sudah punya akun?</Text>
-        <TouchableOpacity style={styles.signIn}>
+        <TouchableOpacity
+          style={styles.signIn}
+          onPress={() => {
+            navigation.navigate("Login");
+          }}
+        >
           <Text style={styles.signInText}>Masuk</Text>
         </TouchableOpacity>
       </View>

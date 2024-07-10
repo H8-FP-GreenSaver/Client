@@ -10,7 +10,7 @@ import {
 export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/Group 11.png")} style={styles.logo} />
+      <Image source={require("../assets/GreenSaver-logo.png")} style={styles.logo} />
       <Text style={styles.masuk}>Masuk</Text>
       <Text style={styles.label}>Email</Text>
       <TextInput style={styles.input} placeholder="Email" />
@@ -19,7 +19,12 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity style={styles.lupaPassword}>
         <Text style={styles.lupaPasswordText}>Lupa Password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("GreenSaver");
+        }}
+      >
         <Text style={styles.buttonText}>Masuk</Text>
       </TouchableOpacity>
       <Text style={styles.atau}>atau</Text>
