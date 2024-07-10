@@ -45,7 +45,7 @@ export default function Home() {
 const styles = StyleSheet.create({
     mainContainer: {
         zIndex: 1,
-        flex: 3,
+        flex: 4,
         width: "100%",
         paddingHorizontal: 24,
         paddingTop: 24,
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     },
     backgroundImage: { 
         zIndex: 0, 
-        flex: 16, 
+        flex: 12, 
+        height: 500,
         width: "100%", 
         backgroundColor: "#E8E8E8" 
     },

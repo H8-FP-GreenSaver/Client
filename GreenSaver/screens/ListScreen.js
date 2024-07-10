@@ -56,7 +56,7 @@ export default function List() {
                     // onChangeText={onChangeNumber}
                     // value={number}
                     placeholder="Search here.."
-                    keyboardType="numeric"
+                    keyboardType="text"
                 />
                 <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", borderTopStartRadius: 24, borderTopEndRadius: 24 }}>
                     {plants.map((plant, index) => {
