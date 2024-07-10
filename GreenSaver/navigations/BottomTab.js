@@ -5,6 +5,7 @@ import { Button, Text, TouchableOpacity } from "react-native";
 import Home from "../screens/HomeScreen";
 import ForumScreen from "../screens/ForumScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import List from "../screens/ListScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +43,7 @@ export default function BottomTab({ navigation }) {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Forum" component={ForumScreen} />
+      <Tab.Screen name="Forum" component={List} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
