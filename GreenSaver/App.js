@@ -4,6 +4,8 @@
 
 import { AuthProvider } from "./contexts/Auth";
 import MainStack from "./navigations/MainStack";
+import PreSteps from "./screens/PreStepsScreen";
+import Steps from "./screens/StepsScreen";
 
 // import RegisterScreen from "./screens/RegisterPage";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -12,13 +14,14 @@ import MainStack from "./navigations/MainStack";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainStack />
-    </AuthProvider>
+    <Steps />
+    // <AuthProvider>
+    //   <MainStack />
+    // </AuthProvider>
     // <View style={styles.container}>
     //   <RegisterScreen />
     //   {/* <LoginScreen /> */}
-    //   {/* <Home /> */}
+      // {/* <Home /> */}
     //   <StatusBar style="auto" />
     // </View>
   );

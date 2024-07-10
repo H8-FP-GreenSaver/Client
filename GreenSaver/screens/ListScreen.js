@@ -112,7 +112,7 @@ export default function List({ navigation }) {
           // onChangeText={onChangeNumber}
           // value={number}
           placeholder="Search here.."
-          keyboardType="numeric"
+          keyboardType="text"
         />
         <View
           style={{
