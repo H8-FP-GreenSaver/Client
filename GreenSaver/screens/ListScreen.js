@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   headContainer: {
     flexDirection: "row",
-    marginTop: 40,
+    marginTop: 24,
   },
   containerWave: {
     marginRight: "auto",
