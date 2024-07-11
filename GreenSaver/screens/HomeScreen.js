@@ -64,44 +64,44 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        zIndex: 1,
-        flex: 4,
-        width: "100%",
-        paddingHorizontal: 24,
-        paddingTop: 24,
-        backgroundColor: "#E8E8E8",
+  mainContainer: {
+    zIndex: 1,
+    flex: 4,
+    width: "100%",
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    backgroundColor: "#E8E8E8",
+  },
+  backgroundImage: {
+    zIndex: 0,
+    flex: 12,
+    height: 500,
+    width: "100%",
+    backgroundColor: "#E8E8E8",
+  },
+  headContainer: {
+    flexDirection: "row",
+    marginTop: 40,
+  },
+  containerWave: {
+    marginRight: "auto",
+    wave: {
+      fontSize: 16,
     },
-    backgroundImage: { 
-        zIndex: 0, 
-        flex: 12, 
-        height: 500,
-        width: "100%", 
-        backgroundColor: "#E8E8E8" 
+    name: {
+      fontSize: 20,
+      fontWeight: "500",
     },
-    headContainer: {
-        flexDirection: "row",
-        marginTop: 40,
-    },
-    containerWave: {
-        marginRight: "auto",
-        wave: {
-            fontSize: 16,
-        },
-        name: {
-            fontSize: 20,
-            fontWeight: "500"
-        }
-    },
-    addButton: {
-        borderRadius: 28,
-        backgroundColor: "white"
-    },
-    shadowProp: {
-      elevation: 8,
-      shadowColor: "#3F3F3F",
-      shadowOffset: { width: -2, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 3,
-    },
+  },
+  addButton: {
+    borderRadius: 28,
+    backgroundColor: "white",
+  },
+  shadowProp: {
+    elevation: 8,
+    shadowColor: "#3F3F3F",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
 });

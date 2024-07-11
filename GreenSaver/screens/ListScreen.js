@@ -129,6 +129,7 @@ export default function List({ navigation }) {
                 key={index}
                 plant={plant}
                 userPreference={userPreference}
+                navigation={navigation}
               />
             );
           })}

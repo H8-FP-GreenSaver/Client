@@ -11,10 +11,10 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/GreenSaver-logo.png")}
+        source={require("../assets/GreenSaver-Logo.png")}
         style={styles.logo}
       />
-      <Text style={styles.masuk}>Masuk</Text>
+      {/* <Text style={styles.masuk}>Masuk</Text> */}
       <Text style={styles.label}>Email</Text>
       <TextInput style={styles.input} placeholder="Email" />
       <Text style={styles.label}>Password</Text>
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    width: 200,
-    height: 80,
+    width: 150,
+    height: 150,
     resizeMode: "contain",
     alignSelf: "center",
     marginBottom: 20,

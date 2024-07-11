@@ -1,37 +1,11 @@
-// import { StatusBar } from "expo-status-bar";
-// import { StyleSheet, Text, View } from "react-native";
-// import LoginScreen from "./screens/LoginPage";
-
-import { AuthProvider } from "./contexts/Auth";
-import MainStack from "./navigations/MainStack";
-import PreSteps from "./screens/PreStepsScreen";
-import Steps from "./screens/StepsScreen";
-
-// import RegisterScreen from "./screens/RegisterPage";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import Home from "./screens/HomeScreen";
-// const Stack = createNativeStackNavigator();
+import React from 'react';
+import { AuthProvider } from './contexts/Auth';
+import MainStack from './navigations/MainStack';
 
 export default function App() {
   return (
-    <Steps />
-    // <AuthProvider>
-    //   <MainStack />
-    // </AuthProvider>
-    // <View style={styles.container}>
-    //   <RegisterScreen />
-    //   {/* <LoginScreen /> */}
-      // {/* <Home /> */}
-    //   <StatusBar style="auto" />
-    // </View>
+    <AuthProvider>
+      <MainStack />
+    </AuthProvider>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
