@@ -48,7 +48,7 @@ export default function RegisterScreen({ navigation }) {
             navigation.navigate("Login");
           }}
         >
-          <Text style={styles.signInText}>Masuk</Text>
+          <Text style={styles.signInText}>Masuk nih</Text>
         </TouchableOpacity>
       </View>
     </View>
