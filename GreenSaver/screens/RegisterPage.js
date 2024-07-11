@@ -17,7 +17,7 @@ export default function RegisterScreen({ navigation }) {
         source={require("../assets/GreenSaver-logo.png")}
         style={styles.logo}
       />
-      <Text style={styles.masuk}>Daftar</Text>
+      {/* <Text style={styles.masuk}>Daftar</Text> */}
       <Text style={styles.label}>Nama</Text>
       <TextInput style={styles.input} placeholder="Nama" />
       <Text style={styles.label}>Email</Text>
@@ -64,16 +64,16 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    width: 200,
-    height: 80,
+    width: 150,
+    height: 150,
     resizeMode: "contain",
     alignSelf: "center",
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   masuk: {
     fontSize: 24,
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 50,
   },
   label: {
     fontSize: 16,
