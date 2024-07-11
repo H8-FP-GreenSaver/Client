@@ -74,9 +74,9 @@ export default function PlantProgress() {
                         <Text style={{ fontSize: 16, lineHeight: 28 }}>{plants[0].category}</Text>
                         <Text style={{ fontSize: 20, fontWeight: "500" }}>{plants[0].name}</Text>
                     </View>
-                    <View style={{ padding: 8, backgroundColor: "white", borderRadius: 50 }}>
+                    <TouchableOpacity style={{ padding: 8, backgroundColor: "white", borderRadius: 50 }}>
                         <Image style={{ width: 32, height: 32 }} source={require("../assets/icon-menu.png")} />
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <Image style={{ width: 300, height: 300, zIndex: 0, objectFit: "cover", alignSelf: "flex-start", marginHorizontal: "auto" }} source={{ uri: plants[0].imageUrl }} />
             </View>
