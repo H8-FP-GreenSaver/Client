@@ -4,6 +4,7 @@
 
 import { AuthProvider } from "./contexts/Auth";
 import MainStack from "./navigations/MainStack";
+import PlantProgress from "./screens/PlantProgress";
 import PreSteps from "./screens/PreStepsScreen";
 import Steps from "./screens/StepsScreen";
 
@@ -14,10 +15,10 @@ import Steps from "./screens/StepsScreen";
 
 export default function App() {
   return (
-    <Steps />
-    // <AuthProvider>
-    //   <MainStack />
-    // </AuthProvider>
+    // <PlantProgress />
+    <AuthProvider>
+      <MainStack />
+    </AuthProvider>
     // <View style={styles.container}>
     //   <RegisterScreen />
     //   {/* <LoginScreen /> */}
