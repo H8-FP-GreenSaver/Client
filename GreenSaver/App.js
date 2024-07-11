@@ -7,7 +7,8 @@ import MainStack from "./navigations/MainStack";
 import PlantProgress from "./screens/PlantProgress";
 import PreSteps from "./screens/PreStepsScreen";
 import Steps from "./screens/StepsScreen";
-import PestEncyclopedia from "./screens/PestEncyclopedia";
+import PestsList from "./screens/PestsList";
+import PestDetail from "./screens/PestDetail";
 
 // import RegisterScreen from "./screens/RegisterPage";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -16,10 +17,10 @@ import PestEncyclopedia from "./screens/PestEncyclopedia";
 
 export default function App() {
   return (
-    <PestEncyclopedia />
-    // <AuthProvider>
-    //   <MainStack />
-    // </AuthProvider>
+    // <PestsList />
+    <AuthProvider>
+      <MainStack />
+    </AuthProvider>
     // <View style={styles.container}>
     //   <RegisterScreen />
     //   {/* <LoginScreen /> */}

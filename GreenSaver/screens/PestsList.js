@@ -3,7 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import { PestCard, PlantCard } from "../components/Card";
 
-export default function PestEncyclopedia({ navigation }) {
+export default function PestsList({ navigation }) {
     const [category, setCategory] = useState("Tanaman Hias");
     const userPreference = {
         preference: ["Tanaman Hias", "Tanaman Buah"],
