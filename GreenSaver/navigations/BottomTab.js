@@ -22,7 +22,7 @@ export default function BottomTab({ navigation }) {
         headerLeft: () => (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Login");
+              navigation.goBack();
             }}
             style={{ marginLeft: 15 }}
           >
