@@ -15,10 +15,10 @@ import Steps from "./screens/StepsScreen";
 
 export default function App() {
   return (
-    <PlantProgress />
-    // <AuthProvider>
-    //   <MainStack />
-    // </AuthProvider>
+    // <PlantProgress />
+    <AuthProvider>
+      <MainStack />
+    </AuthProvider>
     // <View style={styles.container}>
     //   <RegisterScreen />
     //   {/* <LoginScreen /> */}
