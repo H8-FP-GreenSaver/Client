@@ -9,6 +9,7 @@ import PreSteps from "./screens/PreStepsScreen";
 import Steps from "./screens/StepsScreen";
 import PestsList from "./screens/PestsList";
 import PestDetail from "./screens/PestDetail";
+import ForumScreen from "./screens/ForumScreen";
 
 // import RegisterScreen from "./screens/RegisterPage";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -17,10 +18,10 @@ import PestDetail from "./screens/PestDetail";
 
 export default function App() {
   return (
-    // <PestsList />
-    <AuthProvider>
-      <MainStack />
-    </AuthProvider>
+    <ForumScreen />
+    // <AuthProvider>
+    //   <MainStack />
+    // </AuthProvider>
     // <View style={styles.container}>
     //   <RegisterScreen />
     //   {/* <LoginScreen /> */}
