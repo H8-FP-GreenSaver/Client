@@ -18,7 +18,7 @@ export default function ProfileScreen({ navigation }) {
               style={styles.profileImage}
             />
             <View style={styles.userInfo}>
-              <Text style={styles.name}>Alyssa</Text>
+              <Text style={styles.name}>Alyssa ni boss</Text>
               <Text style={styles.username}>@alyssaroem</Text>
               <Text style={styles.role}>Pemula</Text>
             </View>
