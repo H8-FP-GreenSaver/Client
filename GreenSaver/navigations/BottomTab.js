@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Button, Text, TouchableOpacity } from "react-native";
+import { Button, Image, Text, TouchableOpacity } from "react-native";
 import Home from "../screens/HomeScreen";
 import ForumScreen from "../screens/ForumScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -14,13 +14,19 @@ export default function BottomTab({ navigation }) {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerRight: () => (
+          <Image
+            source={require("../assets/GreenSaver-logo.png")}
+            style={{ width: 50, height: 30, marginRight: 25 }}
+          />
+        ),
+        headerLeft: () => (
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Login");
             }}
-            style={{ marginRight: 15 }}
+            style={{ marginLeft: 15 }}
           >
-            <Ionicons name="log-out-outline" size={28} color="#ff0000" />
+            <Ionicons name="chevron-back-outline" size={24} color="black" />
           </TouchableOpacity>
         ),
         tabBarIcon: ({ color, size }) => {
@@ -43,7 +49,7 @@ export default function BottomTab({ navigation }) {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Forum" component={List} />
+      <Tab.Screen name="Forum" component={ForumScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

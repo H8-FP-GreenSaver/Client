@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }) {
         source={require("../assets/GreenSaver-logo.png")}
         style={styles.logo}
       />
-      <Text style={styles.masuk}>Masuk</Text>
+      {/* <Text style={styles.masuk}>Masuk</Text> */}
       <Text style={styles.label}>Email</Text>
       <TextInput style={styles.input} placeholder="Email" />
       <Text style={styles.label}>Password</Text>
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 200,
-    height: 80,
+    height: 200,
     resizeMode: "contain",
     alignSelf: "center",
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   masuk: {
     fontSize: 24,

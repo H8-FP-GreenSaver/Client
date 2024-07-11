@@ -48,15 +48,7 @@ export default function List({ navigation }) {
             <Text style={styles.containerWave.name}>Alyssa!</Text>
           </View>
           <TouchableOpacity style={[styles.addButton, styles.shadowProp]}>
-            <Feather
-              name="x"
-              size={28}
-              padding={12}
-              color="#86BA85"
-              onPress={() => {
-                navigation.navigate("GreenSaver");
-              }}
-            />
+            <Feather name="x" size={28} padding={12} color="#86BA85" />
           </TouchableOpacity>
         </View>
       </View>
@@ -112,7 +104,7 @@ export default function List({ navigation }) {
           // onChangeText={onChangeNumber}
           // value={number}
           placeholder="Search here.."
-          keyboardType="text"
+          keyboardType="numeric"
         />
         <View
           style={{
@@ -129,6 +121,7 @@ export default function List({ navigation }) {
                 key={index}
                 plant={plant}
                 userPreference={userPreference}
+                navigation={navigation}
               />
             );
           })}
@@ -149,7 +142,7 @@ const styles = StyleSheet.create({
   },
   headContainer: {
     flexDirection: "row",
-    marginTop: 24,
+    marginTop: 40,
   },
   containerWave: {
     marginRight: "auto",
