@@ -15,7 +15,7 @@ export default function BottomTab({ navigation }) {
       screenOptions={({ route }) => ({
         headerRight: () => (
           <Image
-            source={require("../assets/GreenSaver-Logo.png")}
+            source={require("../assets/GreenSaver-logo.png")}
             style={{ width: 50, height: 30, marginRight: 25 }}
           />
         ),

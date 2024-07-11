@@ -11,7 +11,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/GreenSaver-Logo.png")}
+        source={require("../assets/GreenSaver-logo.png")}
         style={styles.logo}
       />
       {/* <Text style={styles.masuk}>Masuk</Text> */}
