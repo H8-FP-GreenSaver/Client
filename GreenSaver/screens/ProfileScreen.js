@@ -1,15 +1,55 @@
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.mainContainer}>
         <View style={styles.headContainer}>
-          <Text>Testing</Text>
+          <View style={styles.containerWave}>
+            <Image
+              source={require("../assets/Ideation Ellipse 31.png")}
+              style={styles.profileImage}
+            />
+            <View style={styles.userInfo}>
+              <Text style={styles.name}>Alyssa</Text>
+              <Text style={styles.username}>@alyssaroem</Text>
+              <Text style={styles.role}>Pemula</Text>
+            </View>
+          </View>
+        </View>
+        <View style={{ marginTop: 58 }}>
+          <View style={styles.statsContainer}>
+            <View style={styles.stat}>
+              <Text style={styles.statNumber}>2</Text>
+              <Text style={styles.statLabel}>Tanaman</Text>
+            </View>
+            <View style={styles.stat}>
+              <Text style={styles.statNumber}>3</Text>
+              <Text style={styles.statLabel}>Forum</Text>
+            </View>
+
+            <View style={styles.stat}>
+              <Text style={styles.statNumber}>3</Text>
+              <Text style={styles.statLabel}>Unggahan</Text>
+            </View>
+          </View>
+          <View style={styles.horizontalLine} />
+          <View style={styles.imageCard}>
+            <Image source={require("../assets/Ideation Rectangle 38.png")} />
+            <Image source={require("../assets/Ideation Rectangle 39.png")} />
+            <Image source={require("../assets/Ideation Rectangle 40.png")} />
+          </View>
         </View>
       </View>
       <ImageBackground
-        source={require("../assets/bg.png")}
+        source={require("../assets/background-homepage.png")}
         resizeMode="cover"
         style={styles.backgroundImage}
       />
@@ -18,22 +58,90 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     zIndex: 1,
-    flex: 3,
+    flex: 4,
     width: "100%",
     paddingHorizontal: 24,
     paddingTop: 24,
-    backgroundColor: "#86BA85",
+    backgroundColor: "#94C593",
+  },
+  backgroundImage: {
+    zIndex: 0,
+    flex: 12,
+    height: 560,
+    width: "100%",
+    backgroundColor: "#94C593",
   },
   headContainer: {
     flexDirection: "row",
     marginTop: 40,
   },
-  backgroundImage: {
-    zIndex: 0,
-    flex: 16,
+  containerWave: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 20,
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 3,
+    borderColor: "#fff",
+  },
+  userInfo: {
+    marginLeft: 20,
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#fff",
+    // marginBottom: 5,
+  },
+  username: {
+    fontSize: 16,
+    color: "#fff",
+    // marginBottom: 5,
+  },
+  role: {
+    fontSize: 14,
+    color: "#fff",
+    backgroundColor: "#396D5E",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    alignSelf: "flex-start",
+    marginTop: 4,
+  },
+  statsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+    backgroundColor: "#F5F4F4",
+  },
+  stat: {
+    alignItems: "center",
+  },
+  statNumber: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#222",
+  },
+  statLabel: {
+    fontSize: 14,
+    color: "#222",
+  },
+  horizontalLine: {
+    marginTop: 18,
+    height: 2,
+    backgroundColor: "#B4B4B4",
     width: "100%",
-    backgroundColor: "#E8E8E8",
+    alignSelf: "center",
+  },
+  imageCard: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    padding: 30,
+    gap: 5,
   },
 });
