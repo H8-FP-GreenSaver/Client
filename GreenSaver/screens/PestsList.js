@@ -46,59 +46,65 @@ export default function PestsList({ navigation }) {
 
   return (
     <>
-      <View
-        style={{
-          paddingHorizontal: 24,
-          paddingTop: 16,
-          flex: 6,
-          borderTopStartRadius: 24,
-          borderTopEndRadius: 24,
-          backgroundColor: "#F8F8F8",
-          marginTop: 32,
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("PestsDetail");
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 16,
-          }}
-        >
-          <Text
-            style={{ fontSize: 20, fontWeight: "500", alignSelf: "center" }}
-          >
-            Hama
-          </Text>
-        </View>
-        <TextInput
-          style={{
-            height: 50,
-            borderWidth: 1,
-            padding: 16,
-            marginBottom: 24,
-            borderRadius: 8,
-            borderColor: "lightgray",
-          }}
-          // onChangeText={onChangeNumber}
-          // value={number}
-          placeholder="Search here.."
-          keyboardType="text"
-        />
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
+            paddingHorizontal: 24,
+            paddingTop: 16,
+            flex: 6,
             borderTopStartRadius: 24,
             borderTopEndRadius: 24,
+            backgroundColor: "#F8F8F8",
+            marginTop: 32,
           }}
         >
-          {pests.map((pest, index) => {
-            return <PestCard key={index} pest={pest} />;
-          })}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 16,
+            }}
+          >
+            <Text
+              style={{ fontSize: 20, fontWeight: "500", alignSelf: "center" }}
+            >
+              Hama
+            </Text>
+          </View>
+          <TextInput
+            style={{
+              height: 50,
+              borderWidth: 1,
+              padding: 16,
+              marginBottom: 24,
+              borderRadius: 8,
+              borderColor: "lightgray",
+            }}
+            // onChangeText={onChangeNumber}
+            // value={number}
+            placeholder="Search here.."
+            keyboardType="text"
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              borderTopStartRadius: 24,
+              borderTopEndRadius: 24,
+            }}
+          >
+            {pests.map((pest, index) => {
+              return <PestCard key={index} pest={pest} />;
+            })}
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </>
   );
 }

@@ -94,9 +94,9 @@ export default function PlantProgress({ navigation }) {
             </Text>
           </View>
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
+          onPress={() => {
+            navigation.navigate('Home')
+          }}
             style={{ padding: 8, backgroundColor: "white", borderRadius: 50 }}
           >
             <Image

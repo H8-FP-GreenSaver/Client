@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     alignSelf: "flex-start",
     marginTop: 4,
+    overflow: "hidden",
+    borderRadius: 5,
   },
   statsContainer: {
     flexDirection: "row",
