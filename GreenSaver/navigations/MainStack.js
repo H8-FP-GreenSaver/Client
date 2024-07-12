@@ -23,6 +23,7 @@ export default function MainStack() {
 
   useEffect(() => {
     async function check(params) {
+      console.log(await SecureStore.getItemAsync("access_token"), "<<<")
       const result = await SecureStore.getItemAsync("access_token");
       if (result) {
         authContext.setIsSignedIn(true);
@@ -35,7 +36,7 @@ export default function MainStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {authContext.setIsSignedIn ? (
+        {authContext.isSignedIn ? (
           <>
             <Stack.Screen name="GreenSaver" component={BottomTab} />
             <Stack.Screen name="List" component={List} />

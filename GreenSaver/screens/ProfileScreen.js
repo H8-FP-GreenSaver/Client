@@ -16,7 +16,7 @@ export default function ProfileScreen({ navigation }) {
   const authContext = useContext(AuthContext);
 
   async function handleLogout() {
-    let cek = await SecureStore.deleteItemAsync("access_token");
+    await SecureStore.deleteItemAsync("access_token");
     authContext.setIsSignedIn(false);
   }
 

@@ -28,13 +28,13 @@ export default function BottomTab({ navigation }) {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerRight: () => (
-          <TouchableOpacity onPress={handleLogout} style={{ marginRight: 10 }}>
-            <Ionicons name="log-out-outline" size={28} color="#ff0000" />
-          </TouchableOpacity>
-          // <Image
-          //   source={require("../assets/GreenSaver-logo.png")}
-          //   style={{ width: 50, height: 30, marginRight: 25 }}
-          // />
+          // <TouchableOpacity onPress={handleLogout} style={{ marginRight: 10 }}>
+          //   <Ionicons name="log-out-outline" size={28} color="#ff0000" />
+          // </TouchableOpacity>
+          <Image
+            source={require("../assets/GreenSaver-logo.png")}
+            style={{ width: 50, height: 30, marginRight: 25 }}
+          />
         ),
         // headerLeft: () => (
         //   <TouchableOpacity
