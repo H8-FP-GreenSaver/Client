@@ -1,3 +1,7 @@
+import Axios from "../utils/axios";
+import authContext from "../contexts/Auth";
+// import * as SecureStore from 'expo-secure-store';
+import { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,6 +12,25 @@ import {
 } from "react-native";
 
 export default function LoginScreen({ navigation }) {
+  const [email, onChangeEmail] = useState(null);
+  const [password, onChangePassword] = useState(null);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await Axios({
+        url: "/users/login",
+        method: "POST",
+        data: {
+          email: email,
+          password: password
+        }
+      })
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Image
@@ -16,17 +39,26 @@ export default function LoginScreen({ navigation }) {
       />
       {/* <Text style={styles.masuk}>Masuk</Text> */}
       <Text style={styles.label}>Email</Text>
-      <TextInput style={styles.input} placeholder="Email" />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        onChangeText={onChangeEmail}
+        value={email}
+      />
       <Text style={styles.label}>Password</Text>
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        onChangeText={onChangePassword}
+        value={password}
+        secureTextEntry
+      />
       <TouchableOpacity style={styles.lupaPassword}>
         <Text style={styles.lupaPasswordText}>Lupa Password?</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => {
-          navigation.navigate("Preferences1");
-        }}
+        onPress={handleSubmit}
       >
         <Text style={styles.buttonText}>Masuk</Text>
       </TouchableOpacity>

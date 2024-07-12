@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Axios from "../utils/axios";
 import {
   StyleSheet,
   View,
@@ -9,7 +10,31 @@ import {
 } from "react-native";
 
 export default function RegisterScreen({ navigation }) {
+  const [name, onChangeName] = useState(null);
+  const [email, onChangeEmail] = useState(null);
+  const [password, onChangePassword] = useState(null);
   const [checked, setChecked] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      const result = await Axios({
+        url: "/users/register",
+        method: "POST",
+        data: {
+          fullName: name,
+          email: email,
+          password: password
+        }
+      })
+  
+      if (result) {
+        navigation.navigate("Login")
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -19,11 +44,27 @@ export default function RegisterScreen({ navigation }) {
       />
       {/* <Text style={styles.masuk}>Daftar</Text> */}
       <Text style={styles.label}>Nama</Text>
-      <TextInput style={styles.input} placeholder="Nama" />
+      <TextInput
+        style={styles.input}
+        placeholder="Nama"
+        onChangeText={onChangeName}
+        value={name}
+      />
       <Text style={styles.label}>Email</Text>
-      <TextInput style={styles.input} placeholder="Email" />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        onChangeText={onChangeEmail}
+        value={email}
+      />
       <Text style={styles.label}>Password</Text>
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        onChangeText={onChangePassword}
+        value={password}
+        secureTextEntry
+      />
       <View style={styles.checkboxContainer}>
         <TouchableOpacity
           style={[styles.checkbox, checked && styles.checkedCheckbox]}
@@ -33,7 +74,10 @@ export default function RegisterScreen({ navigation }) {
           Dengan mendaftar saya menyetujui syarat dan ketentuan privasi keamanan
         </Text>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={handleSubmit}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>Daftar</Text>
       </TouchableOpacity>
       <Text style={styles.atau}>atau</Text>
