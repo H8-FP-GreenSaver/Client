@@ -7,6 +7,8 @@ import ForumScreen from "../screens/ForumScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import List from "../screens/ListScreen";
 import { FontAwesome } from "@expo/vector-icons";
+import PestsList from "../screens/PestsList";
+import PestDetail from "../screens/PestDetail";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,16 +22,16 @@ export default function BottomTab({ navigation }) {
             style={{ width: 50, height: 30, marginRight: 25 }}
           />
         ),
-        headerLeft: () => (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{ marginLeft: 15 }}
-          >
-            <Ionicons name="chevron-back-outline" size={24} color="black" />
-          </TouchableOpacity>
-        ),
+        // headerLeft: () => (
+        //   <TouchableOpacity
+        //     onPress={() => {
+        //       navigation.goBack();
+        //     }}
+        //     style={{ marginLeft: 15 }}
+        //   >
+        //     <Ionicons name="chevron-back-outline" size={24} color="black" />
+        //   </TouchableOpacity>
+        // ),
         tabBarIcon: ({ color, size }) => {
           if (route.name === "Home") {
             return <Ionicons name="home" size={size} color={color} />;
@@ -53,7 +55,7 @@ export default function BottomTab({ navigation }) {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Forum" component={ForumScreen} />
-      <Tab.Screen name="Ensiklopedia" component={List} />
+      <Tab.Screen name="Ensiklopedia" component={PestsList} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

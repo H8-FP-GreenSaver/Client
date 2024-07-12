@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons, Octicons } from "@expo/vector-icons";
 
 export default function PreSteps({ navigation }) {
   const [category, setCategory] = useState("Tanaman Hias");
@@ -59,6 +58,16 @@ export default function PreSteps({ navigation }) {
 
   return (
     <>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={styles.buttonBack}
+        >
+          <Ionicons name="chevron-back-outline" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.mainContainer}>
         <View style={{ gap: 24, justifyContent: "center" }}>
           <View style={{ flexDirection: "row", gap: 16 }}>
@@ -190,6 +199,7 @@ export default function PreSteps({ navigation }) {
                   gap: 12,
                   alignItems: "center",
                   marginBottom: 16,
+                  borderRadius: 24,
                 }}
               >
                 <Text
@@ -198,7 +208,8 @@ export default function PreSteps({ navigation }) {
                     paddingHorizontal: 14,
                     backgroundColor: "#94C593",
                     color: "white",
-                    borderRadius: 24,
+                    overflow: "hidden",
+                    borderRadius: 5,
                   }}
                 >
                   {step.stepNumber}
@@ -246,7 +257,7 @@ const styles = StyleSheet.create({
     flex: 2,
     padding: 24,
     width: "100%",
-    paddingTop: 40,
+    paddingTop: 90,
     flexDirection: "row",
     backgroundColor: "#94C593",
   },
@@ -277,5 +288,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+  },
+  header: {
+    position: "absolute",
+    top: 60,
+    left: 30,
+    zIndex: 10,
+  },
+  buttonBack: {
+    marginRight: 10,
   },
 });

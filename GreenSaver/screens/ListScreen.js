@@ -48,7 +48,9 @@ export default function List({ navigation }) {
             <Text style={styles.containerWave.name}>Alyssa!</Text>
           </View>
           <TouchableOpacity style={[styles.addButton, styles.shadowProp]}>
-            <Feather name="x" size={28} padding={12} color="#86BA85" />
+            <Feather name="x" size={28} padding={12} color="#86BA85" onPress={() => {
+              navigation.goBack()
+            }}/>
           </TouchableOpacity>
         </View>
       </View>

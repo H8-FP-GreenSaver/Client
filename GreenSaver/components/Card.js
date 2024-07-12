@@ -13,11 +13,9 @@ export const PlantCard = ({ plant, userPreference, navigation }) => {
   });
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("Detail");
-      }}
-    >
+    <TouchableOpacity onPress={() => {
+      navigation.navigate('Detail')
+    }}>
       <View style={{ marginBottom: 24 }}>
         <Image
           style={{
@@ -69,7 +67,7 @@ export const PestCard = ({ pest }) => {
   }
 
   return (
-    <View style={{ marginBottom: 24 }}>
+    <View style={{ marginBottom: 68 }}>
       <Image
         style={{
           width: 165,

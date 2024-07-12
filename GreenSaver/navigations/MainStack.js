@@ -21,9 +21,10 @@ export default function MainStack() {
         <Stack.Screen name="Auth" component={AuthStack} />
         <Stack.Screen name="GreenSaver" component={BottomTab} />
         <Stack.Screen name="List" component={List} />
-        <Stack.Screen name="Detail" component={PestsList} />
+        <Stack.Screen name="Detail" component={Detail} />
         <Stack.Screen name="PreSteps" component={PreSteps} />
         <Stack.Screen name="Steps" component={Steps} />
+        <Stack.Screen name="PestsDetail" component={PestDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
