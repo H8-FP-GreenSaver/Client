@@ -8,6 +8,9 @@ import List from "../screens/ListScreen";
 import Detail from "../screens/DetailScreen";
 import PreSteps from "../screens/PreStepsScreen";
 import Steps from "../screens/StepsScreen";
+import PestDetail from "../screens/PestDetail";
+import PlantProgress from "../screens/PlantProgress";
+import PestsList from "../screens/PestsList";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +21,7 @@ export default function MainStack() {
         <Stack.Screen name="Auth" component={AuthStack} />
         <Stack.Screen name="GreenSaver" component={BottomTab} />
         <Stack.Screen name="List" component={List} />
-        <Stack.Screen name="Detail" component={Detail} />
+        <Stack.Screen name="Detail" component={PestsList} />
         <Stack.Screen name="PreSteps" component={PreSteps} />
         <Stack.Screen name="Steps" component={Steps} />
       </Stack.Navigator>

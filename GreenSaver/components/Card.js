@@ -1,5 +1,5 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
 
 export const PlantCard = ({ plant, userPreference, navigation }) => {
   const preference = userPreference.preference.map((pref) => {
@@ -50,5 +50,56 @@ export const PlantCard = ({ plant, userPreference, navigation }) => {
         </View>
       </View>
     </TouchableOpacity>
+  );
+};
+
+export const PestCard = ({ pest }) => {
+  const icons = [];
+
+  for (let i = 1; i <= 5; i++) {
+    if (i <= pest.dangerLevel) {
+      icons.push(
+        <FontAwesome5 key={i} name="book-dead" size={18} color="red" />
+      );
+    } else {
+      icons.push(
+        <FontAwesome5 key={i} name="book-dead" size={18} color="lightgray" />
+      );
+    }
+  }
+
+  return (
+    <View style={{ marginBottom: 24 }}>
+      <Image
+        style={{
+          width: 165,
+          height: 165,
+          backgroundColor: "#94C593",
+          borderRadius: 8,
+          objectFit: "cover",
+        }}
+        source={{
+          uri: "https://png.pngtree.com/png-vector/20240214/ourmid/pngtree-hairy-caterpillar-insects-centipedes-hairy-png-image_11693512.png",
+        }}
+      />
+      <View
+        style={{
+          padding: 12,
+          backgroundColor: "white",
+          borderBottomRightRadius: 8,
+          borderBottomLeftRadius: 8,
+          gap: 4,
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ fontWeight: "500", fontSize: 16 }}>
+            {pest.pestName}
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row", gap: 4, marginTop: 8 }}>
+          {icons}
+        </View>
+      </View>
+    </View>
   );
 };
