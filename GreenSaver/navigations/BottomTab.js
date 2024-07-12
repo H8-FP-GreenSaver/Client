@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button, Image, Text, TouchableOpacity } from "react-native";
@@ -9,18 +9,32 @@ import List from "../screens/ListScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import PestsList from "../screens/PestsList";
 import PestDetail from "../screens/PestDetail";
+import { AuthContext } from "../contexts/Auth";
+import * as SecureStore from 'expo-secure-store';
+
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab({ navigation }) {
+  // const authContext = useContext(AuthContext);
+
+  // async function handleLogout() {
+  //   await SecureStore.deleteItemAsync("access_token");
+  //   authContext.setIsSignedIn(false);
+  //   console.log(authContext.isSignedIn)
+  // }
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerRight: () => (
-          <Image
-            source={require("../assets/GreenSaver-logo.png")}
-            style={{ width: 50, height: 30, marginRight: 25 }}
-          />
+          <TouchableOpacity onPress={handleLogout} style={{ marginRight: 10 }}>
+            <Ionicons name="log-out-outline" size={28} color="#ff0000" />
+          </TouchableOpacity>
+          // <Image
+          //   source={require("../assets/GreenSaver-logo.png")}
+          //   style={{ width: 50, height: 30, marginRight: 25 }}
+          // />
         ),
         // headerLeft: () => (
         //   <TouchableOpacity

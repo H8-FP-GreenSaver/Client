@@ -6,8 +6,20 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { MaterialIcons } from '@expo/vector-icons';
+import { AuthContext } from "../contexts/Auth";
+import { useContext } from "react";
+import * as SecureStore from 'expo-secure-store';
+
 
 export default function ProfileScreen({ navigation }) {
+  const authContext = useContext(AuthContext);
+
+  async function handleLogout() {
+    let cek = await SecureStore.deleteItemAsync("access_token");
+    authContext.setIsSignedIn(false);
+  }
+
   return (
     <>
       <View style={styles.mainContainer}>
@@ -41,6 +53,12 @@ export default function ProfileScreen({ navigation }) {
             </View>
           </View>
           <View style={styles.horizontalLine} />
+          <TouchableOpacity onPress={handleLogout}>
+            <View style={{ marginTop: 24, backgroundColor: "red", paddingVertical: 16, borderRadius: 8, flexDirection: "row", justifyContent: "center", gap: 8, overflow: "hidden", alignItems: "center" }}>
+              <MaterialIcons name="logout" size={24} color="white" />
+              <Text style={{ color: "white" }}>Logout</Text>
+            </View>
+          </TouchableOpacity>
           <View style={styles.imageCard}>
             <Image source={require("../assets/Ideation Rectangle 38.png")} />
             <Image source={require("../assets/Ideation Rectangle 39.png")} />
