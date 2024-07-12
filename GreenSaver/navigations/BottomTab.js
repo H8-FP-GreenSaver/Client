@@ -6,6 +6,7 @@ import Home from "../screens/HomeScreen";
 import ForumScreen from "../screens/ForumScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import List from "../screens/ListScreen";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,6 +41,8 @@ export default function BottomTab({ navigation }) {
                 color={color}
               />
             );
+          } else if (route.name === "Ensiklopedia") {
+            return <FontAwesome name="wikipedia-w" size={size} color={color} />;
           } else if (route.name === "Profile") {
             return <Ionicons name="person" size={size} color={color} />;
           }
@@ -50,6 +53,7 @@ export default function BottomTab({ navigation }) {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Forum" component={ForumScreen} />
+      <Tab.Screen name="Ensiklopedia" component={List} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
