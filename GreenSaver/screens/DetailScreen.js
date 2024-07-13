@@ -193,7 +193,7 @@ export default function Detail({ route, navigation }) {
           borderRadius: 16,
         }}
         onPress={() => {
-          navigation.navigate("PreSteps");
+          navigation.navigate("PreSteps", {id: plant.id});
         }}
       >
         <Text

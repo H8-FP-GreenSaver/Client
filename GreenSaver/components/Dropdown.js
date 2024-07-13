@@ -137,7 +137,7 @@ export const Dropdown = ({ plants, category }) => {
 
 const styles = StyleSheet.create({
   dropdownContainer: {
-    marginTop: 24,
+    marginBottom: 16,
     backgroundColor: "white",
     borderRadius: 8,
   },
