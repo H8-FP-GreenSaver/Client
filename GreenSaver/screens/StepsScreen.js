@@ -140,7 +140,7 @@ export default function Steps({ navigation }) {
           </View>
         )}
       </View>
-      <View style={{ padding: 24, flexDirection: "row" }}>
+      <View style={{ paddingHorizontal: 24, paddingBottom: 24, flexDirection: "row", backgroundColor: "white" }}>
         {currentPage > 0 ? (
           <TouchableOpacity
             onPress={handlePrevPage}

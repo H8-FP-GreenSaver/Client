@@ -113,7 +113,7 @@ export default function List({ navigation }) {
           onChangeText={handleSearch}
           value={search}
           placeholder="Search here.."
-          keyboardType="numeric"
+          keyboardType="text"
         />
         <ScrollView>
           <View
@@ -125,10 +125,10 @@ export default function List({ navigation }) {
               borderTopEndRadius: 24,
             }}
           >
-            {plants.map((plant, index) => {
+            {plants.map(plant => {
               return (
                 <PlantCard
-                  key={index}
+                  key={plant.id}
                   plant={plant}
                   userPreference={userPreference}
                   navigation={navigation}

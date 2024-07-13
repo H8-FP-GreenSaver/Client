@@ -1,10 +1,36 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useState } from "react";
 import { MaterialCommunityIcons, Ionicons, Octicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import * as SecureStore from 'expo-secure-store';
+import Axios from "../utils/axios";
 
-export default function PreSteps({ navigation }) {
+export default function PreSteps({ route, navigation }) {
+  const {id} = route.params;
+
   const [category, setCategory] = useState("Tanaman Hias");
-  const [rating, setRating] = useState([]);
+  const [plant, setPlant] = useState([]);
+
+  const fetchPlant = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/plants/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
+
+      setPlant(data)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchPlant();
+  }, []);
+
   const plants = [
     {
       name: "Plant 1",
@@ -48,11 +74,11 @@ export default function PreSteps({ navigation }) {
 
   let difficulty;
 
-  if (plants[0].difficulty >= 1 && plants[0].difficulty < 3) {
+  if (plant.difficulty >= 1 && plant.difficulty < 3) {
     difficulty = "Mudah";
-  } else if (plants[0].difficulty === 3) {
+  } else if (plant.difficulty === 3) {
     difficulty = "Sedang";
-  } else if (plants[0].difficulty > 3 && plants[0].difficulty <= 5) {
+  } else if (plant.difficulty > 3 && plant.difficulty <= 5) {
     difficulty = "Sulit";
   }
 
@@ -110,7 +136,7 @@ export default function PreSteps({ navigation }) {
                 Suhu
               </Text>
               <Text style={{ color: "white", fontSize: 18, fontWeight: "700" }}>
-                {plants[0].temperature}°C
+                {plant.estimateTemperature}°C
               </Text>
             </View>
           </View>
@@ -123,7 +149,7 @@ export default function PreSteps({ navigation }) {
             objectFit: "cover",
             marginStart: "auto",
           }}
-          source={{ uri: plants[0].imageUrl }}
+          source={{ uri: plant.imageUrl }}
         />
       </View>
       <View style={{ backgroundColor: "white", flex: 4, padding: 24 }}>
@@ -154,7 +180,7 @@ export default function PreSteps({ navigation }) {
             <View>
               <Text>Media Tanam</Text>
               <Text style={{ fontWeight: "500", fontSize: 18, marginTop: 8 }}>
-                {plants[0].medium}
+                {plant.medium}
               </Text>
             </View>
           </View>
@@ -174,7 +200,7 @@ export default function PreSteps({ navigation }) {
             <View>
               <Text>Luas Area</Text>
               <Text style={{ fontWeight: "500", fontSize: 18, marginTop: 8 }}>
-                {plants[0].plantArea}
+                {plant.plantArea}
               </Text>
             </View>
           </View>
@@ -209,7 +235,7 @@ export default function PreSteps({ navigation }) {
                     backgroundColor: "#94C593",
                     color: "white",
                     overflow: "hidden",
-                    borderRadius: 5,
+                    borderRadius: 24,
                   }}
                 >
                   {step.stepNumber}

@@ -82,17 +82,19 @@ export default function Home({ navigation }) {
             />
           </TouchableOpacity>
         </View>
-        <View style={{ marginTop: 56 }}>
-          {categories.map((category, index) => {
-            return <Dropdown key={index} plants={plants} category={category} />
-          })}
-        </View>
+        <ScrollView>
+          <View style={{ paddingHorizontal: 24 }}>
+            {categories.map((category, index) => {
+              return <Dropdown key={index} plants={plants} category={category} />
+            })}
+          </View>
+        </ScrollView>
       </View>
-      <ImageBackground
+      {/* <ImageBackground
         source={require("../assets/background-homepage.png")}
         resizeMode="cover"
         style={styles.backgroundImage}
-      />
+      /> */}
     </>
   );
 }
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     flex: 2,
     width: "100%",
-    padding: 24,
+    // padding: 24,
     backgroundColor: "#E8E8E8",
   },
   backgroundImage: {
@@ -115,6 +117,8 @@ const styles = StyleSheet.create({
   },
   headContainer: {
     flexDirection: "row",
+    marginVertical: 16,
+    paddingHorizontal: 24
   },
   containerWave: {
     marginRight: "auto",
