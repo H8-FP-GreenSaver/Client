@@ -1,4 +1,5 @@
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -6,38 +7,38 @@ import {
   View,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Axios from "../utils/axios";
+import * as SecureStore from 'expo-secure-store';
 import { PlantCard } from "../components/Card";
 
 export default function List({ navigation }) {
-  const [category, setCategory] = useState("Tanaman Hias");
+  const [plants, setPlants] = useState([]);
+
+  const fetchAllPlants = async () => {
+    try {
+      const { data } = await Axios({
+        url: "/plants/",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
+
+      setPlants(data)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchAllPlants();
+  }, [])
+
   const userPreference = {
     preference: ["Tanaman Hias", "Tanaman Buah"],
   };
-
-  const plants = [
-    {
-      name: "Plant 1",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/024/859/837/small_2x/monstera-plant-in-ceramic-pot-illustration-ai-generative-png.png",
-      category: "Tanaman Hias",
-      difficulty: "Mudah",
-    },
-    {
-      name: "Plant 2",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/027/254/678/small_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-      category: "Tanaman Buah",
-      difficulty: "Sedang",
-    },
-    {
-      name: "Plant 3",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/previews/027/254/690/non_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-      category: "Tanaman Obat",
-      difficulty: "Sulit",
-    },
-  ];
 
   return (
     <>
@@ -50,7 +51,7 @@ export default function List({ navigation }) {
           <TouchableOpacity style={[styles.addButton, styles.shadowProp]}>
             <Feather name="x" size={28} padding={12} color="#86BA85" onPress={() => {
               navigation.goBack()
-            }}/>
+            }} />
           </TouchableOpacity>
         </View>
       </View>
@@ -108,26 +109,28 @@ export default function List({ navigation }) {
           placeholder="Search here.."
           keyboardType="numeric"
         />
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            borderTopStartRadius: 24,
-            borderTopEndRadius: 24,
-          }}
-        >
-          {plants.map((plant, index) => {
-            return (
-              <PlantCard
-                key={index}
-                plant={plant}
-                userPreference={userPreference}
-                navigation={navigation}
-              />
-            );
-          })}
-        </View>
+        <ScrollView>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              borderTopStartRadius: 24,
+              borderTopEndRadius: 24,
+            }}
+          >
+            {plants.map((plant, index) => {
+              return (
+                <PlantCard
+                  key={index}
+                  plant={plant}
+                  userPreference={userPreference}
+                  navigation={navigation}
+                />
+              );
+            })}
+          </View>
+        </ScrollView>
       </View>
     </>
   );

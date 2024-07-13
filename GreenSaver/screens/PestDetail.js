@@ -6,28 +6,20 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { Dropdown } from "../components/Dropdown";
-import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import * as SecureStore from 'expo-secure-store';
+import Axios from "../utils/axios";
 
-export default function PestDetail({ navigation }) {
-  const pest = {
-    pestName: "Ulat Bulu",
-    description:
-      "Ulat bulu berperan sebagai hama tanaman. Keberadaan ulat bulu pada inang dapat diketahui dengan melihat gejala yang terjadi pada inang yang diamati. Inang yang terserang ulat bulu menunjukkan gejala daun berlubang, bagian tepi daun habis dimakan ulat bulu, dan terdapat sisa kotoran ulat bulu.",
-    imageUrl:
-      "https://png.pngtree.com/png-vector/20240214/ourmid/pngtree-hairy-caterpillar-insects-centipedes-hairy-png-image_11693512.png",
-    dangerLevel: 4,
-    plantId: "Tanaman Gulma", // misalnya, nanti plantId tetep integer
-  };
+export default function PestDetail({ route, navigation }) {
+  const [pests, setPests] = useState({})
+  const { id } = route.params;
 
   const icons = [];
 
   for (let i = 1; i <= 5; i++) {
-    if (i <= pest.dangerLevel) {
+    if (i <= pests.dangerLevel) {
       icons.push(
         <FontAwesome5 key={i} name="book-dead" size={18} color="red" />
       );
@@ -37,6 +29,27 @@ export default function PestDetail({ navigation }) {
       );
     }
   }
+
+  const fetchPests = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/pests/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
+
+      setPests(data)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchPests();
+  }, [])
 
   return (
     <>
@@ -61,7 +74,7 @@ export default function PestDetail({ navigation }) {
         >
           <Image
             style={{ width: 300, height: 200, objectFit: "cover" }}
-            source={{ uri: pest.imageUrl }}
+            source={{ uri: pests.imageUrl }}
           />
         </View>
         <View>
@@ -73,14 +86,14 @@ export default function PestDetail({ navigation }) {
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: "500", marginBottom: 8 }}>
-              {pest.pestName}
+              {pests.pestName}
             </Text>
             <View style={{ flexDirection: "row", gap: 4, marginTop: 8 }}>
               {icons}
             </View>
           </View>
           <Text style={{ fontSize: 16, lineHeight: 28, marginTop: 24 }}>
-            {pest.description}
+            {pests.description}
           </Text>
           <View style={{ marginTop: 24 }}>
             <Text style={{ fontSize: 16, fontWeight: "500" }}>
@@ -102,7 +115,7 @@ export default function PestDetail({ navigation }) {
                   borderRadius: 8,
                 }}
               >
-                {pest.plantId}
+                {pests.plantId}
               </Text>
             </View>
           </View>
