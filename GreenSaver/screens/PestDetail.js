@@ -1,19 +1,12 @@
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
 
 export default function PestDetail({ route, navigation }) {
-  const [pests, setPests] = useState({})
+  const [pests, setPests] = useState({});
   const { id } = route.params;
 
   const icons = [];
@@ -36,20 +29,21 @@ export default function PestDetail({ route, navigation }) {
         url: `/pests/${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
-      setPests(data)
-
+      setPests(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchPests();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -106,17 +100,19 @@ export default function PestDetail({ route, navigation }) {
                 marginTop: 12,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 16,
-                  padding: 8,
-                  backgroundColor: "#DBF0DA",
-                  color: "#689867",
-                  borderRadius: 8,
-                }}
-              >
-                {pests.plantId}
-              </Text>
+              {pests.Plant && (
+                <Text
+                  style={{
+                    fontSize: 16,
+                    padding: 8,
+                    backgroundColor: "#DBF0DA",
+                    color: "#689867",
+                    borderRadius: 8,
+                  }}
+                >
+                  {pests.Plant?.plantName}
+                </Text>
+              )}
             </View>
           </View>
         </View>
