@@ -33,6 +33,14 @@ export default {
       messagingSenderId: process.env.Messaging_Sender_Id,
       appId: process.env.App_Id,
     },
-    plugins: ["expo-secure-store"],
+    plugins: [
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
   },
 };

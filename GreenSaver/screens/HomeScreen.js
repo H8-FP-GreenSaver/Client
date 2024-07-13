@@ -14,27 +14,10 @@ import Axios from "../utils/axios";
 
 
 export default function Home({ navigation }) {
-  // const [plant, setPlant] = useState([]);
+  const [plants, setPlants] = useState(null);
   const [categories, setCategories] = useState([]);
-  const plants = [
-    {
-      name: "Plant 1",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/024/859/837/small_2x/monstera-plant-in-ceramic-pot-illustration-ai-generative-png.png",
-    },
-    {
-      name: "Plant 2",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/027/254/678/small_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-    },
-    {
-      name: "Plant 3",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/previews/027/254/690/non_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-    },
-  ];
 
-  const fetchCategories = async () => {
+  const fetchPlants = async () => {
     try {
       const { data } = await Axios({
         url: "/users/home",
@@ -44,13 +27,17 @@ export default function Home({ navigation }) {
         }
       })
 
-      let categories = [];
+      let tempArr = [];
 
-      data.map(category => {
-        categories.push(category.Plant.categoryId)
-      })
+      if (data["1"]) {
+        tempArr.push(data["1"])
+      }
 
-      setCategories(categories)
+      if (data["4"]) {
+        tempArr.push(data["4"])
+      }
+
+      setPlants(tempArr);
 
     } catch (error) {
       console.log(error)
@@ -58,10 +45,9 @@ export default function Home({ navigation }) {
   }
 
   useEffect(() => {
-    fetchCategories();
+    fetchPlants();
   }, [])
 
-  // console.log(categories)
   return (
     <>
       <View style={styles.mainContainer}>
@@ -84,8 +70,8 @@ export default function Home({ navigation }) {
         </View>
         <ScrollView>
           <View style={{ paddingHorizontal: 24 }}>
-            {categories.map((category, index) => {
-              return <Dropdown key={index} plants={plants} category={category} />
+            {plants && plants.map((plant, index) => {
+              return <Dropdown key={index} plant={plant} />
             })}
           </View>
         </ScrollView>

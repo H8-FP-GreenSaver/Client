@@ -4,66 +4,66 @@ import * as SecureStore from 'expo-secure-store';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-export const Dropdown = ({ plants, category }) => {
-    const [plant, setPlant] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 1;
+export const Dropdown = ({ plant }) => {
+  // const [plant, setPlant] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 1;
 
-    const fetchCategories = async () => {
-        try {
-            const { data } = await Axios({
-                url: "/users/home",
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-                }
-            })
+  // const fetchCategories = async () => {
+  //     try {
+  //         const { data } = await Axios({
+  //             url: "/users/home",
+  //             method: "GET",
+  //             headers: {
+  //                 Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+  //             }
+  //         })
 
-            let categories = {};
+  //         let categories = {};
 
-            data.forEach(item => {
-                const categoryId = item.Plant.categoryId;
-                if (categories[categoryId]) {
-                    categories[categoryId].push(item);
-                } else {
-                    categories[categoryId] = [{ categoryName: getCategoryName(categoryId) || 'Unknown', plants: [item] }];
-                }
-            });
+  //         data.forEach(item => {
+  //             const categoryId = item.Plant.categoryId;
+  //             if (categories[categoryId]) {
+  //                 categories[categoryId].push(item);
+  //             } else {
+  //                 categories[categoryId] = [{ categoryName: getCategoryName(categoryId) || 'Unknown', plants: [item] }];
+  //             }
+  //         });
 
-            // if (categories.categoryId == 1) {
-            //     console.log("test")
-            // }
-            // console.log(categories.categoryId)
-            setPlant(categories)
-            //   setCategories(categories)
+  //         // if (categories.categoryId == 1) {
+  //         //     console.log("test")
+  //         // }
+  //         // console.log(categories.categoryId)
+  //         setPlant(categories)
+  //         //   setCategories(categories)
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+  //     } catch (error) {
+  //         console.log(error)
+  //     }
+  // }
 
-    const getCategoryName = (categoryId) => {
-        // Implement logic to retrieve category name based on categoryId
-        // For example:
-        switch (categoryId) {
-            case 1:
-                return 'Category 1';
-            case 2:
-                return 'Category 2';
-            case 3:
-                return 'Category 3';
-            // Add more cases as needed
-            default:
-                return null;
-        }
-    }
+  // const getCategoryName = (categoryId) => {
+  //     // Implement logic to retrieve category name based on categoryId
+  //     // For example:
+  //     switch (categoryId) {
+  //         case 1:
+  //             return 'Category 1';
+  //         case 2:
+  //             return 'Category 2';
+  //         case 3:
+  //             return 'Category 3';
+  //         // Add more cases as needed
+  //         default:
+  //             return null;
+  //     }
+  // }
 
-    // console.log(plant, "????>?>>??>?>?>")
+  // // console.log(plant, "????>?>>??>?>?>")
 
-    useEffect(() => {
-        fetchCategories();
-    }, [])
+  // useEffect(() => {
+  //     fetchCategories();
+  // }, [])
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -73,19 +73,22 @@ export const Dropdown = ({ plants, category }) => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     } else {
-      setCurrentPage(plants.length - 1);
+      setCurrentPage(plant.length - 1);
     }
   };
 
   const handleNextPage = () => {
-    if ((currentPage + 1) * itemsPerPage < plants.length) {
+    if ((currentPage + 1) * itemsPerPage < plant.length) {
       setCurrentPage(currentPage + 1);
     }
 
-        if ((currentPage + 1) === plants.length) {
-            setCurrentPage(0)
-        }
-    };
+    if ((currentPage + 1) === plant.length) {
+      setCurrentPage(0)
+    }
+  };
+
+  // console.log(plant, "<<< plant nih bos")
+
 
   return (
     <View style={styles.dropdownContainer}>
@@ -93,8 +96,8 @@ export const Dropdown = ({ plants, category }) => {
         onPress={toggleDropdown}
         style={[styles.dropdownHeader, styles.shadowProp]}
       >
-        <Text style={styles.headerText}>{category}</Text>
-        <Text style={styles.plantsAmount}>{plants.length} Tanaman</Text>
+        <Text style={styles.headerText}>Tanaman {plant[0].Plant.Category.categoryName}</Text>
+        <Text style={styles.plantsAmount}>{plant.length} Tanaman</Text>
         <View>
           {!isOpen ? (
             <Feather name="chevron-down" size={24} color="#3D3D3D" />
@@ -120,10 +123,10 @@ export const Dropdown = ({ plants, category }) => {
           <TouchableOpacity style={styles.optionItem}>
             <Image
               style={{ width: 230, height: 300, objectFit: "cover" }}
-              source={{ uri: plants[currentPage].imageUrl }}
+              source={{ uri: plant[currentPage].imageUrl }}
             />
             <Text style={{ fontWeight: "500", fontSize: 16, color: "#689867" }}>
-              {plants[currentPage].name}
+              {plant[currentPage].name}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleNextPage}>
