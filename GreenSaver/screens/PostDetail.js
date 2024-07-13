@@ -64,7 +64,7 @@ export default function PostDetailScreen({ route, navigation }) {
   if (!post) {
     return <Text>Loading...</Text>;
   }
-
+  console.log(post, "<<<>>>>");
   return (
     <>
       <View style={styles.header}>
@@ -77,6 +77,7 @@ export default function PostDetailScreen({ route, navigation }) {
           <Ionicons name="chevron-back-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
+
       <View style={{ flex: 1, padding: 16 }}>
         <ScrollView>
           <View
@@ -96,6 +97,14 @@ export default function PostDetailScreen({ route, navigation }) {
                 marginRight: 16,
               }}
             />
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              {post.fullName}
+            </Text>
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>
               {post.threadCaption}
             </Text>
@@ -104,9 +113,9 @@ export default function PostDetailScreen({ route, navigation }) {
             source={{ uri: post.imageUrl }}
             style={{ width: "100%", height: 200, marginBottom: 16 }}
           />
-          <Text style={{ fontSize: 14, color: "gray", marginBottom: 16 }}>
+          {/* <Text style={{ fontSize: 14, color: "gray", marginBottom: 16 }}>
             {post.postDescription}
-          </Text>
+          </Text> */}
           <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 16 }}>
             Comments
           </Text>
@@ -117,7 +126,12 @@ export default function PostDetailScreen({ route, navigation }) {
           ))}
         </ScrollView>
         <View
-          style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: 16,
+            marginBottom: 30,
+          }}
         >
           <TextInput
             value={newComment}
@@ -139,19 +153,19 @@ export default function PostDetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-//   mainContainer: {
-//     zIndex: 1,
-//     flex: 4,
-//     width: "100%",
-//     paddingHorizontal: 24,
-//     paddingTop: 24,
-//     backgroundColor: "white",
-//   },
+  mainContainer: {
+    zIndex: 1,
+    flex: 4,
+    width: "100%",
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    backgroundColor: "white",
+  },
   header: {
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
-    marginTop: 60,
+    marginTop: 50,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
   },
