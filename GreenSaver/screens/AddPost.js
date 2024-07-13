@@ -9,12 +9,12 @@ import {
     View,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { PestCard, PlantCard } from "../components/Card";
-import * as SecureStore from "expo-secure-store";
-import Axios from "../utils/axios";
+// import { PestCard, PlantCard } from "../components/Card";
+// import * as SecureStore from "expo-secure-store";
+// import Axios from "../utils/axios";
 import * as ImagePicker from "expo-image-picker"
 import * as FileSystem from "expo-file-system";
-import { firebase } from "@react-native-firebase/database";
+// import { firebase } from "@react-native-firebase/database";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function AddPost({ navigation }) {

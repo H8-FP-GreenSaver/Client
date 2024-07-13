@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { collection, getDocs } from "firebase/firestore";
 import { database } from "../config/firebase"; // Adjust the path according to your project structure
-import { FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome6 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { timeSince } from "../helpers/timeConverter";
-
 
 export default function ForumScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
@@ -23,14 +22,16 @@ export default function ForumScreen({ navigation }) {
     fetchPosts();
   }, []);
 
-  // console.log(posts);
+  console.log(posts);
   // {
   // posts.map((post) => console.log(post.comments))
   //   console.log(comment, "__+_+++_")
   // })));
   // }
   return (
-    <View style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}>
+    <View
+      style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
+    >
       <ScrollView style={{ marginTop: 24 }}>
         {posts.map((post) => (
           <TouchableOpacity
@@ -45,7 +46,13 @@ export default function ForumScreen({ navigation }) {
               navigation.navigate("PostDetail", { postId: post.id })
             }
           >
-            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 16 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 16,
+              }}
+            >
               <Image
                 source={{ uri: post.profileUrl }}
                 style={{
@@ -63,7 +70,9 @@ export default function ForumScreen({ navigation }) {
               </View>
             </View>
             <View style={{ width: "100%" }}>
-              <Text style={{ fontSize: 16, fontWeight: "500", marginBottom: 12 }}>
+              <Text
+                style={{ fontSize: 16, fontWeight: "500", marginBottom: 12 }}
+              >
                 {post.threadCaption}
               </Text>
               <Image
@@ -75,7 +84,14 @@ export default function ForumScreen({ navigation }) {
                   objectFit: "cover",
                 }}
               />
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 8,
+                  marginTop: 12,
+                }}
+              >
                 <FontAwesome6 name="comment-alt" size={18} color="gray" />
                 <Text style={{ fontSize: 14, color: "gray" }}>
                   {post.comments.length} komentar
@@ -87,7 +103,7 @@ export default function ForumScreen({ navigation }) {
       </ScrollView>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("AddPost")
+          navigation.navigate("AddPost");
         }}
         style={{
           backgroundColor: "#86BA85",
