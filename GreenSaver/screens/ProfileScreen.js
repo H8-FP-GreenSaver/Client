@@ -8,12 +8,35 @@ import {
 } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { AuthContext } from "../contexts/Auth";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as SecureStore from 'expo-secure-store';
+import Axios from "../utils/axios";
 
 
 export default function ProfileScreen({ navigation }) {
   const authContext = useContext(AuthContext);
+  const [user, setUser] = useState({});
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/users/user-profile`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
+
+      setUser(data)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, [])
 
   async function handleLogout() {
     await SecureStore.deleteItemAsync("access_token");
@@ -26,13 +49,13 @@ export default function ProfileScreen({ navigation }) {
         <View style={styles.headContainer}>
           <View style={styles.containerWave}>
             <Image
-              source={require("../assets/Ideation Ellipse 31.png")}
+              source={{uri: user.avatar}}
               style={styles.profileImage}
             />
             <View style={styles.userInfo}>
-              <Text style={styles.name}>Alyssa</Text>
-              <Text style={styles.username}>@alyssaroem</Text>
-              <Text style={styles.role}>Pemula</Text>
+              <Text style={styles.name}>{user.fullName}</Text>
+              <Text style={styles.username}>{user.email}</Text>
+              <Text style={styles.role}>{user.skill}</Text>
             </View>
           </View>
         </View>
@@ -81,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 4,
     width: "100%",
     paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingTop: 40,
     backgroundColor: "#94C593",
   },
   backgroundImage: {
@@ -93,7 +116,7 @@ const styles = StyleSheet.create({
   },
   headContainer: {
     flexDirection: "row",
-    marginTop: 40,
+    // marginTop: 40,
   },
   containerWave: {
     flexDirection: "row",
@@ -109,6 +132,7 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     marginLeft: 20,
+    gap: 8
   },
   name: {
     fontSize: 20,
@@ -160,8 +184,8 @@ const styles = StyleSheet.create({
   imageCard: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 30,
-    gap: 5,
+    // justifyContent: "space-between",
+    paddingTop: 24,
+    gap: 16,
   },
 });
