@@ -8,32 +8,39 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import { PestCard, PlantCard } from "../components/Card";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
 
 export default function PestsList({ navigation }) {
   const [pests, setPests] = useState([]);
+  const [search, setSearch] = useState("");
 
-  const fetchPests = async () => {
+  const fetchPests = async (query = "") => {
     try {
       const { data } = await Axios({
-        url: "/pests/",
+        url: `/pests?search=${query}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
-      setPests(data)
-
+      setPests(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchPests();
-  }, [])
+  }, []);
+
+  const handleSearch = (query) => {
+    setSearch(query);
+    fetchPests(query);
+  };
 
   return (
     <>
@@ -70,8 +77,8 @@ export default function PestsList({ navigation }) {
             borderRadius: 8,
             borderColor: "lightgray",
           }}
-          // onChangeText={onChangeNumber}
-          // value={number}
+          onChangeText={handleSearch}
+          value={search}
           placeholder="Search here.."
           keyboardType="text"
         />
@@ -86,11 +93,13 @@ export default function PestsList({ navigation }) {
             }}
           >
             {pests.map((pest, index) => {
-              return <PestCard key={index} pest={pest} navigation={navigation} />;
+              return (
+                <PestCard key={index} pest={pest} navigation={navigation} />
+              );
             })}
           </View>
         </ScrollView>
-      </View >
+      </View>
     </>
   );
 }

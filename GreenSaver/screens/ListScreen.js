@@ -14,11 +14,12 @@ import { PlantCard } from "../components/Card";
 
 export default function List({ navigation }) {
   const [plants, setPlants] = useState([]);
+  const [search, setSearch] = useState('');
 
-  const fetchAllPlants = async () => {
+  const fetchAllPlants = async (query = '') => {
     try {
       const { data } = await Axios({
-        url: "/plants/",
+        url: `/plants?search=${query}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
@@ -35,6 +36,11 @@ export default function List({ navigation }) {
   useEffect(() => {
     fetchAllPlants();
   }, [])
+
+  const handleSearch = (query) => {
+    setSearch(query);
+    fetchAllPlants(query);
+  };
 
   const userPreference = {
     preference: ["Tanaman Hias", "Tanaman Buah"],
@@ -104,8 +110,8 @@ export default function List({ navigation }) {
             borderRadius: 8,
             borderColor: "lightgray",
           }}
-          // onChangeText={onChangeNumber}
-          // value={number}
+          onChangeText={handleSearch}
+          value={search}
           placeholder="Search here.."
           keyboardType="numeric"
         />
