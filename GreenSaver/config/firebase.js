@@ -1,19 +1,18 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import Constants from "expo-constants";
 
 //firebase config
 const firebaseConfig = {
-  apiKey: Constants.manifest.extra.apiKey,
-  authDomain: Constants.manifest.extra.authDomain,
-  projectId: Constants.manifest.extra.projectId,
-  storageBucket: Constants.manifest.extra.storageBucket,
-  messagingSenderId: Constants.manifest.extra.messagingSenderId,
-  appId: Constants.manifest.extra.appId,
+  apiKey: "AIzaSyAeKyQlp_b0RPRtpAVlygHmlXvm58sNvtg",
+  authDomain: "greensaver-forum.firebaseapp.com",
+  projectId: "greensaver-forum",
+  storageBucket: "greensaver-forum.appspot.com",
+  messagingSenderId: "219197149134",
+  appId: "219197149134:web:6a6349ffcc1e7ba685659f",
 };
 
 //initialize firebase
-initializeApp(firebaseConfig);
-export const auth = getAuth();
-export const database = getFirestore();
+const app = initializeApp(firebaseConfig);
+const database = getFirestore(app);
+
+export { database };

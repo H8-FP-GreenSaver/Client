@@ -14,6 +14,7 @@ import PestsList from "../screens/PestsList";
 import { AuthContext } from "../contexts/Auth";
 import { useContext, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
+import PostDetailScreen from "../screens/PostDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ export default function MainStack() {
             <Stack.Screen name="PreSteps" component={PreSteps} />
             <Stack.Screen name="Steps" component={Steps} />
             <Stack.Screen name="PestsDetail" component={PestDetail} />
+            <Stack.Screen name="PostDetail" component={PostDetailScreen} />
           </>
         ) : (
           <>
