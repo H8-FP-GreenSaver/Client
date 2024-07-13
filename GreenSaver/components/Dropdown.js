@@ -1,18 +1,69 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ScrollView,
-} from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import Axios from "../utils/axios";
+import * as SecureStore from 'expo-secure-store';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 export const Dropdown = ({ plants, category }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 1;
+    const [plant, setPlant] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 1;
+
+    const fetchCategories = async () => {
+        try {
+            const { data } = await Axios({
+                url: "/users/home",
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+                }
+            })
+
+            let categories = {};
+
+            data.forEach(item => {
+                const categoryId = item.Plant.categoryId;
+                if (categories[categoryId]) {
+                    categories[categoryId].push(item);
+                } else {
+                    categories[categoryId] = [{ categoryName: getCategoryName(categoryId) || 'Unknown', plants: [item] }];
+                }
+            });
+
+            // if (categories.categoryId == 1) {
+            //     console.log("test")
+            // }
+            // console.log(categories.categoryId)
+            setPlant(categories)
+            //   setCategories(categories)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getCategoryName = (categoryId) => {
+        // Implement logic to retrieve category name based on categoryId
+        // For example:
+        switch (categoryId) {
+            case 1:
+                return 'Category 1';
+            case 2:
+                return 'Category 2';
+            case 3:
+                return 'Category 3';
+            // Add more cases as needed
+            default:
+                return null;
+        }
+    }
+
+    // console.log(plant, "????>?>>??>?>?>")
+
+    useEffect(() => {
+        fetchCategories();
+    }, [])
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -31,10 +82,10 @@ export const Dropdown = ({ plants, category }) => {
       setCurrentPage(currentPage + 1);
     }
 
-    if (currentPage + 1 === plants.length) {
-      setCurrentPage(0);
-    }
-  };
+        if ((currentPage + 1) === plants.length) {
+            setCurrentPage(0)
+        }
+    };
 
   return (
     <View style={styles.dropdownContainer}>

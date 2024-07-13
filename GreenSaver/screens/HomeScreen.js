@@ -8,10 +8,14 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Dropdown } from "../components/Dropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import * as SecureStore from 'expo-secure-store';
+import Axios from "../utils/axios";
+
 
 export default function Home({ navigation }) {
-  const [category, setCategory] = useState("Tanaman Hias");
+  // const [plant, setPlant] = useState([]);
+  const [categories, setCategories] = useState([]);
   const plants = [
     {
       name: "Plant 1",
@@ -30,6 +34,34 @@ export default function Home({ navigation }) {
     },
   ];
 
+  const fetchCategories = async () => {
+    try {
+      const { data } = await Axios({
+        url: "/users/home",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
+
+      let categories = [];
+
+      data.map(category => {
+        categories.push(category.Plant.categoryId)
+      })
+
+      setCategories(categories)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, [])
+
+  // console.log(categories)
   return (
     <>
       <View style={styles.mainContainer}>
@@ -50,12 +82,11 @@ export default function Home({ navigation }) {
             />
           </TouchableOpacity>
         </View>
-        {/* <ScrollView> */}
-          <View style={{ marginTop: 56 }}>
-            <Dropdown plants={plants} category={category} />
-            <Dropdown plants={plants} category={category} />
-          </View>
-        {/* </ScrollView> */}
+        <View style={{ marginTop: 56 }}>
+          {categories.map((category, index) => {
+            return <Dropdown key={index} plants={plants} category={category} />
+          })}
+        </View>
       </View>
       <ImageBackground
         source={require("../assets/background-homepage.png")}
@@ -69,22 +100,21 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   mainContainer: {
     zIndex: 1,
-    flex: 4,
+    flex: 2,
     width: "100%",
-    paddingHorizontal: 24,
-    paddingTop: 24,
+    padding: 24,
     backgroundColor: "#E8E8E8",
   },
   backgroundImage: {
     zIndex: 0,
-    flex: 12,
+    flex: 7,
     height: 500,
+    objectFit: "cover",
     width: "100%",
     backgroundColor: "#E8E8E8",
   },
   headContainer: {
     flexDirection: "row",
-    marginTop: 40,
   },
   containerWave: {
     marginRight: "auto",
