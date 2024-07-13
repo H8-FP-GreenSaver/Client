@@ -1,6 +1,6 @@
 import Axios from "../utils/axios";
 import { AuthContext } from "../contexts/Auth";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import { useContext, useState } from "react";
 import {
   Image,
@@ -24,19 +24,21 @@ export default function LoginScreen({ navigation }) {
         method: "POST",
         data: {
           email: email,
-          password: password
-        }
-      })
+          password: password,
+        },
+      });
 
       if (response) {
-        await SecureStore.setItemAsync("access_token", response.data.access_token)
+        await SecureStore.setItemAsync(
+          "access_token",
+          response.data.access_token
+        );
         authContext.setIsSignedIn(true);
       }
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -63,10 +65,7 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity style={styles.lupaPassword}>
         <Text style={styles.lupaPasswordText}>Lupa Password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSubmit}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Masuk</Text>
       </TouchableOpacity>
       <Text style={styles.atau}>atau</Text>
