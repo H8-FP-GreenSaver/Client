@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -49,10 +50,12 @@ export default function Home({ navigation }) {
             />
           </TouchableOpacity>
         </View>
-        <View style={{ marginTop: 56 }}>
-          <Dropdown plants={plants} category={category} />
-          <Dropdown plants={plants} category={category} />
-        </View>
+        {/* <ScrollView> */}
+          <View style={{ marginTop: 56 }}>
+            <Dropdown plants={plants} category={category} />
+            <Dropdown plants={plants} category={category} />
+          </View>
+        {/* </ScrollView> */}
       </View>
       <ImageBackground
         source={require("../assets/background-homepage.png")}

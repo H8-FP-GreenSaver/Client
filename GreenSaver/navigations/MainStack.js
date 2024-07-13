@@ -13,8 +13,7 @@ import PlantProgress from "../screens/PlantProgress";
 import PestsList from "../screens/PestsList";
 import { AuthContext } from "../contexts/Auth";
 import { useContext, useEffect } from "react";
-import * as SecureStore from 'expo-secure-store';
-
+import * as SecureStore from "expo-secure-store";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +22,7 @@ export default function MainStack() {
 
   useEffect(() => {
     async function check(params) {
+      console.log(await SecureStore.getItemAsync("access_token"), "<<<");
       const result = await SecureStore.getItemAsync("access_token");
       if (result) {
         authContext.setIsSignedIn(true);
@@ -35,7 +35,7 @@ export default function MainStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {authContext.setIsSignedIn ? (
+        {authContext.isSignedIn ? (
           <>
             <Stack.Screen name="GreenSaver" component={BottomTab} />
             <Stack.Screen name="List" component={List} />
@@ -44,14 +44,11 @@ export default function MainStack() {
             <Stack.Screen name="Steps" component={Steps} />
             <Stack.Screen name="PestsDetail" component={PestDetail} />
           </>
-        )
-          :
-          (
-            <>
-              <Stack.Screen name="Auth" component={AuthStack} />
-            </>
-          )
-        }
+        ) : (
+          <>
+            <Stack.Screen name="Auth" component={AuthStack} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

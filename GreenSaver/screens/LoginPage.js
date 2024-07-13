@@ -1,7 +1,7 @@
 import Axios from "../utils/axios";
-import authContext from "../contexts/Auth";
-// import * as SecureStore from 'expo-secure-store';
-import { useState } from "react";
+import { AuthContext } from "../contexts/Auth";
+import * as SecureStore from 'expo-secure-store';
+import { useContext, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -15,6 +15,8 @@ export default function LoginScreen({ navigation }) {
   const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
 
+  const authContext = useContext(AuthContext);
+
   const handleSubmit = async () => {
     try {
       const response = await Axios({
@@ -25,6 +27,11 @@ export default function LoginScreen({ navigation }) {
           password: password
         }
       })
+
+      if (response) {
+        await SecureStore.setItemAsync("access_token", response.data.access_token)
+        authContext.setIsSignedIn(true);
+      }
 
     } catch (error) {
       console.log(error)
