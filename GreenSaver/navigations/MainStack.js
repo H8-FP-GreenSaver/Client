@@ -22,7 +22,6 @@ export default function MainStack() {
 
   useEffect(() => {
     async function check(params) {
-      console.log(await SecureStore.getItemAsync("access_token"), "<<<");
       const result = await SecureStore.getItemAsync("access_token");
       if (result) {
         authContext.setIsSignedIn(true);
