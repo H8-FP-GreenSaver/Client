@@ -11,7 +11,8 @@ export default function AuthStack() {
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
-     
+      <Stack.Screen name="Preferences1" component={Preferences1} />
+      <Stack.Screen name="Preferences2" component={Preferences2} />
     </Stack.Navigator>
   );
 }

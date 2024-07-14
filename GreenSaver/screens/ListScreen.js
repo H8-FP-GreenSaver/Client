@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Axios from "../utils/axios";
 import * as SecureStore from 'expo-secure-store';
 import { PlantCard } from "../components/Card";
+import { Skeleton } from "moti/skeleton";
 
 export default function List({ navigation }) {
   const [plants, setPlants] = useState([]);
@@ -47,9 +48,6 @@ export default function List({ navigation }) {
   const userPreference = {
     preference: ["Tanaman Hias", "Tanaman Buah"],
   };
-
-
-  console.log(loading)
 
   return (
     <>
@@ -130,10 +128,10 @@ export default function List({ navigation }) {
               borderTopEndRadius: 24,
             }}
           >
-            {plants.map(plant => {
+            {plants.map((plant, index) => {
               return (
                 <PlantCard
-                  key={plant.id}
+                  key={index}
                   plant={plant}
                   userPreference={userPreference}
                   navigation={navigation}

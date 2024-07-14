@@ -33,7 +33,8 @@ export default function LoginScreen({ navigation }) {
           "access_token",
           response.data.access_token
         );
-        authContext.setIsSignedIn(true);
+        navigation.navigate("Preferences1")
+        // authContext.setIsSignedIn(true);
       }
     } catch (error) {
       console.log(error);

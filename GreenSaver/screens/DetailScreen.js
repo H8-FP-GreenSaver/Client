@@ -127,7 +127,7 @@ export default function Detail({ route, navigation }) {
             >
               <Image source={require("../assets/icon-money.png")} />
               <View>
-                <Text>Harga (Bibit)</Text>
+                <Text>Harga Bibit</Text>
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
                   Rp {new Intl.NumberFormat().format(plant.estimatePrice)}
                 </Text>
@@ -146,7 +146,7 @@ export default function Detail({ route, navigation }) {
             >
               <Ionicons name="water-outline" size={24} color="black" />
               <View>
-                <Text>Harga (Bibit)</Text>
+                <Text>Air</Text>
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
                   {plant.estimateWater} ml
                 </Text>

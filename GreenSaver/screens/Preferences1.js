@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
+import Axios from "../utils/axios";
+import * as SecureStore from "expo-secure-store";
 
 export default function Preferences1({ navigation }) {
   const [selectedButton, setSelectedButton] = useState(null);
@@ -10,11 +12,26 @@ export default function Preferences1({ navigation }) {
     setSelectedButton(button);
   };
 
-  const handleNextPress = () => {
-    if (selectedButton !== null) {
-      navigation.navigate("Preferences2");
-    } else {
-      alert("Please select an option");
+  const handleUpdateSkill = async () => {
+    try {
+      if (!selectedButton) {
+        alert("Please select an option");
+      } else {
+        await Axios({
+          url: "/users/user-profile/update-skill",
+          method: "PATCH",
+          data: {
+            skill: selectedButton,
+          },
+          headers: {
+            Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+          }
+        })
+  
+        navigation.navigate("Preferences2");
+      }
+    } catch (error) {
+      console.log(error)
     }
   };
 
@@ -34,9 +51,9 @@ export default function Preferences1({ navigation }) {
           <TouchableOpacity
             style={[
               styles.buttonChecked,
-              selectedButton === "smileo" && styles.buttonSelected,
+              selectedButton === "Pemula" && styles.buttonSelected,
             ]}
-            onPress={() => handleButtonPress("smileo")}
+            onPress={() => handleButtonPress("Pemula")}
           >
             <AntDesign name="smileo" size={32} color="#86BA85" />
           </TouchableOpacity>
@@ -46,9 +63,9 @@ export default function Preferences1({ navigation }) {
           <TouchableOpacity
             style={[
               styles.buttonChecked,
-              selectedButton === "face-smile-beam" && styles.buttonSelected,
+              selectedButton === "Menengah" && styles.buttonSelected,
             ]}
-            onPress={() => handleButtonPress("face-smile-beam")}
+            onPress={() => handleButtonPress("Menengah")}
           >
             <FontAwesome6 name="face-smile-beam" size={32} color="#86BA85" />
           </TouchableOpacity>
@@ -58,9 +75,9 @@ export default function Preferences1({ navigation }) {
           <TouchableOpacity
             style={[
               styles.buttonChecked,
-              selectedButton === "smiley" && styles.buttonSelected,
+              selectedButton === "Ahli" && styles.buttonSelected,
             ]}
-            onPress={() => handleButtonPress("smiley")}
+            onPress={() => handleButtonPress("Ahli")}
           >
             <Fontisto name="smiley" size={32} color="#86BA85" />
           </TouchableOpacity>
@@ -68,7 +85,7 @@ export default function Preferences1({ navigation }) {
         </View>
       </View>
       <View style={styles.nextContainer}>
-        <TouchableOpacity style={styles.buttonNext} onPress={handleNextPress}>
+        <TouchableOpacity style={styles.buttonNext} onPress={handleUpdateSkill}>
           <AntDesign name="right" size={24} color="#fff" />
         </TouchableOpacity>
       </View>

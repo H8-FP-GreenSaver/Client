@@ -11,18 +11,18 @@ export default function ForumScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchPosts = async () => {
+    const querySnapshot = await getDocs(collection(database, "threads"));
+    const fetchedPosts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setPosts(fetchedPosts);
+    setLoading(false);
+  };
+  
   useEffect(() => {
-    const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(database, "threads"));
-      const fetchedPosts = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setPosts(fetchedPosts);
-      setLoading(false);
-    };
-
     fetchPosts();
   }, []);
 
@@ -52,7 +52,7 @@ export default function ForumScreen({ navigation }) {
                 gap: 12
               }}
             >
-              <Skeleton colorMode="light" width={50} height={50} radius={"round"}>
+              <Skeleton show={false} colorMode="light" width={50} height={50} radius={"round"}>
                 {loading ? null :
                   <Image
                     source={{ uri: post.profileUrl }}
@@ -109,7 +109,7 @@ export default function ForumScreen({ navigation }) {
                   >
                     <FontAwesome6 name="comment-alt" size={18} color="gray" />
                     <Text style={{ fontSize: 14, color: "gray" }}>
-                      {post.comments.length} komentar
+                      {post.comments ? post.comments.length : 0} komentar
                     </Text>
                   </View>
                 </View>
@@ -124,10 +124,12 @@ export default function ForumScreen({ navigation }) {
         }}
         style={{
           backgroundColor: "#86BA85",
-          zIndex: 2,
-          marginBottom: 24,
-          marginStart: "auto",
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
+          padding: 2,
           borderRadius: 50,
+          elevation: 2,
         }}
       >
         <Feather name="plus" padding={20} size={24} color="white" />

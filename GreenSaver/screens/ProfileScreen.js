@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     height: 560,
     width: "100%",
     backgroundColor: "#94C593",
+    // position: 'relative'
   },
   headContainer: {
     flexDirection: "row",
