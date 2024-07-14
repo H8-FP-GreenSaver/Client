@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { collection, getDocs } from "firebase/firestore";
-import { database } from "../config/firebase"; // Adjust the path according to your project structure
+
+import { database } from "../config/firebase";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { timeSince } from "../helpers/timeConverter";
@@ -14,10 +22,18 @@ export default function ForumScreen({ navigation }) {
   useEffect(() => {
     const fetchPosts = async () => {
       const querySnapshot = await getDocs(collection(database, "threads"));
-      const fetchedPosts = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const fetchedPosts = await Promise.all(
+        querySnapshot.docs.map(async (doc) => {
+          const commentsSnapshot = await getDocs(
+            collection(database, "threads", doc.id, "comments")
+          );
+          return {
+            id: doc.id,
+            ...doc.data(),
+            commentsCount: commentsSnapshot.size,
+          };
+        })
+      );
 
       setPosts(fetchedPosts);
       setLoading(false);
@@ -49,11 +65,16 @@ export default function ForumScreen({ navigation }) {
                 flexDirection: "row",
                 alignItems: "center",
                 marginBottom: 16,
-                gap: 12
+                gap: 12,
               }}
             >
-              <Skeleton colorMode="light" width={50} height={50} radius={"round"}>
-                {loading ? null :
+              <Skeleton
+                colorMode="light"
+                width={50}
+                height={50}
+                radius={"round"}
+              >
+                {loading ? null : (
                   <Image
                     source={{ uri: post.profileUrl }}
                     style={{
@@ -62,28 +83,27 @@ export default function ForumScreen({ navigation }) {
                       borderRadius: 25,
                     }}
                   />
-                }
+                )}
               </Skeleton>
               <View style={{ gap: loading ? 8 : 0 }}>
-                <View style={{flexDirection: "row"}}>
+                <View style={{ flexDirection: "row" }}>
                   <Skeleton colorMode="light" width={120} height={24}>
-                    {loading ? null :
+                    {loading ? null : (
                       <Text style={{ fontSize: 16, fontWeight: "bold" }}>
                         {post.fullName}
                       </Text>
-                    }
+                    )}
                   </Skeleton>
-                  {/* <Text style={styles.role}>{post.skill}</Text> */}
                 </View>
                 <Skeleton colorMode="light" width={80} height={18}>
-                  {loading ? null :
+                  {loading ? null : (
                     <Text>{timeSince(post.createdAt.seconds)}</Text>
-                  }
+                  )}
                 </Skeleton>
               </View>
             </View>
             <Skeleton colorMode="light" width={"100%"} height={250}>
-              {loading ? null :
+              {loading ? null : (
                 <View style={{ width: "100%" }}>
                   <Image
                     source={{ uri: post.imageUrl }}
@@ -109,11 +129,11 @@ export default function ForumScreen({ navigation }) {
                   >
                     <FontAwesome6 name="comment-alt" size={18} color="gray" />
                     <Text style={{ fontSize: 14, color: "gray" }}>
-                      {post.comments.length} komentar
+                      {post.commentsCount} komentar
                     </Text>
                   </View>
                 </View>
-              }
+              )}
             </Skeleton>
           </TouchableOpacity>
         ))}
@@ -146,5 +166,5 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     overflow: "hidden",
     borderRadius: 5,
-  }
+  },
 });
