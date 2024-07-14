@@ -1,6 +1,7 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import { Skeleton } from "moti/skeleton";
+import SkeletonExpo from "moti/build/skeleton/expo";
 
 export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
   const preference = userPreference.preference.map((pref) => {
@@ -22,6 +23,7 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
   } else if (plant.difficulty > 3 && plant.difficulty <= 5) {
     difficulty = "Sulit";
   }
+
 
   return (
     <TouchableOpacity
@@ -83,7 +85,7 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
   );
 };
 
-export const PestCard = ({ pest, navigation }) => {
+export const PestCard = ({ pest, navigation, loading }) => {
   const icons = [];
 
   for (let i = 1; i <= 5; i++) {
@@ -105,18 +107,22 @@ export const PestCard = ({ pest, navigation }) => {
       }}
     >
       <View style={{ marginBottom: 68 }}>
-        <Image
-          style={{
-            width: 165,
-            height: 165,
-            backgroundColor: "#94C593",
-            borderRadius: 8,
-            objectFit: "cover",
-          }}
-          source={{
-            uri: pest.imageUrl,
-          }}
-        />
+        <Skeleton colorMode="light" width={165}>
+          {loading ? null :
+            <Image
+              style={{
+                width: 165,
+                height: 165,
+                backgroundColor: "#94C593",
+                borderRadius: 8,
+                objectFit: "cover",
+              }}
+              source={{
+                uri: pest.imageUrl,
+              }}
+            />
+          }
+        </Skeleton>
         <View
           style={{
             padding: 12,

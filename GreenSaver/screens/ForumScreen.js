@@ -39,6 +39,11 @@ export default function ForumScreen({ navigation }) {
       setLoading(false);
     };
 
+    setPosts(fetchedPosts);
+    setLoading(false);
+  };
+  
+  useEffect(() => {
     fetchPosts();
   }, []);
 
@@ -144,10 +149,12 @@ export default function ForumScreen({ navigation }) {
         }}
         style={{
           backgroundColor: "#86BA85",
-          zIndex: 2,
-          marginBottom: 24,
-          marginStart: "auto",
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
+          padding: 2,
           borderRadius: 50,
+          elevation: 2,
         }}
       >
         <Feather name="plus" padding={20} size={24} color="white" />

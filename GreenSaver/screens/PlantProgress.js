@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import * as SecureStore from 'expo-secure-store';
@@ -8,67 +8,33 @@ import { daysCounter } from "../helpers/timeConverter";
 export default function PlantProgress({ route, navigation }) {
   const { id } = route.params;
   const [plant, setPlant] = useState({});
-  // const [currentPage, setCurrentPage] = useState(0);
-  // const itemsPerPage = 1;
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const plants = [
-    {
-      name: "Plant 1",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/024/859/837/small_2x/monstera-plant-in-ceramic-pot-illustration-ai-generative-png.png",
-      category: "Tanaman Hias",
-      difficulty: 2,
-      price: 50000,
-      water: 250,
-      temperature: 26,
-      wateringTime: 1,
-      description:
-        "Tanaman hias tropis dan subtropis yang berasal dari Jepang Selatan. Mawar Jambe merupakan salah satu tanaman yang saat ini sedang naik daun bagi para penggemar tanaman.",
-      medium: "pot bunga",
-      plantArea: "kecil",
-      createdAt: "",
-      today: "",
-      steps: [
-        {
-          name: "Siapkan media tanam",
-          description:
-            "Untuk media tanam dapat menggunakan pot bunga atau langsung ditanamkan ke tanah. Bila memilih menggunakan pot bunga, gunakan ukuran yang kecil sampai sedang. Kemudian isi dengan tanah.",
-          stepNumber: 1,
-          imageUrl:
-            "https://png.pngtree.com/png-clipart/20230927/original/pngtree-flower-pot-with-soil-png-image_13004175.png",
-        },
-        {
-          name: "Siapkan tunas",
-          description:
-            "Untuk tunas bisa membelinya dari penjual tanaman atau diambil dari batang Mawar Jambe secara langsung. Bila mengambil langsung dari batang, gunakan pisau untuk mencongkel bagian tunas-nya.",
-          stepNumber: 2,
-          imageUrl:
-            "https://png.pngtree.com/png-clipart/20210627/original/pngtree-cycad-leaves-outdoor-png-image_6469890.jpg",
-          tips: "Mencongkel tunas dari batang butuh tenaga ekstra karena cukup keras.",
-        },
-        {
-          name: "Proses menanam",
-          description:
-            "Kemudian tanam tunas sebelumnya ke dalam tanah sampai tertutup namun sisakan sedikit pada bagian atas",
-          imageUrl:
-            "https://png.pngtree.com/png-vector/20240317/ourmid/pngtree-cycad-palm-tree-png-image_11987990.png",
-          stepNumber: 3,
-          tips: "Lihat video teknik menanam di bawah ini agar lebih paham",
-          videoUrl: "https://youtu.be/5_6-Oc1TQaY?si=ChX1vgfs_9-xY5T2",
-        },
-      ],
-    },
-    {
-      name: "Plant 2",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/027/254/678/small_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-    },
-    {
-      name: "Plant 3",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/previews/027/254/690/non_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-    },
-  ];
+  const daysInterval = plant.Plant?.wateringTime;
+  const daysOfWeek = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+
+  const renderWaterdrops = () => {
+    const waterdrops = [];
+
+    for (let i = 0; i < 7; i++) {
+      if (i % daysInterval === 0) {
+        waterdrops.push(
+          <Image
+            key={i}
+            style={{ width: 32, height: 32, zIndex: 0, objectFit: 'cover' }}
+            source={require('../assets/icon-waterdrop-solid.png')}
+          />
+        );
+      } else {
+        waterdrops.push(
+          <View key={i} style={{ padding: 9 }}>
+            <View style={{ width: 15, height: 15, backgroundColor: "#E8E8E8", borderRadius: 16 }} />
+          </View>);
+      }
+    }
+
+    return waterdrops;
+  };
 
   const fetchPlant = async () => {
     try {
@@ -87,19 +53,26 @@ export default function PlantProgress({ route, navigation }) {
     }
   }
 
+  const deletePlant = async () => {
+    try {
+      await Axios({
+        url: `users/plant-detail/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
+
+      navigation.navigate("Home")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetchPlant();
   }, [])
 
-  // let difficulty;
-
-  // if (plants[0].difficulty >= 1 && plants[0].difficulty < 3) {
-  //   difficulty = "Mudah";
-  // } else if (plants[0].difficulty === 3) {
-  //   difficulty = "Sedang";
-  // } else if (plants[0].difficulty > 3 && plants[0].difficulty <= 5) {
-  //   difficulty = "Sulit";
-  // }
 
   return (
     <>
@@ -120,15 +93,10 @@ export default function PlantProgress({ route, navigation }) {
             </Text>
           </View>
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Home')
-            }}
-            style={{ padding: 8, backgroundColor: "white", borderRadius: 50 }}
+            onPress={() => setModalVisible(true)}
+            style={{ padding: 16, backgroundColor: "white", borderRadius: 50 }}
           >
-            <Image
-              style={{ width: 32, height: 32 }}
-              source={require("../assets/icon-menu.png")}
-            />
+            <Feather name="trash-2" size={24} color="red" />
           </TouchableOpacity>
         </View>
         <Image
@@ -143,6 +111,40 @@ export default function PlantProgress({ route, navigation }) {
           source={{ uri: plant.Plant?.imageUrl }}
         />
       </View>
+
+      {/* --- Modal --- */}
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={{fontSize: 20, fontWeight: "500", marginBottom: 8}}>Hapus tanaman ini?</Text>
+              <Text style={{fontSize: 16, marginBottom: 8, textAlign: "center", marginBottom: 24}}>Progress tanaman ini akan dihapus secara permanen</Text>
+              <View style={{ flexDirection: "row", gap: 12 }}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible(!modalVisible)}
+                  style={{backgroundColor: "#DFDFDF", paddingVertical: 12, width: "50%", borderRadius: 8}}
+                >
+                  <Text style={{fontSize: 16, color: "gray", fontWeight: "500", textAlign: "center"}}>Batal</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={deletePlant}
+                  style={{ backgroundColor: "red", paddingVertical: 12, width: "50%", borderRadius: 8 }}
+                >
+                  <Text style={{ fontSize: 16, color: "white", fontWeight: "500", textAlign: "center" }}>Ya, Hapus</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+
       <View style={{ backgroundColor: "white", flex: 2, padding: 24 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View>
@@ -200,55 +202,15 @@ export default function PlantProgress({ route, navigation }) {
           Penyiraman
         </Text>
         <View>
-          <View
-            style={{
-              flexDirection: "row",
-              paddingHorizontal: 4,
-              gap: 18,
-              alignItems: "center",
-            }}
-          >
-            <Image
-              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
-              source={require("../assets/icon-waterdrop-solid.png")}
-            />
-            <Image
-              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
-              source={require("../assets/icon-waterdrop-solid.png")}
-            />
-            <Image
-              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
-              source={require("../assets/icon-waterdrop-solid.png")}
-            />
-            <Image
-              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
-              source={require("../assets/icon-waterdrop-solid.png")}
-            />
-            <Image
-              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
-              source={require("../assets/icon-waterdrop-solid.png")}
-            />
-            <Image
-              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
-              source={require("../assets/icon-waterdrop-solid.png")}
-            />
-            <Image
-              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
-              source={require("../assets/icon-waterdrop-solid.png")}
-            />
+          <View style={{ flexDirection: 'row', paddingHorizontal: 4, gap: 18, alignItems: 'center' }}>
+            {renderWaterdrops()}
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              paddingHorizontal: 16,
-              alignItems: "center",
-            }}
-          >
+          <View style={{ flexDirection: 'row', paddingHorizontal: 16, alignItems: 'center' }}>
             <View
               style={{
-                width: "45%",
+                width: '45%',
                 height: 3,
-                backgroundColor: "#56CCF2",
+                backgroundColor: '#56CCF2',
                 marginVertical: 24,
                 borderRadius: 8,
               }}
@@ -257,44 +219,26 @@ export default function PlantProgress({ route, navigation }) {
               style={{
                 width: 16,
                 height: 16,
-                backgroundColor: "#56CCF2",
+                backgroundColor: '#56CCF2',
                 borderRadius: 50,
               }}
             />
             <View
               style={{
-                width: "50%",
+                width: '50%',
                 height: 3,
-                backgroundColor: "#E8E8E8",
+                backgroundColor: '#E8E8E8',
                 marginVertical: 24,
                 borderRadius: 8,
               }}
             />
           </View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}>
-              Senin
-            </Text>
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}>
-              Selasa
-            </Text>
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}>
-              Rabu
-            </Text>
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}>
-              Kamis
-            </Text>
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}>
-              Jumat
-            </Text>
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}>
-              Sabtu
-            </Text>
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}>
-              Minggu
-            </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            {daysOfWeek.map((day, index) => (
+              <Text key={index} style={{ fontSize: 14, fontWeight: '500', color: '#3D3D3D' }}>
+                {day}
+              </Text>
+            ))}
           </View>
         </View>
       </View>
@@ -339,4 +283,41 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    width: "80%",
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  }
 });

@@ -5,10 +5,10 @@ import * as SecureStore from 'expo-secure-store';
 import Axios from "../utils/axios";
 
 export default function PreSteps({ route, navigation }) {
-  const {id} = route.params;
+  const { id } = route.params;
 
-  const [category, setCategory] = useState("Tanaman Hias");
   const [plant, setPlant] = useState([]);
+  const [steps, setSteps] = useState([])
 
   const fetchPlant = async () => {
     try {
@@ -27,50 +27,27 @@ export default function PreSteps({ route, navigation }) {
     }
   }
 
+  const fetchSteps = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/steps/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
+
+      setSteps(data);
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetchPlant();
+    fetchSteps();
   }, []);
-
-  const plants = [
-    {
-      name: "Plant 1",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/024/859/837/small_2x/monstera-plant-in-ceramic-pot-illustration-ai-generative-png.png",
-      category: "Tanaman Hias",
-      difficulty: 2,
-      price: 50000,
-      water: 250,
-      temperature: 26,
-      description:
-        "Tanaman hias tropis dan subtropis yang berasal dari Jepang Selatan. Mawar Jambe merupakan salah satu tanaman yang saat ini sedang naik daun bagi para penggemar tanaman.",
-      medium: "pot bunga",
-      plantArea: "kecil",
-      steps: [
-        {
-          name: "Siapkan media tanam",
-          stepNumber: 1,
-        },
-        {
-          name: "Siapkan tunas",
-          stepNumber: 2,
-        },
-        {
-          name: "Proses menanam",
-          stepNumber: 3,
-        },
-      ],
-    },
-    {
-      name: "Plant 2",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/thumbnails/027/254/678/small_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-    },
-    {
-      name: "Plant 3",
-      imageUrl:
-        "https://static.vecteezy.com/system/resources/previews/027/254/690/non_2x/monstera-plant-in-a-pot-on-a-white-background-ai-generated-png.png",
-    },
-  ];
 
   let difficulty;
 
@@ -114,7 +91,7 @@ export default function PreSteps({ route, navigation }) {
                 {difficulty}
               </Text>
               <Text style={{ color: "white", fontSize: 18, fontWeight: "700" }}>
-                {plants[0].difficulty}/5
+                {plant.difficulty}/5
               </Text>
             </View>
           </View>
@@ -216,7 +193,7 @@ export default function PreSteps({ route, navigation }) {
           >
             Langkah-Langkah
           </Text>
-          {plants[0].steps.map((step, index) => {
+          {steps.map((step, index) => {
             return (
               <View
                 key={index}
@@ -238,41 +215,43 @@ export default function PreSteps({ route, navigation }) {
                     borderRadius: 24,
                   }}
                 >
-                  {step.stepNumber}
+                  {step.Step.stepNumber}
                 </Text>
                 <Text style={{ fontSize: 16, lineHeight: 28 }}>
-                  {step.name}
+                  {step.Step.stepName}
                 </Text>
               </View>
             );
           })}
         </View>
       </View>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#86BA85",
-          zIndex: 2,
-          padding: 20,
-          width: "90%",
-          marginBottom: 24,
-          marginHorizontal: "auto",
-          borderRadius: 16,
-        }}
-        onPress={() => {
-          navigation.navigate("Steps");
-        }}
-      >
-        <Text
+      <View style={{backgroundColor: "white"}}>
+        <TouchableOpacity
           style={{
-            textAlign: "center",
-            fontSize: 16,
-            fontWeight: "500",
-            color: "white",
+            backgroundColor: "#86BA85",
+            zIndex: 2,
+            padding: 20,
+            width: "90%",
+            marginBottom: 24,
+            marginHorizontal: "auto",
+            borderRadius: 16,
+          }}
+          onPress={() => {
+            navigation.navigate("Steps", {id: plant.id});
           }}
         >
-          Mulai
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              fontWeight: "500",
+              color: "white",
+            }}
+          >
+            Mulai
+          </Text>
+        </TouchableOpacity>
+      </View>
     </>
   );
 }

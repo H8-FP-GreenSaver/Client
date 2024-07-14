@@ -1,25 +1,64 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import Axios from "../utils/axios";
+import * as SecureStore from "expo-secure-store";
 
 export default function Preferences2({ navigation }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
 
   const handleButtonPress = (button) => {
+    let categoryId;
+    switch (button) {
+      case "Hias":
+        categoryId = 1;
+        break;
+      case "Sayur":
+        categoryId = 2;
+        break;
+      case "Rumput":
+        categoryId = 3;
+        break;
+      case "Obat":
+        categoryId = 4;
+        break;
+      case "Buah":
+        categoryId = 5;
+        break;
+      default:
+        categoryId = null;
+        break;
+    }
+
     setSelectedButtons((prevSelectedButtons) => {
-      if (prevSelectedButtons.includes(button)) {
-        return prevSelectedButtons.filter((item) => item !== button);
+      if (prevSelectedButtons.includes(categoryId)) {
+        return prevSelectedButtons.filter((item) => item !== categoryId);
       } else {
-        return [...prevSelectedButtons, button];
+        return [...prevSelectedButtons, categoryId];
       }
     });
   };
 
-  const handleNextPress = () => {
-    if (selectedButtons.length > 0) {
-      navigation.navigate("GreenSaver");
-    } else {
-      alert("Please select at least one option");
+  const handleAddPreferences = async () => {
+    try {
+      if (selectedButtons.length === 0) {
+        alert("Please select an option");
+      } else {
+        await Axios({
+          url: "/users/user-preferences/add",
+          method: "POST",
+          data: {
+            categoryIds: selectedButtons,
+          },
+          headers: {
+            Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+          }
+        });
+
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -74,7 +113,7 @@ export default function Preferences2({ navigation }) {
         ))}
       </View>
       <View style={styles.nextContainer}>
-        <TouchableOpacity style={styles.buttonNext} onPress={handleNextPress}>
+        <TouchableOpacity style={styles.buttonNext} onPress={handleAddPreferences}>
           <AntDesign name="right" size={24} color="#fff" />
         </TouchableOpacity>
       </View>

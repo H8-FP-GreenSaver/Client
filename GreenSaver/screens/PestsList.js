@@ -13,6 +13,7 @@ import Axios from "../utils/axios";
 
 export default function PestsList({ navigation }) {
   const [pests, setPests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   const fetchPests = async (query = "") => {
@@ -28,6 +29,8 @@ export default function PestsList({ navigation }) {
       });
 
       setPests(data);
+      setLoading(false);
+
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +54,6 @@ export default function PestsList({ navigation }) {
           borderTopStartRadius: 24,
           borderTopEndRadius: 24,
           backgroundColor: "#F8F8F8",
-          // marginTop: 32,
         }}
       >
         <View
@@ -94,7 +96,7 @@ export default function PestsList({ navigation }) {
           >
             {pests.map((pest, index) => {
               return (
-                <PestCard key={index} pest={pest} navigation={navigation} />
+                <PestCard key={index} pest={pest} navigation={navigation} loading={loading}/>
               );
             })}
           </View>
