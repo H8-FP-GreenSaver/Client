@@ -11,11 +11,12 @@ import { AuthContext } from "../contexts/Auth";
 import { useContext, useEffect, useState } from "react";
 import * as SecureStore from 'expo-secure-store';
 import Axios from "../utils/axios";
-
+import { Skeleton } from "moti/skeleton";
 
 export default function ProfileScreen({ navigation }) {
   const authContext = useContext(AuthContext);
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true)
 
   const fetchUser = async () => {
     try {
@@ -28,6 +29,7 @@ export default function ProfileScreen({ navigation }) {
       })
 
       setUser(data)
+      setLoading(false)
 
     } catch (error) {
       console.log(error)
@@ -48,14 +50,30 @@ export default function ProfileScreen({ navigation }) {
       <View style={styles.mainContainer}>
         <View style={styles.headContainer}>
           <View style={styles.containerWave}>
-            <Image
-              source={{uri: user.avatar}}
-              style={styles.profileImage}
-            />
+            <Skeleton colorMode="light" width={80} height={80} radius={"round"}>
+              {loading ? null :
+                <Image
+                  source={{ uri: user.avatar }}
+                  style={styles.profileImage}
+                />
+              }
+            </Skeleton>
             <View style={styles.userInfo}>
-              <Text style={styles.name}>{user.fullName}</Text>
-              <Text style={styles.username}>{user.email}</Text>
-              <Text style={styles.role}>{user.skill}</Text>
+              <Skeleton colorMode="light" width={100} height={24} radius={8}>
+                {loading ? null :
+                  <Text style={styles.name}>{user.fullName}</Text>
+                }
+              </Skeleton>
+              <Skeleton colorMode="light" width={150} height={20} radius={8}>
+                {loading ? null :
+                  <Text style={styles.username}>{user.email}</Text>
+                }
+              </Skeleton>
+              <Skeleton colorMode="light" width={70} height={20} radius={8}>
+                {loading ? null :
+                  <Text style={styles.role}>{user.skill}</Text>
+                }
+              </Skeleton>
             </View>
           </View>
         </View>

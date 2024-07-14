@@ -26,3 +26,12 @@ export function timeSince(secs) {
     }
     return Math.floor(seconds) + " seconds ago";
 }
+
+export function daysCounter(since) {
+    let now = new Date();
+    let sinceDate = new Date(since)
+    
+    let interval = now.getTime() - sinceDate.getTime();
+    let days = Math.round(interval / (1000 * 3600 * 24));
+    return days;
+}

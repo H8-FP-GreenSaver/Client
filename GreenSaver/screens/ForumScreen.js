@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { collection, getDocs } from "firebase/firestore";
 import { database } from "../config/firebase"; // Adjust the path according to your project structure
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { timeSince } from "../helpers/timeConverter";
+import { Skeleton } from "moti/skeleton";
 
 export default function ForumScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -16,18 +18,14 @@ export default function ForumScreen({ navigation }) {
         id: doc.id,
         ...doc.data(),
       }));
+
       setPosts(fetchedPosts);
+      setLoading(false);
     };
 
     fetchPosts();
   }, []);
 
-  console.log(posts);
-  // {
-  // posts.map((post) => console.log(post.comments))
-  //   console.log(comment, "__+_+++_")
-  // })));
-  // }
   return (
     <View
       style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
@@ -51,53 +49,72 @@ export default function ForumScreen({ navigation }) {
                 flexDirection: "row",
                 alignItems: "center",
                 marginBottom: 16,
+                gap: 12
               }}
             >
-              <Image
-                source={{ uri: post.profileUrl }}
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
-                  marginRight: 12,
-                }}
-              />
-              <View>
-                <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                  {post.fullName}
-                </Text>
-                <Text>{timeSince(post.createdAt.seconds)}</Text>
+              <Skeleton colorMode="light" width={50} height={50} radius={"round"}>
+                {loading ? null :
+                  <Image
+                    source={{ uri: post.profileUrl }}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
+                    }}
+                  />
+                }
+              </Skeleton>
+              <View style={{ gap: loading ? 8 : 0 }}>
+                <View style={{flexDirection: "row"}}>
+                  <Skeleton colorMode="light" width={120} height={24}>
+                    {loading ? null :
+                      <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                        {post.fullName}
+                      </Text>
+                    }
+                  </Skeleton>
+                  {/* <Text style={styles.role}>{post.skill}</Text> */}
+                </View>
+                <Skeleton colorMode="light" width={80} height={18}>
+                  {loading ? null :
+                    <Text>{timeSince(post.createdAt.seconds)}</Text>
+                  }
+                </Skeleton>
               </View>
             </View>
-            <View style={{ width: "100%" }}>
-              <Text
-                style={{ fontSize: 16, fontWeight: "500", marginBottom: 12 }}
-              >
-                {post.threadCaption}
-              </Text>
-              <Image
-                source={{ uri: post.imageUrl }}
-                style={{
-                  borderRadius: 5,
-                  width: "auto",
-                  height: 200,
-                  objectFit: "cover",
-                }}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 8,
-                  marginTop: 12,
-                }}
-              >
-                <FontAwesome6 name="comment-alt" size={18} color="gray" />
-                <Text style={{ fontSize: 14, color: "gray" }}>
-                  {post.comments.length} komentar
-                </Text>
-              </View>
-            </View>
+            <Skeleton colorMode="light" width={"100%"} height={250}>
+              {loading ? null :
+                <View style={{ width: "100%" }}>
+                  <Image
+                    source={{ uri: post.imageUrl }}
+                    style={{
+                      borderRadius: 5,
+                      width: "auto",
+                      height: 200,
+                      objectFit: "cover",
+                    }}
+                  />
+                  <Text
+                    style={{ fontSize: 16, fontWeight: "500", marginTop: 12 }}
+                  >
+                    {post.threadCaption}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 8,
+                      marginTop: 12,
+                    }}
+                  >
+                    <FontAwesome6 name="comment-alt" size={18} color="gray" />
+                    <Text style={{ fontSize: 14, color: "gray" }}>
+                      {post.comments.length} komentar
+                    </Text>
+                  </View>
+                </View>
+              }
+            </Skeleton>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -118,3 +135,16 @@ export default function ForumScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  role: {
+    fontSize: 14,
+    color: "#fff",
+    backgroundColor: "#396D5E",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    alignSelf: "flex-start",
+    overflow: "hidden",
+    borderRadius: 5,
+  }
+});

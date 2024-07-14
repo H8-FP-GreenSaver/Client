@@ -1,10 +1,15 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
+import * as SecureStore from 'expo-secure-store';
+import Axios from "../utils/axios";
+import { daysCounter } from "../helpers/timeConverter";
 
-export default function PlantProgress({ navigation }) {
-  const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 1;
+export default function PlantProgress({ route, navigation }) {
+  const { id } = route.params;
+  const [plant, setPlant] = useState({});
+  // const [currentPage, setCurrentPage] = useState(0);
+  // const itemsPerPage = 1;
 
   const plants = [
     {
@@ -65,15 +70,36 @@ export default function PlantProgress({ navigation }) {
     },
   ];
 
-  let difficulty;
+  const fetchPlant = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/users/plant-detail/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
+        }
+      })
 
-  if (plants[0].difficulty >= 1 && plants[0].difficulty < 3) {
-    difficulty = "Mudah";
-  } else if (plants[0].difficulty === 3) {
-    difficulty = "Sedang";
-  } else if (plants[0].difficulty > 3 && plants[0].difficulty <= 5) {
-    difficulty = "Sulit";
+      setPlant(data)
+
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  useEffect(() => {
+    fetchPlant();
+  }, [])
+
+  // let difficulty;
+
+  // if (plants[0].difficulty >= 1 && plants[0].difficulty < 3) {
+  //   difficulty = "Mudah";
+  // } else if (plants[0].difficulty === 3) {
+  //   difficulty = "Sedang";
+  // } else if (plants[0].difficulty > 3 && plants[0].difficulty <= 5) {
+  //   difficulty = "Sulit";
+  // }
 
   return (
     <>
@@ -87,16 +113,16 @@ export default function PlantProgress({ navigation }) {
         >
           <View style={{ marginRight: 16 }}>
             <Text style={{ fontSize: 16, lineHeight: 28 }}>
-              {plants[0].category}
+              Tanaman {plant.Plant?.categoryId}
             </Text>
             <Text style={{ fontSize: 20, fontWeight: "500" }}>
-              {plants[0].name}
+              {plant.Plant?.plantName}
             </Text>
           </View>
           <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Home')
-          }}
+            onPress={() => {
+              navigation.navigate('Home')
+            }}
             style={{ padding: 8, backgroundColor: "white", borderRadius: 50 }}
           >
             <Image
@@ -114,7 +140,7 @@ export default function PlantProgress({ navigation }) {
             alignSelf: "flex-start",
             marginHorizontal: "auto",
           }}
-          source={{ uri: plants[0].imageUrl }}
+          source={{ uri: plant.Plant?.imageUrl }}
         />
       </View>
       <View style={{ backgroundColor: "white", flex: 2, padding: 24 }}>
@@ -132,10 +158,10 @@ export default function PlantProgress({ navigation }) {
             </Text>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ fontSize: 24, fontWeight: "500" }}>
-                {plants[0].wateringTime}x
+                1x
               </Text>
               <Text style={{ fontSize: 18, marginTop: 4, color: "#AFAFAF" }}>
-                /hari
+                /{plant.Plant?.wateringTime} hari
               </Text>
             </View>
           </View>
@@ -153,7 +179,7 @@ export default function PlantProgress({ navigation }) {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
             >
-              <Text style={{ fontSize: 24, fontWeight: "500" }}>100</Text>
+              <Text style={{ fontSize: 24, fontWeight: "500" }}>{daysCounter(plant?.createdAt)}</Text>
               <Text style={{ fontSize: 18, marginTop: 4, color: "#AFAFAF" }}>
                 hari
               </Text>

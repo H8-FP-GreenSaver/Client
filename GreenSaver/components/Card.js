@@ -1,8 +1,8 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
+import { Skeleton } from "moti/skeleton";
 
-export const PlantCard = ({ plant, userPreference, navigation }) => {
-  // console.log(plant, "<<< dari card")
+export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
   const preference = userPreference.preference.map((pref) => {
     if (pref === `Tanaman ${plant.Category.categoryName}`) {
       return (
@@ -16,7 +16,7 @@ export const PlantCard = ({ plant, userPreference, navigation }) => {
   let difficulty = "";
 
   if (plant.difficulty > 0 && plant.difficulty < 3) {
-    difficulty = "Mudah" 
+    difficulty = "Mudah"
   } else if (plant.difficulty === 3) {
     difficulty = "Sedang"
   } else if (plant.difficulty > 3 && plant.difficulty <= 5) {
@@ -28,17 +28,21 @@ export const PlantCard = ({ plant, userPreference, navigation }) => {
       navigation.navigate('Detail', { id: plant.id })
     }}>
       <View style={{ marginBottom: 24 }}>
-        <Image
-          style={{
-            width: 165,
-            height: 165,
-            backgroundColor: "#94C593",
-            borderRadius: 8,
-          }}
-          source={{
-            uri: plant.imageUrl,
-          }}
-        />
+        <Skeleton colorMode="light" width={165} height={165}>
+          {loading ? null :
+            <Image
+              style={{
+                width: 165,
+                height: 165,
+                backgroundColor: "#94C593",
+                borderRadius: 8,
+              }}
+              source={{
+                uri: plant.imageUrl,
+              }}
+            />
+          }
+        </Skeleton>
         <View
           style={{
             padding: 12,
@@ -48,17 +52,29 @@ export const PlantCard = ({ plant, userPreference, navigation }) => {
             gap: 4,
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontWeight: "500", fontSize: 16 }}>
-              {plant.plantName}
-            </Text>
-            {preference ? preference : ""}
-          </View>
-          <Text style={{ fontSize: 14 }}>Tanaman {plant.Category.categoryName}</Text>
-          <Text>{difficulty}</Text>
+          <Skeleton colorMode="light" width={120} height={24}>
+            {loading ? null :
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={{ fontWeight: "500", fontSize: 16 }}>
+                  {plant.plantName}
+                </Text>
+                {preference ? preference : ""}
+              </View>
+            }
+          </Skeleton>
+          <Skeleton colorMode="light" width={90} height={20}>
+            {loading ? null :
+              <Text style={{ fontSize: 14 }}>Tanaman {plant.Category.categoryName}</Text>
+            }
+          </Skeleton>
+          <Skeleton colorMode="light" width={50} height={20}>
+            {loading ? null :
+              <Text>{difficulty}</Text>
+            }
+          </Skeleton>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableOpacity >
   );
 };
 

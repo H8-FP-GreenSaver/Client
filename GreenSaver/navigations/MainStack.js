@@ -46,6 +46,7 @@ export default function MainStack() {
             <Stack.Screen name="PestsDetail" component={PestDetail} />
             <Stack.Screen name="AddPost" component={AddPost} />
             <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+            <Stack.Screen name="PlantProgress" component={PlantProgress} />
           </>
         ) : (
           <>
