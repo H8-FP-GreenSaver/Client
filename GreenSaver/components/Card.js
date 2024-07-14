@@ -16,20 +16,22 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
   let difficulty = "";
 
   if (plant.difficulty > 0 && plant.difficulty < 3) {
-    difficulty = "Mudah"
+    difficulty = "Mudah";
   } else if (plant.difficulty === 3) {
-    difficulty = "Sedang"
+    difficulty = "Sedang";
   } else if (plant.difficulty > 3 && plant.difficulty <= 5) {
-    difficulty = "Sulit"
+    difficulty = "Sulit";
   }
 
   return (
-    <TouchableOpacity onPress={() => {
-      navigation.navigate('Detail', { id: plant.id })
-    }}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("Detail", { id: plant.id });
+      }}
+    >
       <View style={{ marginBottom: 24 }}>
         <Skeleton colorMode="light" width={165} height={165}>
-          {loading ? null :
+          {loading ? null : (
             <Image
               style={{
                 width: 165,
@@ -41,7 +43,7 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
                 uri: plant.imageUrl,
               }}
             />
-          }
+          )}
         </Skeleton>
         <View
           style={{
@@ -52,29 +54,32 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
             gap: 4,
           }}
         >
-          <Skeleton colorMode="light" width={120} height={24}>
-            {loading ? null :
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Skeleton key={loading} colorMode="light" width={120} height={24}>
+            {loading ? null : (
+              <View
+                key={plant.id}
+                style={{ flexDirection: "row", alignItems: "center" }}
+              >
                 <Text style={{ fontWeight: "500", fontSize: 16 }}>
                   {plant.plantName}
                 </Text>
                 {preference ? preference : ""}
               </View>
-            }
+            )}
           </Skeleton>
           <Skeleton colorMode="light" width={90} height={20}>
-            {loading ? null :
-              <Text style={{ fontSize: 14 }}>Tanaman {plant.Category.categoryName}</Text>
-            }
+            {loading ? null : (
+              <Text style={{ fontSize: 14 }}>
+                Tanaman {plant.Category.categoryName}
+              </Text>
+            )}
           </Skeleton>
           <Skeleton colorMode="light" width={50} height={20}>
-            {loading ? null :
-              <Text>{difficulty}</Text>
-            }
+            {loading ? null : <Text>{difficulty}</Text>}
           </Skeleton>
         </View>
       </View>
-    </TouchableOpacity >
+    </TouchableOpacity>
   );
 };
 
@@ -99,7 +104,6 @@ export const PestCard = ({ pest, navigation }) => {
         navigation.navigate("PestsDetail", { id: pest.id });
       }}
     >
-
       <View style={{ marginBottom: 68 }}>
         <Image
           style={{

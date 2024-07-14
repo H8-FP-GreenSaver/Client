@@ -10,8 +10,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import PestsList from "../screens/PestsList";
 import PestDetail from "../screens/PestDetail";
 import { AuthContext } from "../contexts/Auth";
-import * as SecureStore from 'expo-secure-store';
-
+import * as SecureStore from "expo-secure-store";
 
 const Tab = createBottomTabNavigator();
 
