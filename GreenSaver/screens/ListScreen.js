@@ -15,6 +15,7 @@ import { PlantCard } from "../components/Card";
 export default function List({ navigation }) {
   const [plants, setPlants] = useState([]);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const fetchAllPlants = async (query = '') => {
     try {
@@ -26,7 +27,8 @@ export default function List({ navigation }) {
         }
       })
 
-      setPlants(data)
+      setPlants(data);
+      setLoading(false);
 
     } catch (error) {
       console.log(error)
@@ -45,6 +47,9 @@ export default function List({ navigation }) {
   const userPreference = {
     preference: ["Tanaman Hias", "Tanaman Buah"],
   };
+
+
+  console.log(loading)
 
   return (
     <>
@@ -132,6 +137,7 @@ export default function List({ navigation }) {
                   plant={plant}
                   userPreference={userPreference}
                   navigation={navigation}
+                  loading={loading}
                 />
               );
             })}

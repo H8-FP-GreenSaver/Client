@@ -33,8 +33,20 @@ export default function Home({ navigation }) {
         tempArr.push(data["1"])
       }
 
+      if (data["2"]) {
+        tempArr.push(data["2"])
+      }
+
+      if (data["3"]) {
+        tempArr.push(data["3"])
+      }
+
       if (data["4"]) {
         tempArr.push(data["4"])
+      }
+
+      if (data["5"]) {
+        tempArr.push(data["5"])
       }
 
       setPlants(tempArr);
@@ -71,7 +83,7 @@ export default function Home({ navigation }) {
         <ScrollView>
           <View style={{ paddingHorizontal: 24 }}>
             {plants && plants.map((plant, index) => {
-              return <Dropdown key={index} plant={plant} />
+              return <Dropdown key={index} plant={plant} navigation={navigation} />
             })}
           </View>
         </ScrollView>

@@ -1,69 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "../utils/axios";
 import * as SecureStore from 'expo-secure-store';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-export const Dropdown = ({ plant }) => {
-  // const [plant, setPlant] = useState([]);
+export const Dropdown = ({ plant, navigation }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 1;
-
-  // const fetchCategories = async () => {
-  //     try {
-  //         const { data } = await Axios({
-  //             url: "/users/home",
-  //             method: "GET",
-  //             headers: {
-  //                 Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-  //             }
-  //         })
-
-  //         let categories = {};
-
-  //         data.forEach(item => {
-  //             const categoryId = item.Plant.categoryId;
-  //             if (categories[categoryId]) {
-  //                 categories[categoryId].push(item);
-  //             } else {
-  //                 categories[categoryId] = [{ categoryName: getCategoryName(categoryId) || 'Unknown', plants: [item] }];
-  //             }
-  //         });
-
-  //         // if (categories.categoryId == 1) {
-  //         //     console.log("test")
-  //         // }
-  //         // console.log(categories.categoryId)
-  //         setPlant(categories)
-  //         //   setCategories(categories)
-
-  //     } catch (error) {
-  //         console.log(error)
-  //     }
-  // }
-
-  // const getCategoryName = (categoryId) => {
-  //     // Implement logic to retrieve category name based on categoryId
-  //     // For example:
-  //     switch (categoryId) {
-  //         case 1:
-  //             return 'Category 1';
-  //         case 2:
-  //             return 'Category 2';
-  //         case 3:
-  //             return 'Category 3';
-  //         // Add more cases as needed
-  //         default:
-  //             return null;
-  //     }
-  // }
-
-  // // console.log(plant, "????>?>>??>?>?>")
-
-  // useEffect(() => {
-  //     fetchCategories();
-  // }, [])
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -86,8 +30,6 @@ export const Dropdown = ({ plant }) => {
       setCurrentPage(0)
     }
   };
-
-  // console.log(plant, "<<< plant nih bos")
 
 
   return (
@@ -120,18 +62,42 @@ export const Dropdown = ({ plant }) => {
           <TouchableOpacity onPress={handlePrevPage}>
             <Feather name="chevron-left" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optionItem}>
-            <Image
-              style={{ width: 230, height: 300, objectFit: "cover" }}
-              source={{ uri: plant[currentPage].imageUrl }}
-            />
-            <Text style={{ fontWeight: "500", fontSize: 16, color: "#689867" }}>
-              {plant[currentPage].name}
-            </Text>
-          </TouchableOpacity>
+          {plant.length > 0 && (
+            <TouchableOpacity style={styles.optionItem} onPress={() => {
+              navigation.navigate("PlantProgress", {id: plant[currentPage].Plant.id})
+            }}>
+              <Image
+                style={{ width: 230, height: 300 }}
+                source={{ uri: plant[currentPage]?.Plant?.imageUrl }}
+              />
+              <Text style={{ fontWeight: "500", fontSize: 16, color: "#689867" }}>
+                {plant[currentPage]?.Plant?.plantName}
+              </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity onPress={handleNextPage}>
             <Feather name="chevron-right" size={24} color="black" />
           </TouchableOpacity>
+          {/* {plant.map(plantTest => {
+            // {console.log(plantTest.Plant.imageUrl, "=-=-=-==-=")}
+            <>
+              <TouchableOpacity onPress={handlePrevPage}>
+                <Feather name="chevron-left" size={24} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.optionItem}>
+                <Image
+                  style={{ width: 230, height: 300, objectFit: "cover" }}
+                  source={{ uri: plantTest.Plant.imageUrl }}
+                />
+                <Text style={{ fontWeight: "500", fontSize: 16, color: "#689867" }}>
+                  {plantTest?.Plant?.plantName}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleNextPage}>
+                <Feather name="chevron-right" size={24} color="black" />
+              </TouchableOpacity>
+            </>
+          })} */}
         </View>
       )}
     </View>
