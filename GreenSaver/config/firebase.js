@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-//firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAeKyQlp_b0RPRtpAVlygHmlXvm58sNvtg",
   authDomain: "greensaver-forum.firebaseapp.com",
@@ -11,8 +12,9 @@ const firebaseConfig = {
   appId: "219197149134:web:6a6349ffcc1e7ba685659f",
 };
 
-//initialize firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
+// const auth = getAuth(app);
 
-export { database };
+export { database, auth };
