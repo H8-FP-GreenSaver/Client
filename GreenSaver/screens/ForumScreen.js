@@ -12,7 +12,9 @@ import { database } from "../config/firebase";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { timeSince } from "../helpers/timeConverter";
+
 import { CardLoaderForum } from "../components/Card";
+
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function ForumScreen({ navigation }) {
