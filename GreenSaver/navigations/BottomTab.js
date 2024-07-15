@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button, Image, Text, TouchableOpacity } from "react-native";
-import Home from "../screens/HomeScreen";
 import ForumScreen from "../screens/ForumScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import List from "../screens/ListScreen";
@@ -11,6 +10,7 @@ import PestsList from "../screens/PestsList";
 import PestDetail from "../screens/PestDetail";
 import { AuthContext } from "../contexts/Auth";
 import * as SecureStore from "expo-secure-store";
+import Home from "../screens/HomeScreen";
 
 const Tab = createBottomTabNavigator();
 

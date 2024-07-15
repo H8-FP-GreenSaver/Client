@@ -6,17 +6,18 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/Auth";
-import { useContext, useEffect, useState } from "react";
-import * as SecureStore from 'expo-secure-store';
+import { useContext, useCallback, useState } from "react";
+import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
 import { Skeleton } from "moti/skeleton";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function ProfileScreen({ navigation }) {
   const authContext = useContext(AuthContext);
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
     try {
@@ -24,21 +25,28 @@ export default function ProfileScreen({ navigation }) {
         url: `/users/user-profile`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
-      setUser(data)
-      setLoading(false)
-
+      setUser(data);
+      setLoading(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  useEffect(() => {
-    fetchUser();
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      fetchUser();
+
+      return () => {
+        setLoading(true);
+      };
+    }, [])
+  );
 
   async function handleLogout() {
     await SecureStore.deleteItemAsync("access_token");
@@ -51,34 +59,32 @@ export default function ProfileScreen({ navigation }) {
         <View style={styles.headContainer}>
           <View style={styles.containerWave}>
             <Skeleton colorMode="light" width={80} height={80} radius={"round"}>
-              {loading ? null :
+              {loading ? null : (
                 <Image
                   source={{ uri: user.avatar }}
                   style={styles.profileImage}
                 />
-              }
+              )}
             </Skeleton>
             <View style={styles.userInfo}>
               <Skeleton colorMode="light" width={100} height={24} radius={8}>
-                {loading ? null :
+                {loading ? null : (
                   <Text style={styles.name}>{user.fullName}</Text>
-                }
+                )}
               </Skeleton>
               <Skeleton colorMode="light" width={150} height={20} radius={8}>
-                {loading ? null :
+                {loading ? null : (
                   <Text style={styles.username}>{user.email}</Text>
-                }
+                )}
               </Skeleton>
               <Skeleton colorMode="light" width={70} height={20} radius={8}>
-                {loading ? null :
-                  <Text style={styles.role}>{user.skill}</Text>
-                }
+                {loading ? null : <Text style={styles.role}>{user.skill}</Text>}
               </Skeleton>
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 58 }}>
-          <View style={styles.statsContainer}>
+        <View style={{ marginTop: 88 }}>
+          {/* <View style={styles.statsContainer}>
             <View style={styles.stat}>
               <Text style={styles.statNumber}>2</Text>
               <Text style={styles.statLabel}>Tanaman</Text>
@@ -92,19 +98,52 @@ export default function ProfileScreen({ navigation }) {
               <Text style={styles.statNumber}>3</Text>
               <Text style={styles.statLabel}>Unggahan</Text>
             </View>
-          </View>
-          <View style={styles.horizontalLine} />
+          </View> */}
+          {/* <View style={styles.horizontalLine} /> */}
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("EditProfileUser");
+            }}
+          >
+            <View
+              style={{
+                marginTop: 24,
+                backgroundColor: "red",
+                paddingVertical: 16,
+                borderRadius: 8,
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 8,
+                overflow: "hidden",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "white" }}>Edit Profile</Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity onPress={handleLogout}>
-            <View style={{ marginTop: 24, backgroundColor: "red", paddingVertical: 16, borderRadius: 8, flexDirection: "row", justifyContent: "center", gap: 8, overflow: "hidden", alignItems: "center" }}>
+            <View
+              style={{
+                marginTop: 24,
+                backgroundColor: "red",
+                paddingVertical: 16,
+                borderRadius: 8,
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 8,
+                overflow: "hidden",
+                alignItems: "center",
+              }}
+            >
               <MaterialIcons name="logout" size={24} color="white" />
               <Text style={{ color: "white" }}>Logout</Text>
             </View>
           </TouchableOpacity>
-          <View style={styles.imageCard}>
+          {/* <View style={styles.imageCard}>
             <Image source={require("../assets/Ideation Rectangle 38.png")} />
             <Image source={require("../assets/Ideation Rectangle 39.png")} />
             <Image source={require("../assets/Ideation Rectangle 40.png")} />
-          </View>
+          </View> */}
         </View>
       </View>
       <ImageBackground
@@ -148,10 +187,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderWidth: 3,
     borderColor: "#fff",
+    objectFit: "contain",
   },
   userInfo: {
     marginLeft: 20,
-    gap: 8
+    gap: 8,
   },
   name: {
     fontSize: 20,

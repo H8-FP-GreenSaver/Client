@@ -7,29 +7,7 @@ import * as SecureStore from "expo-secure-store";
 export default function Preferences2({ navigation }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
 
-  const handleButtonPress = (button) => {
-    let categoryId;
-    switch (button) {
-      case "Hias":
-        categoryId = 1;
-        break;
-      case "Sayur":
-        categoryId = 2;
-        break;
-      case "Rumput":
-        categoryId = 3;
-        break;
-      case "Obat":
-        categoryId = 4;
-        break;
-      case "Buah":
-        categoryId = 5;
-        break;
-      default:
-        categoryId = null;
-        break;
-    }
-
+  const handleButtonPress = (categoryId) => {
     setSelectedButtons((prevSelectedButtons) => {
       if (prevSelectedButtons.includes(categoryId)) {
         return prevSelectedButtons.filter((item) => item !== categoryId);
@@ -51,8 +29,10 @@ export default function Preferences2({ navigation }) {
             categoryIds: selectedButtons,
           },
           headers: {
-            Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-          }
+            Authorization: `Bearer ${await SecureStore.getItemAsync(
+              "access_token"
+            )}`,
+          },
         });
 
         navigation.navigate("Home");
@@ -76,16 +56,22 @@ export default function Preferences2({ navigation }) {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        {["Hias", "Sayur", "Rumput", "Obat", "Buah"].map((button) => (
+        {[
+          { id: 1, name: "Hias" },
+          { id: 2, name: "Sayur" },
+          { id: 3, name: "Rumput" },
+          { id: 4, name: "Obat" },
+          { id: 5, name: "Buah" },
+        ].map((button) => (
           <TouchableOpacity
-            key={button}
+            key={button.id}
             style={[
               styles.buttonChecked,
-              selectedButtons.includes(button) && styles.buttonSelected,
+              selectedButtons.includes(button.id) && styles.buttonSelected,
             ]}
-            onPress={() => handleButtonPress(button)}
+            onPress={() => handleButtonPress(button.id)}
           >
-            {selectedButtons.includes(button) && (
+            {selectedButtons.includes(button.id) && (
               <AntDesign
                 name="check"
                 size={16}
@@ -96,12 +82,13 @@ export default function Preferences2({ navigation }) {
             <Text
               style={[
                 styles.buttonText,
-                selectedButtons.includes(button) && styles.buttonTextSelected,
+                selectedButtons.includes(button.id) &&
+                  styles.buttonTextSelected,
               ]}
             >
-              {button}
+              {button.name}
             </Text>
-            {selectedButtons.includes(button) && (
+            {selectedButtons.includes(button.id) && (
               <AntDesign
                 name="close"
                 size={16}
@@ -113,7 +100,10 @@ export default function Preferences2({ navigation }) {
         ))}
       </View>
       <View style={styles.nextContainer}>
-        <TouchableOpacity style={styles.buttonNext} onPress={handleAddPreferences}>
+        <TouchableOpacity
+          style={styles.buttonNext}
+          onPress={handleAddPreferences}
+        >
           <AntDesign name="right" size={24} color="#fff" />
         </TouchableOpacity>
       </View>

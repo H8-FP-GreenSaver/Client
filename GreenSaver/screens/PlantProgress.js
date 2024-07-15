@@ -1,9 +1,18 @@
-import { Image, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
 import { daysCounter } from "../helpers/timeConverter";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function PlantProgress({ route, navigation }) {
   const { id } = route.params;
@@ -11,7 +20,7 @@ export default function PlantProgress({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const daysInterval = plant.Plant?.wateringTime;
-  const daysOfWeek = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+  const daysOfWeek = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
 
   const renderWaterdrops = () => {
     const waterdrops = [];
@@ -21,15 +30,23 @@ export default function PlantProgress({ route, navigation }) {
         waterdrops.push(
           <Image
             key={i}
-            style={{ width: 32, height: 32, zIndex: 0, objectFit: 'cover' }}
-            source={require('../assets/icon-waterdrop-solid.png')}
+            style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+            source={require("../assets/icon-waterdrop-solid.png")}
           />
         );
       } else {
         waterdrops.push(
           <View key={i} style={{ padding: 9 }}>
-            <View style={{ width: 15, height: 15, backgroundColor: "#E8E8E8", borderRadius: 16 }} />
-          </View>);
+            <View
+              style={{
+                width: 15,
+                height: 15,
+                backgroundColor: "#E8E8E8",
+                borderRadius: 16,
+              }}
+            />
+          </View>
+        );
       }
     }
 
@@ -42,16 +59,17 @@ export default function PlantProgress({ route, navigation }) {
         url: `/users/plant-detail/${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
-      setPlant(data)
-
+      setPlant(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const deletePlant = async () => {
     try {
@@ -59,24 +77,35 @@ export default function PlantProgress({ route, navigation }) {
         url: `users/plant-detail/${id}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
-      navigation.navigate("Home")
+      navigation.navigate("Home");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchPlant();
-  }, [])
-
+  }, []);
 
   return (
     <>
       <View style={styles.mainContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.buttonBack}
+          >
+            <Ionicons name="chevron-back-outline" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -124,20 +153,61 @@ export default function PlantProgress({ route, navigation }) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={{fontSize: 20, fontWeight: "500", marginBottom: 8}}>Hapus tanaman ini?</Text>
-              <Text style={{fontSize: 16, marginBottom: 8, textAlign: "center", marginBottom: 24}}>Progress tanaman ini akan dihapus secara permanen</Text>
+              <Text
+                style={{ fontSize: 20, fontWeight: "500", marginBottom: 8 }}
+              >
+                Hapus tanaman ini?
+              </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginBottom: 8,
+                  textAlign: "center",
+                  marginBottom: 24,
+                }}
+              >
+                Progress tanaman ini akan dihapus secara permanen
+              </Text>
               <View style={{ flexDirection: "row", gap: 12 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{backgroundColor: "#DFDFDF", paddingVertical: 12, width: "50%", borderRadius: 8}}
+                  style={{
+                    backgroundColor: "#DFDFDF",
+                    paddingVertical: 12,
+                    width: "50%",
+                    borderRadius: 8,
+                  }}
                 >
-                  <Text style={{fontSize: 16, color: "gray", fontWeight: "500", textAlign: "center"}}>Batal</Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "gray",
+                      fontWeight: "500",
+                      textAlign: "center",
+                    }}
+                  >
+                    Batal
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={deletePlant}
-                  style={{ backgroundColor: "red", paddingVertical: 12, width: "50%", borderRadius: 8 }}
+                  style={{
+                    backgroundColor: "red",
+                    paddingVertical: 12,
+                    width: "50%",
+                    borderRadius: 8,
+                  }}
                 >
-                  <Text style={{ fontSize: 16, color: "white", fontWeight: "500", textAlign: "center" }}>Ya, Hapus</Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "white",
+                      fontWeight: "500",
+                      textAlign: "center",
+                    }}
+                  >
+                    Ya, Hapus
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -159,9 +229,7 @@ export default function PlantProgress({ route, navigation }) {
               Penyiraman
             </Text>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ fontSize: 24, fontWeight: "500" }}>
-                1x
-              </Text>
+              <Text style={{ fontSize: 24, fontWeight: "500" }}>1x</Text>
               <Text style={{ fontSize: 18, marginTop: 4, color: "#AFAFAF" }}>
                 /{plant.Plant?.wateringTime} hari
               </Text>
@@ -181,7 +249,9 @@ export default function PlantProgress({ route, navigation }) {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
             >
-              <Text style={{ fontSize: 24, fontWeight: "500" }}>{daysCounter(plant?.createdAt)}</Text>
+              <Text style={{ fontSize: 24, fontWeight: "500" }}>
+                {daysCounter(plant?.createdAt)}
+              </Text>
               <Text style={{ fontSize: 18, marginTop: 4, color: "#AFAFAF" }}>
                 hari
               </Text>
@@ -202,15 +272,28 @@ export default function PlantProgress({ route, navigation }) {
           Penyiraman
         </Text>
         <View>
-          <View style={{ flexDirection: 'row', paddingHorizontal: 4, gap: 18, alignItems: 'center' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              paddingHorizontal: 4,
+              gap: 18,
+              alignItems: "center",
+            }}
+          >
             {renderWaterdrops()}
           </View>
-          <View style={{ flexDirection: 'row', paddingHorizontal: 16, alignItems: 'center' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              paddingHorizontal: 16,
+              alignItems: "center",
+            }}
+          >
             <View
               style={{
-                width: '45%',
+                width: "45%",
                 height: 3,
-                backgroundColor: '#56CCF2',
+                backgroundColor: "#56CCF2",
                 marginVertical: 24,
                 borderRadius: 8,
               }}
@@ -219,23 +302,28 @@ export default function PlantProgress({ route, navigation }) {
               style={{
                 width: 16,
                 height: 16,
-                backgroundColor: '#56CCF2',
+                backgroundColor: "#56CCF2",
                 borderRadius: 50,
               }}
             />
             <View
               style={{
-                width: '50%',
+                width: "50%",
                 height: 3,
-                backgroundColor: '#E8E8E8',
+                backgroundColor: "#E8E8E8",
                 marginVertical: 24,
                 borderRadius: 8,
               }}
             />
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
             {daysOfWeek.map((day, index) => (
-              <Text key={index} style={{ fontSize: 14, fontWeight: '500', color: '#3D3D3D' }}>
+              <Text
+                key={index}
+                style={{ fontSize: 14, fontWeight: "500", color: "#3D3D3D" }}
+              >
                 {day}
               </Text>
             ))}
@@ -285,17 +373,17 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "80%",
     borderRadius: 20,
     padding: 24,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -310,14 +398,25 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  }
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    marginTop: 10,
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#ccc",
+  },
+  buttonBack: {
+    marginRight: 10,
+  },
 });
