@@ -1,42 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Axios from "../utils/axios";
+import { AuthContext } from "../contexts/Auth";
 import * as SecureStore from "expo-secure-store";
 
 export default function Preferences2({ navigation }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
 
-  const handleButtonPress = (button) => {
-    let categoryId;
-    switch (button) {
-      case "Hias":
-        categoryId = 1;
-        break;
-      case "Sayur":
-        categoryId = 2;
-        break;
-      case "Rumput":
-        categoryId = 3;
-        break;
-      case "Obat":
-        categoryId = 4;
-        break;
-      case "Buah":
-        categoryId = 5;
-        break;
-      default:
-        categoryId = null;
-        break;
-    }
+  const authContext = useContext(AuthContext);
 
+
+  const handleButtonPress = (button) => {
+    // let 
+    // if (button === "Hias") {
+    //   retur
+    // }
     setSelectedButtons((prevSelectedButtons) => {
-      if (prevSelectedButtons.includes(categoryId)) {
-        return prevSelectedButtons.filter((item) => item !== categoryId);
+      if (prevSelectedButtons.includes(button)) {
+        return prevSelectedButtons.filter((item) => item !== button);
       } else {
-        return [...prevSelectedButtons, categoryId];
+        return [...prevSelectedButtons, button];
       }
     });
+  };
+
+  const handleNextPress = () => {
+    if (selectedButtons.length > 0) {
+      navigation.navigate("GreenSaver");
+    } else {
+      alert("Please select at least one option");
+    }
   };
 
   const handleAddPreferences = async () => {
@@ -55,7 +49,9 @@ export default function Preferences2({ navigation }) {
           }
         });
 
-        navigation.navigate("Home");
+        authContext.setIsSignedIn(true);
+
+        // navigation.navigate("GreenSaver");
       }
     } catch (error) {
       console.log(error);
@@ -76,7 +72,7 @@ export default function Preferences2({ navigation }) {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        {["Hias", "Sayur", "Rumput", "Obat", "Buah"].map((button) => (
+        {[1, 2, 3, 4, 5].map((button) => (
           <TouchableOpacity
             key={button}
             style={[
@@ -99,7 +95,7 @@ export default function Preferences2({ navigation }) {
                 selectedButtons.includes(button) && styles.buttonTextSelected,
               ]}
             >
-              {button}
+              {["Hias", "Sayur", "Rumput", "Obat", "Buah"][button - 1]} {/* Mengambil teks berdasarkan index tombol */}
             </Text>
             {selectedButtons.includes(button) && (
               <AntDesign

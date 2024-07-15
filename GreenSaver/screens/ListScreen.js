@@ -10,7 +10,7 @@ import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import Axios from "../utils/axios";
 import * as SecureStore from 'expo-secure-store';
-import { PlantCard } from "../components/Card";
+import { CardLoader, PlantCard } from "../components/Card";
 import { Skeleton } from "moti/skeleton";
 
 export default function List({ navigation }) {
@@ -128,17 +128,25 @@ export default function List({ navigation }) {
               borderTopEndRadius: 24,
             }}
           >
-            {plants.map((plant, index) => {
-              return (
-                <PlantCard
-                  key={index}
-                  plant={plant}
-                  userPreference={userPreference}
-                  navigation={navigation}
-                  loading={loading}
-                />
-              );
-            })}
+            {loading ?
+              <>
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+              </>
+              :
+              plants.map((plant, index) => {
+                return (
+                  <PlantCard
+                    key={index}
+                    plant={plant}
+                    userPreference={userPreference}
+                    navigation={navigation}
+                    loading={loading}
+                  />
+                );
+              })}
           </View>
         </ScrollView>
       </View>

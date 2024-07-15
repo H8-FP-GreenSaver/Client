@@ -32,6 +32,9 @@ export default {
       storageBucket: process.env.Storage_Bucket,
       messagingSenderId: process.env.Messaging_Sender_Id,
       appId: process.env.App_Id,
+      "eas": {
+        "projectId": "c88f29cc-a057-46f1-9bc4-45baadc50abb"
+      }
     },
     plugins: [
       "expo-secure-store",

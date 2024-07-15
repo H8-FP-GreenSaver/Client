@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { collection, getDocs } from "firebase/firestore";
-import { database } from "../config/firebase"; // Adjust the path according to your project structure
+import { database } from "../config/firebase";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { timeSince } from "../helpers/timeConverter";
-import { Skeleton } from "moti/skeleton";
+import { CardLoaderForum } from "../components/Card";
 
 export default function ForumScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
@@ -21,7 +21,7 @@ export default function ForumScreen({ navigation }) {
     setPosts(fetchedPosts);
     setLoading(false);
   };
-  
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -31,60 +31,53 @@ export default function ForumScreen({ navigation }) {
       style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
     >
       <ScrollView style={{ marginTop: 24 }}>
-        {posts.map((post) => (
-          <TouchableOpacity
-            key={post.id}
-            style={{
-              backgroundColor: "white",
-              padding: 16,
-              borderRadius: 16,
-              marginBottom: 16,
-            }}
-            onPress={() =>
-              navigation.navigate("PostDetail", { postId: post.id })
-            }
-          >
-            <View
+        {loading ?
+          <>
+            <CardLoaderForum />
+            <CardLoaderForum />
+            <CardLoaderForum />
+          </>
+          :
+          posts.map((post) => (
+            <TouchableOpacity
+              key={post.id}
               style={{
-                flexDirection: "row",
-                alignItems: "center",
+                backgroundColor: "white",
+                padding: 16,
+                borderRadius: 16,
                 marginBottom: 16,
-                gap: 12
               }}
+              onPress={() =>
+                navigation.navigate("PostDetail", { postId: post.id })
+              }
             >
-              <Skeleton show={false} colorMode="light" width={50} height={50} radius={"round"}>
-                {loading ? null :
-                  <Image
-                    source={{ uri: post.profileUrl }}
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 25,
-                    }}
-                  />
-                }
-              </Skeleton>
-              <View style={{ gap: loading ? 8 : 0 }}>
-                <View style={{flexDirection: "row"}}>
-                  <Skeleton colorMode="light" width={120} height={24}>
-                    {loading ? null :
-                      <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                        {post.fullName}
-                      </Text>
-                    }
-                  </Skeleton>
-                  {/* <Text style={styles.role}>{post.skill}</Text> */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 16,
+                  gap: 12
+                }}
+              >
+                <Image
+                  source={{ uri: post.profileUrl }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 25,
+                  }}
+                />
+                <View style={{ gap: loading ? 8 : 0 }}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                      {post.fullName}
+                    </Text>
+                  </View>
+                  <Text>{timeSince(post.createdAt.seconds)}</Text>
                 </View>
-                <Skeleton colorMode="light" width={80} height={18}>
-                  {loading ? null :
-                    <Text>{timeSince(post.createdAt.seconds)}</Text>
-                  }
-                </Skeleton>
               </View>
-            </View>
-            <Skeleton colorMode="light" width={"100%"} height={250}>
-              {loading ? null :
-                <View style={{ width: "100%" }}>
+              <View style={{ width: "100%" }}>
+                {post.imageUrl &&
                   <Image
                     source={{ uri: post.imageUrl }}
                     style={{
@@ -94,29 +87,29 @@ export default function ForumScreen({ navigation }) {
                       objectFit: "cover",
                     }}
                   />
-                  <Text
-                    style={{ fontSize: 16, fontWeight: "500", marginTop: 12 }}
-                  >
-                    {post.threadCaption}
+                }
+                <Text
+                  style={{ fontSize: 16, fontWeight: "500", marginTop: 12 }}
+                >
+                  {post.threadCaption}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                    marginTop: 12,
+                  }}
+                >
+                  <FontAwesome6 name="comment-alt" size={18} color="gray" />
+                  <Text style={{ fontSize: 14, color: "gray" }}>
+                    {post.comments ? post.comments.length : 0} komentar
                   </Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 8,
-                      marginTop: 12,
-                    }}
-                  >
-                    <FontAwesome6 name="comment-alt" size={18} color="gray" />
-                    <Text style={{ fontSize: 14, color: "gray" }}>
-                      {post.comments ? post.comments.length : 0} komentar
-                    </Text>
-                  </View>
                 </View>
-              }
-            </Skeleton>
-          </TouchableOpacity>
-        ))}
+              </View>
+            </TouchableOpacity>
+          ))
+        }
       </ScrollView>
       <TouchableOpacity
         onPress={() => {

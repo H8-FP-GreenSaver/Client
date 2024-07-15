@@ -178,9 +178,9 @@ export default function PostDetailScreen({ route, navigation }) {
                   <Text style={styles.commentDate}>
                     {formatDate(comment.createdAt)}
                   </Text>
+                  <Text style={styles.commentText}>{comment.text}</Text>
                 </View>
               </View>
-              <Text style={styles.commentText}>{comment.text}</Text>
             </View>
           ))}
         </ScrollView>
@@ -222,21 +222,24 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   commentAvatar: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginRight: 8,
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+    marginRight: 10,
+    alignSelf: "flex-start"
   },
   commentAuthor: {
-    fontSize: 14,
+    fontSize: 16,
+    marginBottom: 4,
     fontWeight: "bold",
   },
   commentDate: {
     fontSize: 12,
+    marginBottom: 8,
     color: "gray",
   },
   commentText: {
-    fontSize: 14,
+    fontSize: 16,
   },
   commentInputContainer: {
     flexDirection: "row",

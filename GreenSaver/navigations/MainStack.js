@@ -16,6 +16,7 @@ import { useContext, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import PostDetailScreen from "../screens/PostDetail";
 import AddPost from "../screens/AddPost";
+import App from "../screens/PushNotification";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ export default function MainStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        
         {authContext.isSignedIn ? (
           <>
             <Stack.Screen name="GreenSaver" component={BottomTab} />
