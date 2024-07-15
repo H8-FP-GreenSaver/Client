@@ -186,6 +186,7 @@ export default function PostDetailScreen({ route, navigation }) {
                   <Text style={{ fontSize: 12, color: "gray" }}>
                     {formatDate(comment.createdAt)}
                   </Text>
+                  <Text style={styles.commentText}>{comment.text}</Text>
                 </View>
               </View>
               <Text style={{ marginLeft: 38, marginTop: 4 }}>
@@ -234,6 +235,52 @@ const styles = StyleSheet.create({
     marginTop: 45,
   },
   buttonBack: {
+    marginRight: 10,
+  },
+  commentContainer: {
+    marginBottom: 16,
+    padding: 10,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
+  },
+  commentHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  commentAvatar: {
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+    marginRight: 10,
+    alignSelf: "flex-start"
+  },
+  commentAuthor: {
+    fontSize: 16,
+    marginBottom: 4,
+    fontWeight: "bold",
+  },
+  commentDate: {
+    fontSize: 12,
+    marginBottom: 8,
+    color: "gray",
+  },
+  commentText: {
+    fontSize: 16,
+  },
+  commentInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 20,
+  },
+  commentInput: {
+    flex: 1,
+    borderColor: "gray",
+    borderWidth: 1,
+    padding: 8,
+    borderRadius: 8,
+    marginRight: 8,
     paddingVertical: 10,
   },
 });

@@ -37,6 +37,7 @@ export default function MainStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        
         {authContext.isSignedIn ? (
           <>
             <Stack.Screen name="GreenSaver" component={BottomTab} />

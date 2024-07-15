@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Dropdown } from "../components/Dropdown";
 import { useCallback, useEffect, useState } from "react";
@@ -59,25 +60,11 @@ export default function Home({ navigation }) {
 
       let tempArr = [];
 
-      if (data["1"]) {
-        tempArr.push(data["1"]);
-      }
-
-      if (data["2"]) {
-        tempArr.push(data["2"]);
-      }
-
-      if (data["3"]) {
-        tempArr.push(data["3"]);
-      }
-
-      if (data["4"]) {
-        tempArr.push(data["4"]);
-      }
-
-      if (data["5"]) {
-        tempArr.push(data["5"]);
-      }
+      if (data["1"]) tempArr.push(data["1"]);
+      if (data["2"]) tempArr.push(data["2"]);
+      if (data["3"]) tempArr.push(data["3"]);
+      if (data["4"]) tempArr.push(data["4"]);
+      if (data["5"]) tempArr.push(data["5"]);
 
       setPlants(tempArr);
     } catch (error) {

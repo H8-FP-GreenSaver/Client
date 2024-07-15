@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { PestCard, PlantCard } from "../components/Card";
+import { CardLoader, PestCard, PlantCard } from "../components/Card";
 import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
 
@@ -98,16 +98,22 @@ export default function PestsList({ navigation }) {
               borderTopEndRadius: 24,
             }}
           >
-            {pests.map((pest, index) => {
-              return (
-                <PestCard
-                  key={index}
-                  pest={pest}
-                  navigation={navigation}
-                  loading={loading}
-                />
-              );
-            })}
+            {loading ?
+              <>
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+              </>
+              :
+              pests.map((pest, index) => {
+                return (
+                  <PestCard key={index} pest={pest} navigation={navigation} loading={loading} />
+                );
+              })
+            }
           </View>
         </ScrollView>
       </View>
