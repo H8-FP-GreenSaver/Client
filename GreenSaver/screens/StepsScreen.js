@@ -1,14 +1,21 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
 
 export default function Steps({ route, navigation }) {
   const { id } = route.params;
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [steps, setSteps] = useState([])
+  const [steps, setSteps] = useState([]);
   const itemsPerPage = 1;
 
   const fetchSteps = async () => {
@@ -17,16 +24,17 @@ export default function Steps({ route, navigation }) {
         url: `/steps/${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
       setSteps(data);
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleAddPlant = async () => {
     try {
@@ -34,13 +42,15 @@ export default function Steps({ route, navigation }) {
         url: `/users/add-plant/${steps[0].Plant.id}`,
         method: "POST",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchSteps();
@@ -61,6 +71,8 @@ export default function Steps({ route, navigation }) {
     }
   };
 
+  console.log(steps);
+
   return (
     <>
       <View style={styles.mainContainer}>
@@ -78,7 +90,6 @@ export default function Steps({ route, navigation }) {
 
       <View style={{ backgroundColor: "white", flex: 4, padding: 24 }}>
         <ScrollView>
-
           <Text style={{ fontSize: 16, fontWeight: "500", marginBottom: 8 }}>
             Langkah {currentPage + 1}
           </Text>
@@ -119,7 +130,14 @@ export default function Steps({ route, navigation }) {
           )}
         </ScrollView>
       </View>
-      <View style={{ paddingHorizontal: 24, paddingBottom: 24, flexDirection: "row", backgroundColor: "white" }}>
+      <View
+        style={{
+          paddingHorizontal: 24,
+          paddingBottom: 24,
+          flexDirection: "row",
+          backgroundColor: "white",
+        }}
+      >
         {currentPage > 0 ? (
           <TouchableOpacity
             onPress={handlePrevPage}

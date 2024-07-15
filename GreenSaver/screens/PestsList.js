@@ -30,7 +30,6 @@ export default function PestsList({ navigation }) {
 
       setPests(data);
       setLoading(false);
-
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +64,12 @@ export default function PestsList({ navigation }) {
           }}
         >
           <Text
-            style={{ fontSize: 20, fontWeight: "500", alignSelf: "center" }}
+            style={{
+              fontSize: 20,
+              fontWeight: "500",
+              alignSelf: "center",
+              marginTop: 10,
+            }}
           >
             Hama
           </Text>
@@ -96,7 +100,12 @@ export default function PestsList({ navigation }) {
           >
             {pests.map((pest, index) => {
               return (
-                <PestCard key={index} pest={pest} navigation={navigation} loading={loading}/>
+                <PestCard
+                  key={index}
+                  pest={pest}
+                  navigation={navigation}
+                  loading={loading}
+                />
               );
             })}
           </View>
