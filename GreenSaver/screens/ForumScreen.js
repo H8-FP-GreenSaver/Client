@@ -14,38 +14,36 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { timeSince } from "../helpers/timeConverter";
 import { Skeleton } from "moti/skeleton";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function ForumScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(database, "threads"));
-      const fetchedPosts = await Promise.all(
-        querySnapshot.docs.map(async (doc) => {
-          const commentsSnapshot = await getDocs(
-            collection(database, "threads", doc.id, "comments")
-          );
-          return {
-            id: doc.id,
-            ...doc.data(),
-            commentsCount: commentsSnapshot.size,
-          };
-        })
-      );
+  useFocusEffect(
+    useCallback(() => {
+      const fetchPosts = async () => {
+        const querySnapshot = await getDocs(collection(database, "threads"));
+        const fetchedPosts = await Promise.all(
+          querySnapshot.docs.map(async (doc) => {
+            const commentsSnapshot = await getDocs(
+              collection(database, "threads", doc.id, "comments")
+            );
+            return {
+              id: doc.id,
+              ...doc.data(),
+              commentsCount: commentsSnapshot.size,
+            };
+          })
+        );
 
-      setPosts(fetchedPosts);
-      setLoading(false);
-    };
+        setPosts(fetchedPosts);
+        setLoading(false);
+      };
 
-    setPosts(fetchedPosts);
-    setLoading(false);
-  };
-  
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+      fetchPosts();
+    }, [])
+  );
 
   return (
     <View
@@ -149,12 +147,10 @@ export default function ForumScreen({ navigation }) {
         }}
         style={{
           backgroundColor: "#86BA85",
-          position: 'absolute',
-          bottom: 24,
-          right: 24,
-          padding: 2,
+          zIndex: 2,
+          marginBottom: 24,
+          marginStart: "auto",
           borderRadius: 50,
-          elevation: 2,
         }}
       >
         <Feather name="plus" padding={20} size={24} color="white" />
