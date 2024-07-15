@@ -1,30 +1,48 @@
-import React, { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { collection, getDocs } from "firebase/firestore";
 import { database } from "../config/firebase";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { timeSince } from "../helpers/timeConverter";
 import { CardLoaderForum } from "../components/Card";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function ForumScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchPosts = async () => {
-    const querySnapshot = await getDocs(collection(database, "threads"));
-    const fetchedPosts = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+  useFocusEffect(
+    useCallback(() => {
+      const fetchPosts = async () => {
+        const querySnapshot = await getDocs(collection(database, "threads"));
+        const fetchedPosts = await Promise.all(
+          querySnapshot.docs.map(async (doc) => {
+            const commentsSnapshot = await getDocs(
+              collection(database, "threads", doc.id, "comments")
+            );
+            return {
+              id: doc.id,
+              ...doc.data(),
+              commentsCount: commentsSnapshot.size,
+            };
+          })
+        );
 
-    setPosts(fetchedPosts);
-    setLoading(false);
-  };
+        setPosts(fetchedPosts);
+        setLoading(false);
+      };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+      fetchPosts();
+    }, [])
+  );
 
   return (
     <View
@@ -46,6 +64,7 @@ export default function ForumScreen({ navigation }) {
                 padding: 16,
                 borderRadius: 16,
                 marginBottom: 16,
+                gap: 12,
               }}
               onPress={() =>
                 navigation.navigate("PostDetail", { postId: post.id })
@@ -103,7 +122,7 @@ export default function ForumScreen({ navigation }) {
                 >
                   <FontAwesome6 name="comment-alt" size={18} color="gray" />
                   <Text style={{ fontSize: 14, color: "gray" }}>
-                    {post.comments ? post.comments.length : 0} komentar
+                    {post.commentsCount} komentar
                   </Text>
                 </View>
               </View>
@@ -117,12 +136,10 @@ export default function ForumScreen({ navigation }) {
         }}
         style={{
           backgroundColor: "#86BA85",
-          position: 'absolute',
-          bottom: 24,
-          right: 24,
-          padding: 2,
+          zIndex: 2,
+          marginBottom: 24,
+          marginStart: "auto",
           borderRadius: 50,
-          elevation: 2,
         }}
       >
         <Feather name="plus" padding={20} size={24} color="white" />
@@ -141,5 +158,5 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     overflow: "hidden",
     borderRadius: 5,
-  }
+  },
 });

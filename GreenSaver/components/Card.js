@@ -16,18 +16,20 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
   let difficulty = "";
 
   if (plant.difficulty > 0 && plant.difficulty < 3) {
-    difficulty = "Mudah"
+    difficulty = "Mudah";
   } else if (plant.difficulty === 3) {
-    difficulty = "Sedang"
+    difficulty = "Sedang";
   } else if (plant.difficulty > 3 && plant.difficulty <= 5) {
-    difficulty = "Sulit"
+    difficulty = "Sulit";
   }
 
 
   return (
-    <TouchableOpacity onPress={() => {
-      navigation.navigate('Detail', { id: plant.id })
-    }}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("Detail", { id: plant.id });
+      }}
+    >
       <View style={{ marginBottom: 24 }}>
         <Image
           style={{
@@ -59,7 +61,7 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
           <Text>{difficulty}</Text>
         </View>
       </View>
-    </TouchableOpacity >
+    </TouchableOpacity>
   );
 };
 
@@ -84,7 +86,6 @@ export const PestCard = ({ pest, navigation, loading }) => {
         navigation.navigate("PestsDetail", { id: pest.id });
       }}
     >
-
       <View style={{ marginBottom: 68 }}>
         <Image
           style={{

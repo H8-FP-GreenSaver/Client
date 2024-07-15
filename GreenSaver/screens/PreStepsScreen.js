@@ -58,6 +58,7 @@ export default function PreSteps({ route, navigation }) {
   } else if (plant.difficulty > 3 && plant.difficulty <= 5) {
     difficulty = "Sulit";
   }
+  
 
   return (
     <>

@@ -161,37 +161,61 @@ export default function PostDetailScreen({ route, navigation }) {
             }}
           />
           <Text style={{ fontSize: 14, color: "gray", marginBottom: 16 }}>
-            {post.postDescription}
+            {post.threadCaption}
           </Text>
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 16 }}>
+
+          <Text style={{ fontSize: 14, fontWeight: "bold", marginBottom: 16 }}>
             Comments
           </Text>
           {comments.map((comment) => (
-            <View key={comment.id} style={styles.commentContainer}>
-              <View style={styles.commentHeader}>
+            <View key={comment.id} style={{ marginBottom: 16 }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image
                   source={{ uri: comment.imageUrl }}
-                  style={styles.commentAvatar}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 15,
+                    marginRight: 8,
+                  }}
                 />
                 <View>
-                  <Text style={styles.commentAuthor}>{comment.fullName}</Text>
-                  <Text style={styles.commentDate}>
+                  <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                    {comment.fullName}
+                  </Text>
+                  <Text style={{ fontSize: 12, color: "gray" }}>
                     {formatDate(comment.createdAt)}
                   </Text>
                   <Text style={styles.commentText}>{comment.text}</Text>
                 </View>
               </View>
+              <Text style={{ marginLeft: 38, marginTop: 4 }}>
+                {comment.text}
+              </Text>
             </View>
           ))}
         </ScrollView>
-        <View style={styles.commentInputContainer}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: 16,
+          }}
+        >
           <TextInput
             value={newComment}
             onChangeText={setNewComment}
-            style={styles.commentInput}
-            placeholder="Add a comment"
+            placeholder="Add a comment..."
+            style={{
+              flex: 1,
+              borderColor: "gray",
+              borderWidth: 1,
+              borderRadius: 5,
+              padding: 8,
+              marginRight: 8,
+            }}
           />
-          <Button title="Send" onPress={handleAddComment} />
+          <Button title="Post" onPress={handleAddComment} />
         </View>
       </View>
     </>
@@ -200,12 +224,15 @@ export default function PostDetailScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   header: {
+    backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
-    marginTop: 60,
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderBottomColor: "#ddd",
+    marginTop: 45,
   },
   buttonBack: {
     marginRight: 10,
@@ -254,5 +281,6 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     marginRight: 8,
+    paddingVertical: 10,
   },
 });

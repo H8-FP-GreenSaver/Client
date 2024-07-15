@@ -1,4 +1,5 @@
 import {
+  Image,
   ImageBackground,
   ScrollView,
   StyleSheet,
@@ -9,23 +10,52 @@ import {
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Dropdown } from "../components/Dropdown";
-import { useEffect, useState } from "react";
-import * as SecureStore from 'expo-secure-store';
+import { useCallback, useEffect, useState } from "react";
+import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
-import { useFocusEffect } from '@react-navigation/native';
-
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Home({ navigation }) {
   const [plants, setPlants] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [user, setUser] = useState({});
 
+  const fetchUser = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/users/user-profile`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
+
+      setUser(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUser();
+    }, [])
+  );
+
+  console.log(user);
   const fetchPlants = async () => {
     try {
       const { data } = await Axios({
         url: "/users/home",
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
       });
 
       let tempArr = [];
@@ -43,18 +73,23 @@ export default function Home({ navigation }) {
   };
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       fetchPlants();
     }, [])
   );
 
+  // useEffect(() => {
+  //   fetchPlants();
+  // }, [])
+
   return (
     <>
       <View style={styles.mainContainer}>
+          {/* <Image source={{ uri: user.avatar }} style={styles.profileImage} /> */}
         <View style={styles.headContainer}>
           <View style={styles.containerWave}>
-            <Text style={styles.containerWave.wave}>Selamat Pagi,</Text>
-            <Text style={styles.containerWave.name}>Alyssa!</Text>
+            <Text style={styles.containerWave.wave}>Welcome,</Text>
+            <Text style={styles.containerWave.name}>{user.fullName}!</Text>
           </View>
           <TouchableOpacity style={[styles.addButton, styles.shadowProp]}>
             <Feather
@@ -70,9 +105,12 @@ export default function Home({ navigation }) {
         </View>
         <ScrollView>
           <View style={{ paddingHorizontal: 24 }}>
-            {plants && plants.map((plant, index) => {
-              return <Dropdown key={index} plant={plant} navigation={navigation} />
-            })}
+            {plants &&
+              plants.map((plant, index) => {
+                return (
+                  <Dropdown key={index} plant={plant} navigation={navigation} />
+                );
+              })}
           </View>
         </ScrollView>
       </View>
@@ -104,7 +142,7 @@ const styles = StyleSheet.create({
   headContainer: {
     flexDirection: "row",
     marginVertical: 16,
-    paddingHorizontal: 24
+    paddingHorizontal: 24,
   },
   containerWave: {
     marginRight: "auto",
@@ -126,5 +164,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 3,
+    borderColor: "#fff",
   },
 });

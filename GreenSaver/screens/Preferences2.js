@@ -10,12 +10,12 @@ export default function Preferences2({ navigation }) {
 
   const authContext = useContext(AuthContext);
 
-
   const handleButtonPress = (button) => {
     // let 
     // if (button === "Hias") {
     //   retur
     // }
+//   const handleButtonPress = (categoryId) => {
     setSelectedButtons((prevSelectedButtons) => {
       if (prevSelectedButtons.includes(button)) {
         return prevSelectedButtons.filter((item) => item !== button);
@@ -45,8 +45,10 @@ export default function Preferences2({ navigation }) {
             categoryIds: selectedButtons,
           },
           headers: {
-            Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-          }
+            Authorization: `Bearer ${await SecureStore.getItemAsync(
+              "access_token"
+            )}`,
+          },
         });
 
         authContext.setIsSignedIn(true);
@@ -74,14 +76,14 @@ export default function Preferences2({ navigation }) {
       <View style={styles.buttonContainer}>
         {[1, 2, 3, 4, 5].map((button) => (
           <TouchableOpacity
-            key={button}
+            key={button.id}
             style={[
               styles.buttonChecked,
-              selectedButtons.includes(button) && styles.buttonSelected,
+              selectedButtons.includes(button.id) && styles.buttonSelected,
             ]}
-            onPress={() => handleButtonPress(button)}
+            onPress={() => handleButtonPress(button.id)}
           >
-            {selectedButtons.includes(button) && (
+            {selectedButtons.includes(button.id) && (
               <AntDesign
                 name="check"
                 size={16}
@@ -92,12 +94,13 @@ export default function Preferences2({ navigation }) {
             <Text
               style={[
                 styles.buttonText,
-                selectedButtons.includes(button) && styles.buttonTextSelected,
+                selectedButtons.includes(button.id) &&
+                  styles.buttonTextSelected,
               ]}
             >
               {["Hias", "Sayur", "Rumput", "Obat", "Buah"][button - 1]} {/* Mengambil teks berdasarkan index tombol */}
             </Text>
-            {selectedButtons.includes(button) && (
+            {selectedButtons.includes(button.id) && (
               <AntDesign
                 name="close"
                 size={16}
@@ -109,7 +112,10 @@ export default function Preferences2({ navigation }) {
         ))}
       </View>
       <View style={styles.nextContainer}>
-        <TouchableOpacity style={styles.buttonNext} onPress={handleAddPreferences}>
+        <TouchableOpacity
+          style={styles.buttonNext}
+          onPress={handleAddPreferences}
+        >
           <AntDesign name="right" size={24} color="#fff" />
         </TouchableOpacity>
       </View>

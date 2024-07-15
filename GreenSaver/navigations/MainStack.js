@@ -16,7 +16,7 @@ import { useContext, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import PostDetailScreen from "../screens/PostDetail";
 import AddPost from "../screens/AddPost";
-import App from "../screens/PushNotification";
+import EditProfileUser from "../screens/EditProfileUser";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +49,7 @@ export default function MainStack() {
             <Stack.Screen name="AddPost" component={AddPost} />
             <Stack.Screen name="PostDetail" component={PostDetailScreen} />
             <Stack.Screen name="PlantProgress" component={PlantProgress} />
+            <Stack.Screen name="EditProfileUser" component={EditProfileUser} />
           </>
         ) : (
           <>
