@@ -24,6 +24,12 @@ export default function AddPost({ navigation }) {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [user, setUser] = useState({});
+  const [img, setImg] = useState({
+    uri: "",
+    type: "",
+    name: "",
+  });
+  const [convertedImage, setConvertedImage] = useState(null);
   const authContext = useContext(AuthContext);
 
   const fetchUser = async () => {
@@ -79,6 +85,25 @@ export default function AddPost({ navigation }) {
         aspect: [4, 3],
         quality: 1,
       });
+      console.log(result, "<><>");
+
+      let localUri = result.assets[0].uri;
+      let filename = localUri.split("/").pop();
+
+      // Infer the type of the image
+      let match = /.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      // console.log(type, localUri, filename, "<<<<<");
+
+      setImg({ uri: localUri, name: filename, type });
+      // fullName,
+      //   profileUrl,
+      //   threadCaption,
+      // let formData = new FormData();
+      // formData.append("file", { uri: localUri, name: filename, type });
+      // formData.append("fullName", user.name);
+      // formData.append("profileUrl", user.avatar);
+      // formData.append("threadCaption", caption);
 
       if (!result.canceled) {
         setImage(result.assets[0].uri);
@@ -114,29 +139,59 @@ export default function AddPost({ navigation }) {
     }
   };
 
-  console.log(image);
-  const handleSubmit = async () => {
-    try {
-      setUploading(true);
-      const imageUrl = await fileSystem();
-      const postData = {
-        fullName: user.fullName,
-        profileUrl: user.avatar || "https://example.com/default-avatar.png",
-        threadCaption: caption,
-        imageUrl: image,
-        createdAt: new Date(),
-      };
+  // console.log(image);
 
-      await addDoc(collection(database, "threads"), postData);
-      setCaption("");
-      setImage(null);
-      setUploading(false);
-      navigation.goBack();
+  const handleSubmitPost = async () => {
+    try {
+      console.log(img, user, caption);
+      let formData = new FormData();
+      formData.append("file", img);
+      formData.append("fullName", user.fullName);
+      formData.append("profileUrl", user.avatar);
+      formData.append("threadCaption", caption);
+
+      const res = await Axios({
+        url: `/forums`,
+        method: "POST",
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(res.data, "<--- hoi");
+      navigation.navigate("Forum");
+      // setUser(data);
+      // setLoading(false);
     } catch (error) {
-      console.log(error);
-      setUploading(false);
+      console.log(error, "<--- hei");
     }
   };
+
+  // const handleSubmit = async () => {
+  //   try {
+  //     setUploading(true);
+  //     const imageUrl = await fileSystem();
+  //     const postData = {
+  //       fullName: user.fullName,
+  //       profileUrl: user.avatar || "https://example.com/default-avatar.png",
+  //       threadCaption: caption,
+  //       imageUrl: image,
+  //       createdAt: new Date(),
+  //     };
+
+  //     await addDoc(collection(database, "threads"), postData);
+  //     setCaption("");
+  //     setImage(null);
+  //     setUploading(false);
+  //     navigation.goBack();
+  //   } catch (error) {
+  //     console.log(error);
+  //     setUploading(false);
+  //   }
+  // };
 
   return (
     <ScrollView style={styles.container}>
@@ -252,7 +307,7 @@ export default function AddPost({ navigation }) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={handleSubmit}
+        onPress={handleSubmitPost}
         disabled={uploading}
       >
         <Text style={styles.buttonText}>

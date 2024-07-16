@@ -19,6 +19,7 @@ export default function Home({ navigation }) {
   const [plants, setPlants] = useState(null);
   const [categories, setCategories] = useState([]);
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true)
 
   const fetchUser = async () => {
     try {
@@ -45,7 +46,6 @@ export default function Home({ navigation }) {
     }, [])
   );
 
-  console.log(user);
   const fetchPlants = async () => {
     try {
       const { data } = await Axios({
