@@ -20,26 +20,30 @@ import { addDoc, collection } from "firebase/firestore";
 import { database } from "../config/firebase";
 
 export default function AddPost({ navigation }) {
-  const [caption, setCaption] = useState("");
+  const [caption, setCaption] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [user, setUser] = useState({});
+<<<<<<< HEAD
+  const [error, setError] = useState(null);
+=======
   const [img, setImg] = useState({
     uri: "",
     type: "",
     name: "",
   });
   const [convertedImage, setConvertedImage] = useState(null);
+>>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
   const authContext = useContext(AuthContext);
 
   const fetchUser = async () => {
     try {
       const { data } = await Axios({
-        url: `/users/user-profile`,
-        method: "GET",
+        url: '/users/user-profile',
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${await SecureStore.getItemAsync(
-            "access_token"
+            'access_token'
           )}`,
         },
       });
@@ -66,7 +70,7 @@ export default function AddPost({ navigation }) {
           quality: 1,
         });
 
-        if (!result.canceled) {
+        if (!result.cancelled) {
           setImage(result.assets[0].uri);
         }
       }
@@ -105,7 +109,7 @@ export default function AddPost({ navigation }) {
       // formData.append("profileUrl", user.avatar);
       // formData.append("threadCaption", caption);
 
-      if (!result.canceled) {
+      if (!result.cancelled) {
         setImage(result.assets[0].uri);
       }
     }
@@ -113,32 +117,65 @@ export default function AddPost({ navigation }) {
 
   const fileSystem = async () => {
     try {
-      const { uri } = await FileSystem.getInfoAsync(image);
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = () => {
-          resolve(xhr.response);
-        };
-        xhr.onerror = (e) => {
-          reject(new TypeError("Oops! Something's wrong!"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", uri, true);
-        xhr.send(null);
-      });
+      if (image) {
+        const { uri } = await FileSystem.getInfoAsync(image);
 
-      const fileName = image.substring(image.lastIndexOf("/") + 1);
-      const ref = firebase.storage().ref().child(fileName);
+        const blob = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.onload = () => {
+            resolve(xhr.response);
+          };
+          xhr.onerror = (e) => {
+            reject(new TypeError("Oops! Something's wrong!"));
+          };
+          xhr.responseType = 'blob';
+          xhr.open('GET', uri, true);
+          xhr.send(null);
+        });
 
-      await ref.put(blob);
-      console.log(ref);
-      return await ref.getDownloadURL();
+        const fileName = image.substring(image.lastIndexOf('/') + 1);
+        const ref = firebase.storage().ref().child(fileName);
+
+        await ref.put(blob);
+        console.log(ref);
+        return await ref.getDownloadURL();
+
+      } 
     } catch (error) {
       console.log(error);
       setUploading(false);
+      throw error;
     }
   };
 
+<<<<<<< HEAD
+  const handleSubmit = async () => {
+    try {
+      if (!caption) {
+        setError('Caption harus diisi');
+        return;
+      }
+
+      setUploading(true);
+      const imageUrl = await fileSystem();
+      const postData = {
+        fullName: user.fullName,
+        profileUrl: user.avatar || 'https://example.com/default-avatar.png',
+        threadCaption: caption,
+        imageUrl: imageUrl || "",
+        createdAt: new Date(),
+      };
+
+      await addDoc(collection(database, 'threads'), postData);
+      setCaption('');
+      setImage(null);
+      setUploading(false);
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+      setUploading(false);
+      setError('An unexpected error occurred. Please try again later.');
+=======
   // console.log(image);
 
   const handleSubmitPost = async () => {
@@ -167,6 +204,7 @@ export default function AddPost({ navigation }) {
       // setLoading(false);
     } catch (error) {
       console.log(error, "<--- hei");
+>>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
     }
   };
 
@@ -194,27 +232,31 @@ export default function AddPost({ navigation }) {
   // };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={{ padding: 24 }}>
       <View style={{ marginBottom: 16, marginTop: 40 }}>
         {image ? (
           <>
             <TouchableOpacity>
               <Image
                 source={{ uri: image }}
-                style={{ width: "100%", height: 250, borderRadius: 8 }}
+                style={{ width: '100%', height: 250, borderRadius: 8 }}
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: "row", gap: 8, marginTop: 16 }}>
+            <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
               <TouchableOpacity
                 onPress={() => {
                   setImage(null);
                 }}
-                style={{ flex: 1, backgroundColor: "#ff5f5c", borderRadius: 8 }}
+                style={{
+                  flex: 1,
+                  backgroundColor: '#ff5f5c',
+                  borderRadius: 8,
+                }}
               >
                 <Text
                   style={{
-                    textAlign: "center",
-                    color: "white",
+                    textAlign: 'center',
+                    color: 'white',
                     paddingVertical: 12,
                   }}
                 >
@@ -225,12 +267,12 @@ export default function AddPost({ navigation }) {
                 onPress={uploadViaGallery}
                 style={{
                   flex: 1,
-                  backgroundColor: "gray",
+                  backgroundColor: 'gray',
                   paddingVertical: 12,
                   borderRadius: 8,
                 }}
               >
-                <Text style={{ textAlign: "center", color: "white" }}>
+                <Text style={{ textAlign: 'center', color: 'white' }}>
                   Via Galeri
                 </Text>
               </TouchableOpacity>
@@ -238,12 +280,12 @@ export default function AddPost({ navigation }) {
                 onPress={uploadViaCamera}
                 style={{
                   flex: 1,
-                  backgroundColor: "gray",
+                  backgroundColor: 'gray',
                   paddingVertical: 12,
                   borderRadius: 8,
                 }}
               >
-                <Text style={{ textAlign: "center", color: "white" }}>
+                <Text style={{ textAlign: 'center', color: 'white' }}>
                   Via Kamera
                 </Text>
               </TouchableOpacity>
@@ -252,28 +294,33 @@ export default function AddPost({ navigation }) {
         ) : (
           <>
             <TouchableOpacity
-              style={styles.imagePlaceholder}
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: 250,
+                backgroundColor: 'lightgray',
+                borderRadius: 8,
+              }}
               onPress={uploadViaGallery}
             >
-              <View style={{ alignItems: "center" }}>
-                <MaterialCommunityIcons
-                  name="file-image-plus-outline"
-                  size={64}
-                  color="lightgray"
-                />
-              </View>
+              <MaterialCommunityIcons
+                name="file-image-plus-outline"
+                size={64}
+                color="darkgray"
+              />
             </TouchableOpacity>
-            <View style={{ flexDirection: "row", gap: 8, marginTop: 16 }}>
+            <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
               <TouchableOpacity
                 onPress={uploadViaGallery}
                 style={{
                   flex: 1,
-                  backgroundColor: "gray",
+                  backgroundColor: 'gray',
                   paddingVertical: 12,
                   borderRadius: 8,
                 }}
               >
-                <Text style={{ textAlign: "center", color: "white" }}>
+                <Text style={{ textAlign: 'center', color: 'white' }}>
                   Via Galeri
                 </Text>
               </TouchableOpacity>
@@ -281,12 +328,12 @@ export default function AddPost({ navigation }) {
                 onPress={uploadViaCamera}
                 style={{
                   flex: 1,
-                  backgroundColor: "gray",
+                  backgroundColor: 'gray',
                   paddingVertical: 12,
                   borderRadius: 8,
                 }}
               >
-                <Text style={{ textAlign: "center", color: "white" }}>
+                <Text style={{ textAlign: 'center', color: 'white' }}>
                   Via Kamera
                 </Text>
               </TouchableOpacity>
@@ -294,27 +341,52 @@ export default function AddPost({ navigation }) {
           </>
         )}
       </View>
+      {error && (
+        <Text style={styles.errorText}>
+          {error}
+        </Text>
+      )}
       <View style={{ marginVertical: 16 }}>
-        <Text style={styles.label}>Caption</Text>
+        <Text style={{ paddingHorizontal: 8, marginBottom: 8 }}>Caption</Text>
         <TextInput
           placeholder="Caption Post"
-          style={styles.textArea}
+          style={{
+            alignSelf: 'flex-start',
+            borderColor: 'gray',
+            borderWidth: 1,
+            borderRadius: 8,
+            paddingHorizontal: 16,
+            paddingTop: 12,
+            paddingBottom: 12,
+            width: '100%',
+          }}
           multiline={true}
-          numberOfLines={4}
+          numberOfLines={2}
           onChangeText={setCaption}
           value={caption}
         />
       </View>
       <TouchableOpacity
+<<<<<<< HEAD
+        style={{
+          backgroundColor: '#86BA85',
+          paddingVertical: 16,
+          borderRadius: 8,
+          alignItems: 'center',
+          marginBottom: 32,
+        }}
+        onPress={handleSubmit}
+=======
         style={styles.button}
         onPress={handleSubmitPost}
+>>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
         disabled={uploading}
       >
-        <Text style={styles.buttonText}>
-          {uploading ? "Uploading..." : "Kirim"}
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>
+          {uploading ? 'Uploading...' : 'Kirim'}
         </Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -362,5 +434,13 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     backgroundColor: "#F5F5F5",
     justifyContent: "center",
+  },
+  errorText: {
+    backgroundColor: "red",
+    padding: 10,
+    fontSize: 16,
+    marginTop: 10,
+    borderRadius: 4,
+    color: "white",
   },
 });

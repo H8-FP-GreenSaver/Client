@@ -79,7 +79,7 @@ export default function PestDetail({ route, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text style={{ fontSize: 20, fontWeight: "500", marginBottom: 8 }}>
+            <Text style={{ fontSize: 20, fontWeight: "500"}}>
               {pests.pestName}
             </Text>
             <View style={{ flexDirection: "row", gap: 4, marginTop: 8 }}>

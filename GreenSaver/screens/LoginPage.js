@@ -9,16 +9,21 @@ import {
   View,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 
 export default function LoginScreen({ navigation }) {
   const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
-
-  const authContext = useContext(AuthContext);
-
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true)
+  
   const handleSubmit = async () => {
     try {
+      if (!email || !password) {
+        setError("Email / Password is required")
+      }
+      
       const response = await Axios({
         url: "/users/login",
         method: "POST",
@@ -27,64 +32,82 @@ export default function LoginScreen({ navigation }) {
           password: password,
         },
       });
-
+      
       if (response) {
         await SecureStore.setItemAsync(
           "access_token",
           response.data.access_token
         );
+        
+        setLoading(false)
         navigation.navigate("Preferences1")
         // authContext.setIsSignedIn(true);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        const errorMessage = error.response.data.message;
+        setError(errorMessage);
+      } else if (error.request) {
+        setError("Network error. Please try again.");
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+      }
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("../assets/GreenSaver-logo.png")}
-        style={styles.logo}
-      />
-      {/* <Text style={styles.masuk}>Masuk</Text> */}
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={onChangeEmail}
-        value={email}
-      />
-      <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={onChangePassword}
-        value={password}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.lupaPassword}>
-        <Text style={styles.lupaPasswordText}>Lupa Password?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Masuk</Text>
-      </TouchableOpacity>
-      <Text style={styles.atau}>atau</Text>
-      <TouchableOpacity style={styles.buttonGoogle}>
-        <Text style={styles.buttonTextGoogle}>Masuk dengan Google</Text>
-      </TouchableOpacity>
-      <View style={styles.registerContainer}>
-        <Text style={styles.akun}>Belum punya akun?</Text>
-        <TouchableOpacity
-          style={styles.signIn}
-          onPress={() => {
-            navigation.navigate("Register");
-          }}
-        >
-          <Text style={styles.signInText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <>
+      {!loading ?
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#86BA85" />
+        </View>
+        :
+
+        <View style={styles.container}>
+          <Image
+            source={require("../assets/GreenSaver-logo.png")}
+            style={styles.logo}
+          />
+          {error && <Text style={styles.errorText}>{error}</Text>}
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={onChangeEmail}
+            value={email}
+          />
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={onChangePassword}
+            value={password}
+            secureTextEntry
+          />
+          <TouchableOpacity style={styles.lupaPassword}>
+            <Text style={styles.lupaPasswordText}>Lupa Password?</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Masuk</Text>
+          </TouchableOpacity>
+          <Text style={styles.atau}>atau</Text>
+          <TouchableOpacity style={styles.buttonGoogle}>
+            <Text style={styles.buttonTextGoogle}>Masuk dengan Google</Text>
+          </TouchableOpacity>
+          <View style={styles.registerContainer}>
+            <Text style={styles.akun}>Belum punya akun?</Text>
+            <TouchableOpacity
+              style={styles.signIn}
+              onPress={() => {
+                navigation.navigate("Register");
+              }}
+            >
+              <Text style={styles.signInText}>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      }
+    </>
   );
 }
 
@@ -181,5 +204,23 @@ const styles = StyleSheet.create({
   },
   signInText: {
     color: "#0066cc",
+  },
+  errorText: {
+    backgroundColor: "red",
+    padding: 10,
+    fontSize: 16,
+    marginTop: 10,
+    borderRadius: 4,
+    color: "white",
+    marginBottom: 16
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
   },
 });

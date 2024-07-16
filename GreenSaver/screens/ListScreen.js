@@ -135,15 +135,19 @@ export default function List({ navigation }) {
               alignItems: "center",
               paddingHorizontal: 8,
               paddingVertical: 8,
+              backgroundColor: "#faf3e1",
+              borderWidth: 1,
+              borderColor: "#edc553",
+              borderRadius: 8
             }}
           >
             <Feather
               name="star"
               size={14}
               color="#edc553"
-              style={{ marginRight: 4 }}
+              style={{ marginRight: 8 }}
             />
-            <Text>= Recommended</Text>
+            <Text>Recommended</Text>
           </View>
         </View>
         <TextInput

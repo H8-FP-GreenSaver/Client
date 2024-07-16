@@ -8,6 +8,7 @@ import * as SecureStore from "expo-secure-store";
 export default function Preferences2({ navigation }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
   const authContext = useContext(AuthContext);
+  const [error, setError] = useState(null);
 
   const buttonData = [
     { id: 1, label: "Hias" },
@@ -17,6 +18,17 @@ export default function Preferences2({ navigation }) {
     { id: 5, label: "Buah" },
   ];
 
+<<<<<<< HEAD
+=======
+  const buttonData = [
+    { id: 1, label: "Hias" },
+    { id: 2, label: "Sayur" },
+    { id: 3, label: "Rumput" },
+    { id: 4, label: "Obat" },
+    { id: 5, label: "Buah" },
+  ];
+
+>>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
   const handleButtonPress = (id) => {
     setSelectedButtons((prevSelectedButtons) => {
       if (prevSelectedButtons.includes(id)) {
@@ -30,7 +42,7 @@ export default function Preferences2({ navigation }) {
   const handleAddPreferences = async () => {
     try {
       if (selectedButtons.length === 0) {
-        alert("Please select an option");
+        return setError("* pilih minimal 1");
       } else {
         await Axios({
           url: "/users/user-preferences/add",
@@ -65,6 +77,7 @@ export default function Preferences2({ navigation }) {
         <Text style={styles.greetings}>
           Pilih kategori tanaman yang anda suka
         </Text>
+        {error && <Text style={{ color: "red", marginBottom: 16 }}>{error}</Text>}
       </View>
       <View style={styles.buttonContainer}>
         {buttonData.map((button) => (
@@ -88,7 +101,7 @@ export default function Preferences2({ navigation }) {
               style={[
                 styles.buttonText,
                 selectedButtons.includes(button.id) &&
-                  styles.buttonTextSelected,
+                styles.buttonTextSelected,
               ]}
             >
               {button.label}
