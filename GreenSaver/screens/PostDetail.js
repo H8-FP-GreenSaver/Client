@@ -19,10 +19,11 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { database } from "../config/firebase";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/Auth";
 import Axios from "../utils/axios";
 import * as SecureStore from "expo-secure-store";
+import { timeSince } from "../helpers/timeConverter";
 
 export default function PostDetailScreen({ route, navigation }) {
   const { postId } = route.params;
@@ -146,9 +147,14 @@ export default function PostDetailScreen({ route, navigation }) {
                 marginRight: 16,
               }}
             />
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {post.threadCaption}
-            </Text>
+            <View>
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                {post.fullName}
+              </Text>
+              <Text style={{ fontSize: 12, color: "gray" }}>
+                {timeSince(post.createdAt.seconds)}
+              </Text>
+            </View>
           </View>
 
           <Image
@@ -183,13 +189,12 @@ export default function PostDetailScreen({ route, navigation }) {
                   <Text style={{ fontSize: 14, fontWeight: "bold" }}>
                     {comment.fullName}
                   </Text>
-                  <Text style={{ fontSize: 12, color: "gray" }}>
-                    {formatDate(comment.createdAt)}
+                  <Text style={{ fontSize: 12, color: "gray", paddingTop: 2 }}>
+                    {timeSince(comment.createdAt.seconds)}
                   </Text>
-                  <Text style={styles.commentText}>{comment.text}</Text>
                 </View>
               </View>
-              <Text style={{ marginLeft: 38, marginTop: 4 }}>
+              <Text style={{ marginLeft: 38, marginTop: 3 }}>
                 {comment.text}
               </Text>
             </View>
@@ -200,6 +205,7 @@ export default function PostDetailScreen({ route, navigation }) {
             flexDirection: "row",
             alignItems: "center",
             marginTop: 16,
+            marginBottom: 26,
           }}
         >
           <TextInput
@@ -215,7 +221,12 @@ export default function PostDetailScreen({ route, navigation }) {
               marginRight: 8,
             }}
           />
-          <Button title="Post" onPress={handleAddComment} />
+          <FontAwesome
+            onPress={handleAddComment}
+            name="send"
+            size={24}
+            color="black"
+          />
         </View>
       </View>
     </>
@@ -253,7 +264,7 @@ const styles = StyleSheet.create({
     height: 35,
     borderRadius: 18,
     marginRight: 10,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   commentAuthor: {
     fontSize: 16,

@@ -58,7 +58,7 @@ export default function BottomTab({ navigation }) {
               />
             );
           } else if (route.name === "Ensiklopedia") {
-            return <FontAwesome name="wikipedia-w" size={size} color={color} />;
+            return <Ionicons name="bug-sharp" size={size} color={color} />
           } else if (route.name === "Profile") {
             return <Ionicons name="person" size={size} color={color} />;
           }

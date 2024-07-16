@@ -7,30 +7,24 @@ import * as SecureStore from "expo-secure-store";
 
 export default function Preferences2({ navigation }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
-
   const authContext = useContext(AuthContext);
 
-  const handleButtonPress = (button) => {
-    // let 
-    // if (button === "Hias") {
-    //   retur
-    // }
-//   const handleButtonPress = (categoryId) => {
+  const buttonData = [
+    { id: 1, label: "Hias" },
+    { id: 2, label: "Sayur" },
+    { id: 3, label: "Rumput" },
+    { id: 4, label: "Obat" },
+    { id: 5, label: "Buah" },
+  ];
+
+  const handleButtonPress = (id) => {
     setSelectedButtons((prevSelectedButtons) => {
-      if (prevSelectedButtons.includes(button)) {
-        return prevSelectedButtons.filter((item) => item !== button);
+      if (prevSelectedButtons.includes(id)) {
+        return prevSelectedButtons.filter((item) => item !== id);
       } else {
-        return [...prevSelectedButtons, button];
+        return [...prevSelectedButtons, id];
       }
     });
-  };
-
-  const handleNextPress = () => {
-    if (selectedButtons.length > 0) {
-      navigation.navigate("GreenSaver");
-    } else {
-      alert("Please select at least one option");
-    }
   };
 
   const handleAddPreferences = async () => {
@@ -52,8 +46,7 @@ export default function Preferences2({ navigation }) {
         });
 
         authContext.setIsSignedIn(true);
-
-        // navigation.navigate("GreenSaver");
+        navigation.navigate("GreenSaver");
       }
     } catch (error) {
       console.log(error);
@@ -74,7 +67,7 @@ export default function Preferences2({ navigation }) {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        {[1, 2, 3, 4, 5].map((button) => (
+        {buttonData.map((button) => (
           <TouchableOpacity
             key={button.id}
             style={[
@@ -98,7 +91,7 @@ export default function Preferences2({ navigation }) {
                   styles.buttonTextSelected,
               ]}
             >
-              {["Hias", "Sayur", "Rumput", "Obat", "Buah"][button - 1]} {/* Mengambil teks berdasarkan index tombol */}
+              {button.label}
             </Text>
             {selectedButtons.includes(button.id) && (
               <AntDesign
