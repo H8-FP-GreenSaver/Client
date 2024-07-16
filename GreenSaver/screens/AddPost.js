@@ -24,16 +24,16 @@ export default function AddPost({ navigation }) {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [user, setUser] = useState({});
-<<<<<<< HEAD
+
   const [error, setError] = useState(null);
-=======
+
   const [img, setImg] = useState({
     uri: "",
     type: "",
     name: "",
   });
   const [convertedImage, setConvertedImage] = useState(null);
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
+
   const authContext = useContext(AuthContext);
 
   const fetchUser = async () => {
@@ -148,34 +148,6 @@ export default function AddPost({ navigation }) {
     }
   };
 
-<<<<<<< HEAD
-  const handleSubmit = async () => {
-    try {
-      if (!caption) {
-        setError('Caption harus diisi');
-        return;
-      }
-
-      setUploading(true);
-      const imageUrl = await fileSystem();
-      const postData = {
-        fullName: user.fullName,
-        profileUrl: user.avatar || 'https://example.com/default-avatar.png',
-        threadCaption: caption,
-        imageUrl: imageUrl || "",
-        createdAt: new Date(),
-      };
-
-      await addDoc(collection(database, 'threads'), postData);
-      setCaption('');
-      setImage(null);
-      setUploading(false);
-      navigation.goBack();
-    } catch (error) {
-      console.log(error);
-      setUploading(false);
-      setError('An unexpected error occurred. Please try again later.');
-=======
   // console.log(image);
 
   const handleSubmitPost = async () => {
@@ -204,7 +176,7 @@ export default function AddPost({ navigation }) {
       // setLoading(false);
     } catch (error) {
       console.log(error, "<--- hei");
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
+
     }
   };
 
@@ -367,7 +339,7 @@ export default function AddPost({ navigation }) {
         />
       </View>
       <TouchableOpacity
-<<<<<<< HEAD
+
         style={{
           backgroundColor: '#86BA85',
           paddingVertical: 16,
@@ -375,11 +347,8 @@ export default function AddPost({ navigation }) {
           alignItems: 'center',
           marginBottom: 32,
         }}
-        onPress={handleSubmit}
-=======
-        style={styles.button}
+        // style={styles.button}
         onPress={handleSubmitPost}
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
         disabled={uploading}
       >
         <Text style={{ color: 'white', fontWeight: 'bold' }}>

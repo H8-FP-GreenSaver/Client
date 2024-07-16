@@ -52,15 +52,13 @@ export default function ForumScreen({ navigation }) {
   );
 
   return (
-<<<<<<< HEAD
-    <View style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}>
-      <ScrollView style={{ marginTop: 24 }} showsVerticalScrollIndicator={false}>
-=======
     <View
       style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
     >
-      <ScrollView style={{ marginTop: 24 }}>
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
+      <ScrollView
+        style={{ marginTop: 24 }}
+        showsVerticalScrollIndicator={false}
+      >
         {loading ? (
           <>
             <CardLoaderForum />
@@ -78,20 +76,21 @@ export default function ForumScreen({ navigation }) {
                 marginBottom: 16,
                 // gap: 12,
               }}
-              onPress={() => navigation.navigate("PostDetail", { postId: post.id })}
+              onPress={() =>
+                navigation.navigate("PostDetail", { postId: post.id })
+              }
             >
-<<<<<<< HEAD
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-=======
               <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
+              >
+                {/* <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
                   marginBottom: 16,
                   gap: 12,
                 }}
-              >
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
+              > */}
                 <Image
                   source={{ uri: post.profileUrl }}
                   style={{
@@ -109,11 +108,7 @@ export default function ForumScreen({ navigation }) {
                   <Text>{timeSince(post.createdAt.seconds)}</Text>
                 </View>
               </View>
-<<<<<<< HEAD
               <View style={{ width: "100%", marginTop: 12 }}>
-=======
-              <View style={{ width: "100%" }}>
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
                 {post.imageUrl && (
                   <Image
                     source={{ uri: post.imageUrl }}
@@ -125,16 +120,19 @@ export default function ForumScreen({ navigation }) {
                     }}
                   />
                 )}
-<<<<<<< HEAD
-                <Text style={{ fontSize: 16, marginTop: 12 }}>
-=======
                 <Text
                   style={{ fontSize: 16, fontWeight: "500", marginTop: 12 }}
                 >
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
                   {post.threadCaption}
                 </Text>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                    marginTop: 12,
+                  }}
+                >
                   <FontAwesome6 name="comment-alt" size={18} color="gray" />
                   <Text style={{ fontSize: 14, color: "gray" }}>
                     {post.commentsCount} komentar
@@ -149,7 +147,7 @@ export default function ForumScreen({ navigation }) {
       <TouchableOpacity
         onPress={() => navigation.navigate("AddPost")}
         style={{
-          position: 'absolute',
+          position: "absolute",
           bottom: 24,
           right: 24,
           backgroundColor: "#86BA85",
@@ -163,6 +161,8 @@ export default function ForumScreen({ navigation }) {
     </View>
   );
 }
+
+// test
 
 const styles = StyleSheet.create({
   role: {
