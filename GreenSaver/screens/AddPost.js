@@ -24,7 +24,16 @@ export default function AddPost({ navigation }) {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [user, setUser] = useState({});
+<<<<<<< HEAD
   const [error, setError] = useState(null);
+=======
+  const [img, setImg] = useState({
+    uri: "",
+    type: "",
+    name: "",
+  });
+  const [convertedImage, setConvertedImage] = useState(null);
+>>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
   const authContext = useContext(AuthContext);
 
   const fetchUser = async () => {
@@ -80,6 +89,25 @@ export default function AddPost({ navigation }) {
         aspect: [4, 3],
         quality: 1,
       });
+      console.log(result, "<><>");
+
+      let localUri = result.assets[0].uri;
+      let filename = localUri.split("/").pop();
+
+      // Infer the type of the image
+      let match = /.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      // console.log(type, localUri, filename, "<<<<<");
+
+      setImg({ uri: localUri, name: filename, type });
+      // fullName,
+      //   profileUrl,
+      //   threadCaption,
+      // let formData = new FormData();
+      // formData.append("file", { uri: localUri, name: filename, type });
+      // formData.append("fullName", user.name);
+      // formData.append("profileUrl", user.avatar);
+      // formData.append("threadCaption", caption);
 
       if (!result.cancelled) {
         setImage(result.assets[0].uri);
@@ -120,6 +148,7 @@ export default function AddPost({ navigation }) {
     }
   };
 
+<<<<<<< HEAD
   const handleSubmit = async () => {
     try {
       if (!caption) {
@@ -146,8 +175,61 @@ export default function AddPost({ navigation }) {
       console.log(error);
       setUploading(false);
       setError('An unexpected error occurred. Please try again later.');
+=======
+  // console.log(image);
+
+  const handleSubmitPost = async () => {
+    try {
+      console.log(img, user, caption);
+      let formData = new FormData();
+      formData.append("file", img);
+      formData.append("fullName", user.fullName);
+      formData.append("profileUrl", user.avatar);
+      formData.append("threadCaption", caption);
+
+      const res = await Axios({
+        url: `/forums`,
+        method: "POST",
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(res.data, "<--- hoi");
+      navigation.navigate("Forum");
+      // setUser(data);
+      // setLoading(false);
+    } catch (error) {
+      console.log(error, "<--- hei");
+>>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
     }
   };
+
+  // const handleSubmit = async () => {
+  //   try {
+  //     setUploading(true);
+  //     const imageUrl = await fileSystem();
+  //     const postData = {
+  //       fullName: user.fullName,
+  //       profileUrl: user.avatar || "https://example.com/default-avatar.png",
+  //       threadCaption: caption,
+  //       imageUrl: image,
+  //       createdAt: new Date(),
+  //     };
+
+  //     await addDoc(collection(database, "threads"), postData);
+  //     setCaption("");
+  //     setImage(null);
+  //     setUploading(false);
+  //     navigation.goBack();
+  //   } catch (error) {
+  //     console.log(error);
+  //     setUploading(false);
+  //   }
+  // };
 
   return (
     <View style={{ padding: 24 }}>
@@ -285,6 +367,7 @@ export default function AddPost({ navigation }) {
         />
       </View>
       <TouchableOpacity
+<<<<<<< HEAD
         style={{
           backgroundColor: '#86BA85',
           paddingVertical: 16,
@@ -293,6 +376,10 @@ export default function AddPost({ navigation }) {
           marginBottom: 32,
         }}
         onPress={handleSubmit}
+=======
+        style={styles.button}
+        onPress={handleSubmitPost}
+>>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
         disabled={uploading}
       >
         <Text style={{ color: 'white', fontWeight: 'bold' }}>

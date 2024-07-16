@@ -1,10 +1,17 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome6 } from '@expo/vector-icons';
-import { useEffect, useState } from "react";
-import * as SecureStore from 'expo-secure-store';
+import { MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
+import { useEffect, useState, useCallback } from "react";
+import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Detail({ route, navigation }) {
   const { id } = route.params;
@@ -16,20 +23,26 @@ export default function Detail({ route, navigation }) {
         url: `/plants/${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
-      setPlant(data)
-
+      setPlant(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      fetchPlant();
+    }, [])
+  );
 
-  useEffect(() => {
-    fetchPlant();
-  }, [])
+  // useEffect(() => {
+  //   fetchPlant();
+  // }, [])
 
   let difficulty;
 
@@ -79,7 +92,6 @@ export default function Detail({ route, navigation }) {
         style={{ backgroundColor: "white", flex: 9, padding: 24, zIndex: 2 }}
       >
         <ScrollView>
-
           <Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 8 }}>
             {plant.plantName}
           </Text>
@@ -176,7 +188,9 @@ export default function Detail({ route, navigation }) {
             </View>
           </View>
           <View>
-            <Text style={{ fontSize: 16, fontWeight: "500", marginVertical: 8 }}>
+            <Text
+              style={{ fontSize: 16, fontWeight: "500", marginVertical: 8 }}
+            >
               Deskripsi
             </Text>
             <Text style={{ fontSize: 16, lineHeight: 28 }}>

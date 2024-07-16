@@ -7,38 +7,72 @@ import {
   View,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Axios from "../utils/axios";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import { CardLoader, PlantCard } from "../components/Card";
 import { Skeleton } from "moti/skeleton";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function List({ navigation }) {
   const [plants, setPlants] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({});
 
-  const fetchAllPlants = async (query = '') => {
+  const fetchUser = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/users/user-profile`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
+
+      setUser(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUser();
+    }, [])
+  );
+
+  const fetchAllPlants = async (query = "") => {
     try {
       const { data } = await Axios({
         url: `/plants?search=${query}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
 
       setPlants(data);
       setLoading(false);
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  useEffect(() => {
-    fetchAllPlants();
-  }, [])
+  // useEffect(() => {
+  //   fetchAllPlants();
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchAllPlants();
+    }, [])
+  );
 
   const handleSearch = (query) => {
     setSearch(query);
@@ -54,13 +88,21 @@ export default function List({ navigation }) {
       <View style={styles.mainContainer}>
         <View style={styles.headContainer}>
           <View style={styles.containerWave}>
-            <Text style={styles.containerWave.wave}>Selamat Pagi,</Text>
-            <Text style={styles.containerWave.name}>Alyssa!</Text>
+            <Text style={styles.containerWave.wave}>
+              Pilih Tanaman Kesukaanmu
+            </Text>
+            <Text style={styles.containerWave.name}>{user.fullName}!</Text>
           </View>
           <TouchableOpacity style={[styles.addButton, styles.shadowProp]}>
-            <Feather name="x" size={28} padding={12} color="#86BA85" onPress={() => {
-              navigation.goBack()
-            }} />
+            <Feather
+              name="x"
+              size={28}
+              padding={12}
+              color="#86BA85"
+              onPress={() => {
+                navigation.goBack();
+              }}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -132,25 +174,26 @@ export default function List({ navigation }) {
               borderTopEndRadius: 24,
             }}
           >
-            {loading ?
+            {loading ? (
               <>
                 <CardLoader />
                 <CardLoader />
                 <CardLoader />
                 <CardLoader />
               </>
-              :
+            ) : (
               plants.map((plant, index) => {
                 return (
                   <PlantCard
-                    key={index}
+                    key={plant.id}
                     plant={plant}
                     userPreference={userPreference}
                     navigation={navigation}
                     loading={loading}
                   />
                 );
-              })}
+              })
+            )}
           </View>
         </ScrollView>
       </View>
@@ -175,6 +218,7 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     wave: {
       fontSize: 16,
+      marginTop: 10,
     },
     name: {
       fontSize: 20,
