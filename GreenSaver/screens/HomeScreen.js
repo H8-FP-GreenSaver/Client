@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   ImageBackground,
   ScrollView,
@@ -14,11 +15,13 @@ import { useCallback, useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
 import { useFocusEffect } from "@react-navigation/native";
+import { Skeleton } from "moti/skeleton";
 
 export default function Home({ navigation }) {
   const [plants, setPlants] = useState(null);
   const [categories, setCategories] = useState([]);
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true)
 
   const fetchUser = async () => {
     try {
@@ -45,7 +48,6 @@ export default function Home({ navigation }) {
     }, [])
   );
 
-  console.log(user);
   const fetchPlants = async () => {
     try {
       const { data } = await Axios({
@@ -67,6 +69,8 @@ export default function Home({ navigation }) {
       if (data["5"]) tempArr.push(data["5"]);
 
       setPlants(tempArr);
+      setLoading(false);
+
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +89,6 @@ export default function Home({ navigation }) {
   return (
     <>
       <View style={styles.mainContainer}>
-          {/* <Image source={{ uri: user.avatar }} style={styles.profileImage} /> */}
         <View style={styles.headContainer}>
           <View style={styles.containerWave}>
             <Text style={styles.containerWave.wave}>Welcome,</Text>
@@ -103,16 +106,36 @@ export default function Home({ navigation }) {
             />
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          <View style={{ paddingHorizontal: 24 }}>
-            {plants &&
-              plants.map((plant, index) => {
-                return (
-                  <Dropdown key={index} plant={plant} navigation={navigation} />
-                );
-              })}
+        {loading &&
+          <View style={[styles.loadingContainer, styles.horizontal]}>
+            <ActivityIndicator size="large" color="#86BA85" />
           </View>
-        </ScrollView>
+        }
+
+        {plants?.length === 0 ?
+          <View style={{ paddingHorizontal: 24, justifyContent: "center", alignItems: "center", marginTop: 32 }}>
+            <Image source={require("../assets/empty-state-home.png")} style={{ width: 300, height: 300, marginBottom: 16 }} />
+            <Text style={{ fontSize: 16, marginBottom: 16 }}>Kamu belum menanam apapun</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("List")
+              }}
+              style={{ paddingHorizontal: 16, paddingVertical: 12, backgroundColor: "#cee0ce", borderWidth: 1, borderColor: "#86BA85", borderRadius: 8 }}>
+              <Text style={{ fontSize: 16 }}>Jelajahi tanaman</Text>
+            </TouchableOpacity>
+          </View>
+          :
+          <ScrollView>
+            <View style={{ paddingHorizontal: 24 }}>
+              {plants &&
+                plants.map((plant, index) => {
+                  return (
+                    <Dropdown key={index} plant={plant} navigation={navigation} />
+                  );
+                })}
+            </View>
+          </ScrollView>
+        }
       </View>
       {/* <ImageBackground
         source={require("../assets/background-homepage.png")}
@@ -171,5 +194,16 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderWidth: 3,
     borderColor: "#fff",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: "center",
+    height: "100%"
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
   },
 });

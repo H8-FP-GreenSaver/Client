@@ -5,18 +5,28 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
+  Alert
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import Axios from "../utils/axios";
+import YoutubePlayer from "react-native-youtube-iframe";
 
 export default function Steps({ route, navigation }) {
   const { id } = route.params;
+  const itemsPerPage = 1;
 
   const [currentPage, setCurrentPage] = useState(0);
   const [steps, setSteps] = useState([]);
-  const itemsPerPage = 1;
+  const [playing, setPlaying] = useState(false);
+
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+    }
+  }, []);
 
   const fetchSteps = async () => {
     try {
@@ -71,7 +81,6 @@ export default function Steps({ route, navigation }) {
     }
   };
 
-  console.log(steps);
 
   return (
     <>
@@ -88,7 +97,7 @@ export default function Steps({ route, navigation }) {
         />
       </View>
 
-      <View style={{ backgroundColor: "white", flex: 4, padding: 24 }}>
+      <View style={{ backgroundColor: "white", flex: 4, padding: 24,  }}>
         <ScrollView>
           <Text style={{ fontSize: 16, fontWeight: "500", marginBottom: 8 }}>
             Langkah {currentPage + 1}
@@ -123,9 +132,19 @@ export default function Steps({ route, navigation }) {
                   Tips
                 </Text>
               </View>
-              <Text style={{ lineHeight: 28, fontSize: 16, marginStart: 28 }}>
+              <Text style={{ lineHeight: 28, fontSize: 16, marginStart: 28, marginBottom: 16 }}>
                 {steps[currentPage]?.Step?.tips}
               </Text>
+              {steps[currentPage]?.Step?.videoLink && (
+                <View style={{marginStart: 28}}>
+                  <YoutubePlayer
+                    height={160}
+                    play={playing}
+                    videoId={steps[currentPage].Step.videoLink}
+                    onChangeState={onStateChange}
+                  />
+                </View>
+              )}
             </View>
           )}
         </ScrollView>

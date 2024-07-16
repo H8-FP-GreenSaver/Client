@@ -55,7 +55,7 @@ export default function PestsList({ navigation }) {
           backgroundColor: "#F8F8F8",
         }}
       >
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
@@ -73,13 +73,13 @@ export default function PestsList({ navigation }) {
           >
             Hama
           </Text>
-        </View>
+        </View> */}
         <TextInput
           style={{
             height: 50,
             borderWidth: 1,
             padding: 16,
-            marginBottom: 24,
+            marginVertical: 24,
             borderRadius: 8,
             borderColor: "lightgray",
           }}

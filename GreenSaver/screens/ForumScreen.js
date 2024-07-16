@@ -47,17 +47,15 @@ export default function ForumScreen({ navigation }) {
   );
 
   return (
-    <View
-      style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
-    >
-      <ScrollView style={{ marginTop: 24 }}>
-        {loading ?
+    <View style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}>
+      <ScrollView style={{ marginTop: 24 }} showsVerticalScrollIndicator={false}>
+        {loading ? (
           <>
             <CardLoaderForum />
             <CardLoaderForum />
             <CardLoaderForum />
           </>
-          :
+        ) : (
           posts.map((post) => (
             <TouchableOpacity
               key={post.id}
@@ -66,20 +64,11 @@ export default function ForumScreen({ navigation }) {
                 padding: 16,
                 borderRadius: 16,
                 marginBottom: 16,
-                gap: 12,
+                // gap: 12,
               }}
-              onPress={() =>
-                navigation.navigate("PostDetail", { postId: post.id })
-              }
+              onPress={() => navigation.navigate("PostDetail", { postId: post.id })}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: 16,
-                  gap: 12
-                }}
-              >
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
                 <Image
                   source={{ uri: post.profileUrl }}
                   style={{
@@ -97,8 +86,8 @@ export default function ForumScreen({ navigation }) {
                   <Text>{timeSince(post.createdAt.seconds)}</Text>
                 </View>
               </View>
-              <View style={{ width: "100%" }}>
-                {post.imageUrl &&
+              <View style={{ width: "100%", marginTop: 12 }}>
+                {post.imageUrl && (
                   <Image
                     source={{ uri: post.imageUrl }}
                     style={{
@@ -108,20 +97,11 @@ export default function ForumScreen({ navigation }) {
                       objectFit: "cover",
                     }}
                   />
-                }
-                <Text
-                  style={{ fontSize: 16, fontWeight: "500", marginTop: 12 }}
-                >
+                )}
+                <Text style={{ fontSize: 16, marginTop: 12 }}>
                   {post.threadCaption}
                 </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 8,
-                    marginTop: 12,
-                  }}
-                >
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12 }}>
                   <FontAwesome6 name="comment-alt" size={18} color="gray" />
                   <Text style={{ fontSize: 14, color: "gray" }}>
                     {post.commentsCount} komentar
@@ -130,21 +110,22 @@ export default function ForumScreen({ navigation }) {
               </View>
             </TouchableOpacity>
           ))
-        }
+        )}
       </ScrollView>
+
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("AddPost");
-        }}
+        onPress={() => navigation.navigate("AddPost")}
         style={{
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
           backgroundColor: "#86BA85",
           zIndex: 2,
-          marginBottom: 24,
-          marginStart: "auto",
           borderRadius: 50,
+          padding: 16,
         }}
       >
-        <Feather name="plus" padding={20} size={24} color="white" />
+        <Feather name="plus" size={24} color="white" />
       </TouchableOpacity>
     </View>
   );

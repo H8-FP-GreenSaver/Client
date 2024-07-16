@@ -21,6 +21,36 @@ export default function PlantProgress({ route, navigation }) {
 
   const daysInterval = plant.Plant?.wateringTime;
   const daysOfWeek = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+  const todayIndex = new Date().getDay();
+
+  let firstLine;
+  let secondLine;
+
+  if (todayIndex === 0) {
+    firstLine = "85%";
+    secondLine = 0;
+  } else if (todayIndex === 1) {
+    firstLine = 0;
+    secondLine = "85%";
+  } else if (todayIndex === 2) {
+    firstLine = "15%";
+    secondLine = "70%";
+  } else if (todayIndex === 3) {
+    firstLine = "30%%";
+    secondLine = "55%";
+  } else if (todayIndex === 4) {
+    firstLine = "45%";
+    secondLine = "40%";
+  } else if (todayIndex === 5) {
+    firstLine = "60%";
+    secondLine = "25";
+  } else if (todayIndex === 6) {
+    firstLine = "75%";
+    secondLine = "10%";
+  } else {
+    firstLine = "30%";
+    secondLine = "55%";
+  }
 
   const renderWaterdrops = () => {
     const waterdrops = [];
@@ -115,7 +145,7 @@ export default function PlantProgress({ route, navigation }) {
         >
           <View style={{ marginRight: 16 }}>
             <Text style={{ fontSize: 16, lineHeight: 28 }}>
-              Tanaman {plant.Plant?.categoryId}
+              Tanaman {plant.Plant?.index}
             </Text>
             <Text style={{ fontSize: 20, fontWeight: "500" }}>
               {plant.Plant?.plantName}
@@ -285,30 +315,31 @@ export default function PlantProgress({ route, navigation }) {
           <View
             style={{
               flexDirection: "row",
-              paddingHorizontal: 16,
+              paddingHorizontal: 0,
               alignItems: "center",
             }}
           >
             <View
               style={{
-                width: "45%",
+                width: `${firstLine}`,
                 height: 3,
                 backgroundColor: "#56CCF2",
                 marginVertical: 24,
                 borderRadius: 8,
               }}
             />
-            <View
+            <Image source={require("../assets/icons-plant.png")} style={{width: 40, height: 40}}/>
+            {/* <View
               style={{
                 width: 16,
                 height: 16,
                 backgroundColor: "#56CCF2",
                 borderRadius: 50,
               }}
-            />
+            /> */}
             <View
               style={{
-                width: "50%",
+                width: `${secondLine}`,
                 height: 3,
                 backgroundColor: "#E8E8E8",
                 marginVertical: 24,
@@ -317,7 +348,7 @@ export default function PlantProgress({ route, navigation }) {
             />
           </View>
           <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
+            style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 8 }}
           >
             {daysOfWeek.map((day, index) => (
               <Text
@@ -372,12 +403,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   centeredView: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
+    marginTop: "70%",
     backgroundColor: "white",
     width: "80%",
     borderRadius: 20,

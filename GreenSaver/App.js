@@ -14,19 +14,22 @@ import { AuthContext } from "./contexts/Auth";
 import { useState } from "react";
 import MainStack from "./navigations/MainStack";
 import Push from "./screens/PushNotification";
+import LoginScreen from "./screens/LoginPage";
+import RegisterScreen from "./screens/RegisterPage";
 
 export default function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   return (
-    // <Push />
-    <AuthContext.Provider
-      value={{
-        isSignedIn: isSignedIn,
-        setIsSignedIn: setIsSignedIn,
-      }}
-    >
-      <MainStack />
-    </AuthContext.Provider>
+    <>
+      <AuthContext.Provider
+        value={{
+          isSignedIn: isSignedIn,
+          setIsSignedIn: setIsSignedIn,
+        }}
+      >
+        <MainStack />
+      </AuthContext.Provider>
+    </>
   );
 }

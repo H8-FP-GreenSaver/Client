@@ -83,7 +83,7 @@ export default function ProfileScreen({ navigation }) {
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 88 }}>
+        <View style={{ marginTop: 88, backgroundColor: "white", flex: 1, paddingHorizontal: 24 }}>
           {/* <View style={styles.statsContainer}>
             <View style={styles.stat}>
               <Text style={styles.statNumber}>2</Text>
@@ -105,21 +105,7 @@ export default function ProfileScreen({ navigation }) {
               navigation.navigate("EditProfileUser");
             }}
           >
-            <View
-              style={{
-                marginTop: 24,
-                backgroundColor: "red",
-                paddingVertical: 16,
-                borderRadius: 8,
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: 8,
-                overflow: "hidden",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: "white" }}>Edit Profile</Text>
-            </View>
+            <Text>Edit Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleLogout}>
             <View
@@ -146,11 +132,11 @@ export default function ProfileScreen({ navigation }) {
           </View> */}
         </View>
       </View>
-      <ImageBackground
+      {/* <ImageBackground
         source={require("../assets/background-homepage.png")}
         resizeMode="cover"
         style={styles.backgroundImage}
-      />
+      /> */}
     </>
   );
 }
@@ -160,13 +146,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
     flex: 4,
     width: "100%",
-    paddingHorizontal: 24,
+    // paddingHorizontal: 24,
     paddingTop: 40,
     backgroundColor: "#94C593",
   },
   backgroundImage: {
     zIndex: 0,
-    flex: 12,
+    // flex: 12,
     height: 560,
     width: "100%",
     backgroundColor: "#94C593",
@@ -174,7 +160,8 @@ const styles = StyleSheet.create({
   },
   headContainer: {
     flexDirection: "row",
-    // marginTop: 40,
+    paddingHorizontal: 24,
+    // marginTop: 24,
   },
   containerWave: {
     flexDirection: "row",

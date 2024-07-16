@@ -3,6 +3,7 @@ import { MaterialCommunityIcons, Ionicons, Octicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import * as SecureStore from 'expo-secure-store';
 import Axios from "../utils/axios";
+import { ScrollView } from "moti";
 
 export default function PreSteps({ route, navigation }) {
   const { id } = route.params;
@@ -58,7 +59,7 @@ export default function PreSteps({ route, navigation }) {
   } else if (plant.difficulty > 3 && plant.difficulty <= 5) {
     difficulty = "Sulit";
   }
-  
+
 
   return (
     <>
@@ -130,103 +131,106 @@ export default function PreSteps({ route, navigation }) {
           source={{ uri: plant.imageUrl }}
         />
       </View>
+
       <View style={{ backgroundColor: "white", flex: 4, padding: 24 }}>
-        <Text style={{ fontSize: 20, fontWeight: "500", marginBottom: 16 }}>
-          Persiapan
-        </Text>
-        <View
-          style={{
-            flexWrap: "wrap",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            columnGap: 16,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#FBFBFB",
-              paddingVertical: 16,
-              paddingHorizontal: 24,
-              gap: 14,
-              borderRadius: 8,
-              marginBottom: 16,
-              minWidth: "45%",
-            }}
-          >
-            <MaterialCommunityIcons name="pitchfork" size={24} color="black" />
-            <View>
-              <Text>Media Tanam</Text>
-              <Text style={{ fontWeight: "500", fontSize: 18, marginTop: 8 }}>
-                {plant.medium}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#FBFBFB",
-              paddingVertical: 16,
-              paddingHorizontal: 24,
-              gap: 14,
-              borderRadius: 8,
-              marginBottom: 16,
-              minWidth: "45%",
-            }}
-          >
-            <Octicons name="number" size={22} color="black" />
-            <View>
-              <Text>Luas Area</Text>
-              <Text style={{ fontWeight: "500", fontSize: 18, marginTop: 8 }}>
-                {plant.plantArea}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "500",
-              marginTop: 8,
-              marginBottom: 20,
-            }}
-          >
-            Langkah-Langkah
+        <ScrollView>
+          <Text style={{ fontSize: 20, fontWeight: "500", marginBottom: 16 }}>
+            Persiapan
           </Text>
-          {steps.map((step, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flexDirection: "row",
-                  gap: 12,
-                  alignItems: "center",
-                  marginBottom: 16,
-                  borderRadius: 24,
-                }}
-              >
-                <Text
+          <View
+            style={{
+              flexWrap: "wrap",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              columnGap: 16,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#FBFBFB",
+                paddingVertical: 16,
+                paddingHorizontal: 16,
+                gap: 14,
+                borderRadius: 8,
+                marginBottom: 16,
+                width: "47%",
+              }}
+            >
+              <MaterialCommunityIcons name="pitchfork" size={20} color="black" />
+              <View>
+                <Text>Media Tanam</Text>
+                <Text style={{ fontWeight: "500", fontSize: 18, marginTop: 8 }}>
+                  {plant.medium}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#FBFBFB",
+                paddingVertical: 16,
+                paddingHorizontal: 24,
+                gap: 14,
+                borderRadius: 8,
+                marginBottom: 16,
+                width: "47%",
+              }}
+            >
+              <Octicons name="number" size={22} color="black" />
+              <View>
+                <Text>Luas Area</Text>
+                <Text style={{ fontWeight: "500", fontSize: 18, marginTop: 8 }}>
+                  {plant.plantArea}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "500",
+                marginTop: 8,
+                marginBottom: 20,
+              }}
+            >
+              Langkah-Langkah
+            </Text>
+            {steps.map((step, index) => {
+              return (
+                <View
+                  key={index}
                   style={{
-                    paddingVertical: 8,
-                    paddingHorizontal: 14,
-                    backgroundColor: "#94C593",
-                    color: "white",
-                    overflow: "hidden",
+                    flexDirection: "row",
+                    gap: 12,
+                    alignItems: "center",
+                    marginBottom: 16,
                     borderRadius: 24,
                   }}
                 >
-                  {step.Step.stepNumber}
-                </Text>
-                <Text style={{ fontSize: 16, lineHeight: 28 }}>
-                  {step.Step.stepName}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
+                  <Text
+                    style={{
+                      paddingVertical: 8,
+                      paddingHorizontal: 14,
+                      backgroundColor: "#94C593",
+                      color: "white",
+                      overflow: "hidden",
+                      borderRadius: 18,
+                    }}
+                  >
+                    {step.Step.stepNumber}
+                  </Text>
+                  <Text style={{ fontSize: 16, lineHeight: 28 }}>
+                    {step.Step.stepName}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </ScrollView>
       </View>
-      <View style={{backgroundColor: "white"}}>
+      <View style={{ backgroundColor: "white" }}>
         <TouchableOpacity
           style={{
             backgroundColor: "#86BA85",
@@ -238,7 +242,7 @@ export default function PreSteps({ route, navigation }) {
             borderRadius: 16,
           }}
           onPress={() => {
-            navigation.navigate("Steps", {id: plant.id});
+            navigation.navigate("Steps", { id: plant.id });
           }}
         >
           <Text

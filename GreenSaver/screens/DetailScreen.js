@@ -1,5 +1,7 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import * as SecureStore from 'expo-secure-store';
 import Axios from "../utils/axios";
@@ -118,17 +120,18 @@ export default function Detail({ route, navigation }) {
               style={{
                 flexDirection: "row",
                 backgroundColor: "#FBFBFB",
-                padding: 24,
-                gap: 8,
+                paddingVertical: 24,
+                paddingHorizontal: 16,
+                gap: 16,
                 borderRadius: 8,
                 marginBottom: 16,
-                minWidth: "45%",
+                width: "47%",
               }}
             >
-              <Image source={require("../assets/icon-money.png")} />
-              <View>
+              <MaterialCommunityIcons name="hand-coin-outline" size={24} color="black" />
+              <View style={{ gap: 8 }}>
                 <Text>Harga Bibit</Text>
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                <Text style={{ fontWeight: "500", fontSize: 16 }}>
                   Rp {new Intl.NumberFormat().format(plant.estimatePrice)}
                 </Text>
               </View>
@@ -138,14 +141,14 @@ export default function Detail({ route, navigation }) {
                 flexDirection: "row",
                 backgroundColor: "#FBFBFB",
                 padding: 24,
-                gap: 8,
+                gap: 16,
                 borderRadius: 8,
                 marginBottom: 16,
-                minWidth: "45%",
+                width: "47%",
               }}
             >
-              <Ionicons name="water-outline" size={24} color="black" />
-              <View>
+              <MaterialCommunityIcons name="watering-can-outline" size={24} color="black" />
+              <View style={{ gap: 8 }}>
                 <Text>Air</Text>
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
                   {plant.estimateWater} ml
@@ -157,14 +160,14 @@ export default function Detail({ route, navigation }) {
                 flexDirection: "row",
                 backgroundColor: "#FBFBFB",
                 padding: 24,
-                gap: 8,
+                gap: 16,
                 borderRadius: 8,
                 marginBottom: 16,
-                minWidth: "48%",
+                width: "47%",
               }}
             >
-              <Image source={require("../assets/icon-temperature.png")} />
-              <View>
+              <FontAwesome6 name="temperature-half" size={20} color="black" />
+              <View style={{ gap: 8 }}>
                 <Text>Suhu</Text>
                 <Text style={{ fontWeight: "500", fontSize: 18 }}>
                   {plant.estimateTemperature}°C
@@ -193,7 +196,7 @@ export default function Detail({ route, navigation }) {
           borderRadius: 16,
         }}
         onPress={() => {
-          navigation.navigate("PreSteps", {id: plant.id});
+          navigation.navigate("PreSteps", { id: plant.id });
         }}
       >
         <Text

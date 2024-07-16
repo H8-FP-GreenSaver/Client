@@ -85,11 +85,12 @@ export const PestCard = ({ pest, navigation, loading }) => {
       onPress={() => {
         navigation.navigate("PestsDetail", { id: pest.id });
       }}
+      style={{width: "47%"}}
     >
-      <View style={{ marginBottom: 68 }}>
+      <View style={{ marginBottom: 24 }}>
         <Image
           style={{
-            width: 165,
+            width: "100%",
             height: 165,
             backgroundColor: "#94C593",
             borderRadius: 8,
@@ -169,6 +170,7 @@ export const CardLoaderForum = () => {
               padding: 16,
               borderRadius: 16,
               marginBottom: 16,
+              width: "100%"
             }}
           >
             <View
@@ -176,7 +178,8 @@ export const CardLoaderForum = () => {
                 flexDirection: "row",
                 alignItems: "center",
                 marginBottom: 16,
-                gap: 12
+                gap: 12,
+                width: "100%"
               }}
             >
               <Skeleton colorMode="light" width={50} height={50} radius={"round"} />
