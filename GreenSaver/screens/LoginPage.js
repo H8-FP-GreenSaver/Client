@@ -22,12 +22,12 @@ export default function LoginScreen({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-      setLoading(true)
       if (!email || !password) {
         setError("Email / Password is required");
         return;
       }
-
+      
+      // setLoading(true)
       const response = await Axios({
         url: "/users/login",
         method: "POST",
@@ -43,7 +43,7 @@ export default function LoginScreen({ navigation }) {
           response.data.access_token
         );
 
-        setLoading(false)
+        // setLoading(false)
         const skill = response.data.skill
 
         if (skill) {
@@ -68,11 +68,11 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <>
-      {loading ?
+      {/* {loading ?
         <View style={[styles.loadingContainer, styles.horizontal]}>
           <ActivityIndicator size="large" color="#86BA85" />
         </View>
-        :
+        : */}
 
         <View style={styles.container}>
           <Image
@@ -117,7 +117,7 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      }
+      {/* } */}
     </>
   );
 }
