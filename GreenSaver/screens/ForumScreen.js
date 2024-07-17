@@ -52,13 +52,15 @@ export default function ForumScreen({ navigation }) {
   );
 
   return (
-    <View
-      style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
-    >
-      <ScrollView
-        style={{ marginTop: 24 }}
-        showsVerticalScrollIndicator={false}
-      >
+    <View style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}>
+      <ScrollView style={{ marginTop: 24 }} showsVerticalScrollIndicator={false}>
+//     <View
+//       style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
+//     >
+//       <ScrollView
+//         style={{ marginTop: 24 }}
+//         showsVerticalScrollIndicator={false}
+//       >
         {loading ? (
           <>
             <CardLoaderForum />
@@ -80,17 +82,7 @@ export default function ForumScreen({ navigation }) {
                 navigation.navigate("PostDetail", { postId: post.id })
               }
             >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
-              >
-                {/* <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: 16,
-                  gap: 12,
-                }}
-              > */}
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
                 <Image
                   source={{ uri: post.profileUrl }}
                   style={{
@@ -120,9 +112,7 @@ export default function ForumScreen({ navigation }) {
                     }}
                   />
                 )}
-                <Text
-                  style={{ fontSize: 16, fontWeight: "500", marginTop: 12 }}
-                >
+                <Text style={{ fontSize: 16, marginTop: 12 }}>
                   {post.threadCaption}
                 </Text>
                 <View

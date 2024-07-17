@@ -87,12 +87,11 @@ export default function EditProfileUser({ navigation }) {
       });
 
       if (data) {
-        Alert.alert("Success", "User profile is updated");
         navigation.goBack();
       }
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Failed to update profile");
+      return setError("Error", "Failed to update profile");
     }
   };
 

@@ -15,6 +15,7 @@ import { Skeleton } from "moti/skeleton";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function List({ navigation }) {
+  const [preference, setPreference] = useState([]);
   const [plants, setPlants] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,37 @@ export default function List({ navigation }) {
   useFocusEffect(
     useCallback(() => {
       fetchUser();
+    }, [])
+  );
+
+  const fetchPreference = async () => {
+    try {
+      const { data } = await Axios({
+        url: `/users/user-preferences`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync(
+            "access_token"
+          )}`,
+        },
+      });
+
+      const arrPreference = [];
+
+      const preference = data.map(category => {
+        arrPreference.push(category.Category.categoryName)
+      })
+
+      setPreference(arrPreference);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchPreference();
     }, [])
   );
 
@@ -136,8 +168,6 @@ export default function List({ navigation }) {
               paddingHorizontal: 8,
               paddingVertical: 8,
               backgroundColor: "#faf3e1",
-              borderWidth: 1,
-              borderColor: "#edc553",
               borderRadius: 8
             }}
           >
@@ -185,9 +215,9 @@ export default function List({ navigation }) {
               plants.map((plant, index) => {
                 return (
                   <PlantCard
-                    key={plant.id}
+                    key={index}
                     plant={plant}
-                    userPreference={userPreference}
+                    preference={preference}
                     navigation={navigation}
                     loading={loading}
                   />
@@ -218,7 +248,6 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     wave: {
       fontSize: 16,
-      marginTop: 10,
     },
     name: {
       fontSize: 20,

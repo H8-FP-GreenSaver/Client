@@ -174,7 +174,7 @@ export default function PostDetailScreen({ route, navigation }) {
             Comments
           </Text>
           {comments.map((comment) => (
-            <View key={comment.id} style={{ marginBottom: 16 }}>
+            <View key={comment.id} style={{ marginBottom: 16, backgroundColor: "white", padding: 16, borderRadius: 8 }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image
                   source={{ uri: comment.imageUrl }}

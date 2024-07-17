@@ -2,9 +2,9 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import { Skeleton } from "moti/skeleton";
 
-export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
-  const preference = userPreference.preference.map((pref) => {
-    if (pref === `Tanaman ${plant.Category.categoryName}`) {
+export const PlantCard = ({ plant, preference, navigation, loading }) => {
+  const userPreference = preference.map((pref) => {
+    if (pref === plant.Category.categoryName) {
       return (
         <>
           <Feather name="star" size={14} color="#edc553" marginStart={4} />
@@ -55,7 +55,7 @@ export const PlantCard = ({ plant, userPreference, navigation, loading }) => {
             <Text style={{ fontWeight: "500", fontSize: 16 }}>
               {plant.plantName}
             </Text>
-            {preference ? preference : ""}
+            {userPreference ? userPreference : ""}
           </View>
           <Text style={{ fontSize: 14 }}>Tanaman {plant.Category.categoryName}</Text>
           <Text>{difficulty}</Text>
@@ -161,9 +161,9 @@ export const CardLoader = () => {
 export const CardLoaderForum = () => {
   return (
     <View
-      style={{ flex: 1, paddingHorizontal: 24, backgroundColor: "#E8E8E8" }}
+      style={{ flex: 1, backgroundColor: "#E8E8E8" }}
     >
-      <ScrollView style={{ marginTop: 24 }}>
+      <ScrollView>
           <TouchableOpacity
             style={{
               backgroundColor: "white",

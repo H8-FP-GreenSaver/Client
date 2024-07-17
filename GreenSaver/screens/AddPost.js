@@ -18,15 +18,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/Auth";
 import { addDoc, collection } from "firebase/firestore";
 import { database } from "../config/firebase";
+import { Ionicons } from "@expo/vector-icons";
+
 
 export default function AddPost({ navigation }) {
   const [caption, setCaption] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [user, setUser] = useState({});
-
   const [error, setError] = useState(null);
-
   const [img, setImg] = useState({
     uri: "",
     type: "",
@@ -70,13 +70,48 @@ export default function AddPost({ navigation }) {
           quality: 1,
         });
 
-        if (!result.cancelled) {
+        let localUri = result.assets[0].uri;
+        let filename = localUri.split("/").pop();
+
+        // Infer the type of the image
+        let match = /.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+
+        setImg({ uri: localUri, name: filename, type });
+        // fullName,
+        //   profileUrl,
+        //   threadCaption,
+        // let formData = new FormData();
+        // formData.append("file", { uri: localUri, name: filename, type });
+        // formData.append("fullName", user.name);
+        // formData.append("profileUrl", user.avatar);
+        // formData.append("threadCaption", caption);
+
+        if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
+    // try {
+    //   const permission = await ImagePicker.requestCameraPermissionsAsync();
+
+    //   if (permission.granted) {
+    //     let result = await ImagePicker.launchCameraAsync({
+    //       cameraType: ImagePicker.CameraType.back,
+    //       allowsEditing: true,
+    //       aspect: [4, 3],
+    //       quality: 1,
+    //     });
+
+    //     if (!result.cancelled) {
+    //       setImage(result.assets[0].uri);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const uploadViaGallery = async () => {
@@ -89,7 +124,6 @@ export default function AddPost({ navigation }) {
         aspect: [4, 3],
         quality: 1,
       });
-      console.log(result, "<><>");
 
       let localUri = result.assets[0].uri;
       let filename = localUri.split("/").pop();
@@ -109,7 +143,7 @@ export default function AddPost({ navigation }) {
       // formData.append("profileUrl", user.avatar);
       // formData.append("threadCaption", caption);
 
-      if (!result.cancelled) {
+      if (!result.canceled) {
         setImage(result.assets[0].uri);
       }
     }
@@ -140,7 +174,7 @@ export default function AddPost({ navigation }) {
         console.log(ref);
         return await ref.getDownloadURL();
 
-      } 
+      }
     } catch (error) {
       console.log(error);
       setUploading(false);
@@ -176,7 +210,6 @@ export default function AddPost({ navigation }) {
       // setLoading(false);
     } catch (error) {
       console.log(error, "<--- hei");
-
     }
   };
 
@@ -204,158 +237,186 @@ export default function AddPost({ navigation }) {
   // };
 
   return (
-    <View style={{ padding: 24 }}>
-      <View style={{ marginBottom: 16, marginTop: 40 }}>
-        {image ? (
-          <>
-            <TouchableOpacity>
-              <Image
-                source={{ uri: image }}
-                style={{ width: '100%', height: 250, borderRadius: 8 }}
-              />
-            </TouchableOpacity>
-            <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setImage(null);
-                }}
-                style={{
-                  flex: 1,
-                  backgroundColor: '#ff5f5c',
-                  borderRadius: 8,
-                }}
-              >
-                <Text
+    <>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={styles.buttonBack}
+        >
+          <Ionicons name="chevron-back-outline" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ padding: 24 }}>
+        <View style={{ marginBottom: 16 }}>
+          {image ? (
+            <>
+              <TouchableOpacity>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: '100%', height: 250, borderRadius: 8 }}
+                />
+              </TouchableOpacity>
+              <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setImage(null);
+                  }}
                   style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    paddingVertical: 12,
+                    flex: 1,
+                    backgroundColor: '#ff5f5c',
+                    borderRadius: 8,
                   }}
                 >
-                  Hapus
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      paddingVertical: 12,
+                    }}
+                  >
+                    Hapus
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={uploadViaGallery}
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'gray',
+                    paddingVertical: 12,
+                    borderRadius: 8,
+                  }}
+                >
+                  <Text style={{ textAlign: 'center', color: 'white' }}>
+                    Via Galeri
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={uploadViaCamera}
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'gray',
+                    paddingVertical: 12,
+                    borderRadius: 8,
+                  }}
+                >
+                  <Text style={{ textAlign: 'center', color: 'white' }}>
+                    Via Kamera
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <>
               <TouchableOpacity
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  height: 250,
+                  backgroundColor: 'lightgray',
+                  borderRadius: 8,
+                }}
                 onPress={uploadViaGallery}
-                style={{
-                  flex: 1,
-                  backgroundColor: 'gray',
-                  paddingVertical: 12,
-                  borderRadius: 8,
-                }}
               >
-                <Text style={{ textAlign: 'center', color: 'white' }}>
-                  Via Galeri
-                </Text>
+                <MaterialCommunityIcons
+                  name="file-image-plus-outline"
+                  size={64}
+                  color="darkgray"
+                />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={uploadViaCamera}
-                style={{
-                  flex: 1,
-                  backgroundColor: 'gray',
-                  paddingVertical: 12,
-                  borderRadius: 8,
-                }}
-              >
-                <Text style={{ textAlign: 'center', color: 'white' }}>
-                  Via Kamera
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : (
-          <>
-            <TouchableOpacity
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                height: 250,
-                backgroundColor: 'lightgray',
-                borderRadius: 8,
-              }}
-              onPress={uploadViaGallery}
-            >
-              <MaterialCommunityIcons
-                name="file-image-plus-outline"
-                size={64}
-                color="darkgray"
-              />
-            </TouchableOpacity>
-            <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
-              <TouchableOpacity
-                onPress={uploadViaGallery}
-                style={{
-                  flex: 1,
-                  backgroundColor: 'gray',
-                  paddingVertical: 12,
-                  borderRadius: 8,
-                }}
-              >
-                <Text style={{ textAlign: 'center', color: 'white' }}>
-                  Via Galeri
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={uploadViaCamera}
-                style={{
-                  flex: 1,
-                  backgroundColor: 'gray',
-                  paddingVertical: 12,
-                  borderRadius: 8,
-                }}
-              >
-                <Text style={{ textAlign: 'center', color: 'white' }}>
-                  Via Kamera
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </>
+              <View style={{ flexDirection: 'row', gap: 8, marginTop: 16 }}>
+                <TouchableOpacity
+                  onPress={uploadViaGallery}
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'gray',
+                    paddingVertical: 12,
+                    borderRadius: 8,
+                  }}
+                >
+                  <Text style={{ textAlign: 'center', color: 'white' }}>
+                    Via Galeri
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={uploadViaCamera}
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'gray',
+                    paddingVertical: 12,
+                    borderRadius: 8,
+                  }}
+                >
+                  <Text style={{ textAlign: 'center', color: 'white' }}>
+                    Via Kamera
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </View>
+        {error && (
+          <Text style={styles.errorText}>
+            {error}
+          </Text>
         )}
-      </View>
-      {error && (
-        <Text style={styles.errorText}>
-          {error}
-        </Text>
-      )}
-      <View style={{ marginVertical: 16 }}>
-        <Text style={{ paddingHorizontal: 8, marginBottom: 8 }}>Caption</Text>
-        <TextInput
-          placeholder="Caption Post"
+        <View style={{ marginVertical: 16 }}>
+          <Text style={{ paddingHorizontal: 8, marginBottom: 8 }}>Caption</Text>
+          <TextInput
+            placeholder="Caption Post"
+            style={{
+              alignSelf: 'flex-start',
+              borderColor: 'gray',
+              borderWidth: 1,
+              borderRadius: 8,
+              paddingHorizontal: 16,
+              paddingTop: 12,
+              paddingBottom: 12,
+              width: '100%',
+            }}
+            multiline={true}
+            numberOfLines={2}
+            onChangeText={setCaption}
+            value={caption}
+          />
+        </View>
+        <TouchableOpacity
           style={{
-            alignSelf: 'flex-start',
-            borderColor: 'gray',
-            borderWidth: 1,
+            backgroundColor: '#86BA85',
+            paddingVertical: 16,
             borderRadius: 8,
-            paddingHorizontal: 16,
-            paddingTop: 12,
-            paddingBottom: 12,
-            width: '100%',
+            alignItems: 'center',
+            marginBottom: 32,
           }}
-          multiline={true}
-          numberOfLines={2}
-          onChangeText={setCaption}
-          value={caption}
-        />
+          onPress={handleSubmitPost}
+          disabled={uploading}
+        >
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>
+            {uploading ? 'Uploading...' : 'Kirim'}
+          </Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
+    </>
+//       <TouchableOpacity
 
-        style={{
-          backgroundColor: '#86BA85',
-          paddingVertical: 16,
-          borderRadius: 8,
-          alignItems: 'center',
-          marginBottom: 32,
-        }}
-        // style={styles.button}
-        onPress={handleSubmitPost}
-        disabled={uploading}
-      >
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>
-          {uploading ? 'Uploading...' : 'Kirim'}
-        </Text>
-      </TouchableOpacity>
-    </View>
+//         style={{
+//           backgroundColor: '#86BA85',
+//           paddingVertical: 16,
+//           borderRadius: 8,
+//           alignItems: 'center',
+//           marginBottom: 32,
+//         }}
+//         // style={styles.button}
+//         onPress={handleSubmitPost}
+//         disabled={uploading}
+//       >
+//         <Text style={{ color: 'white', fontWeight: 'bold' }}>
+//           {uploading ? 'Uploading...' : 'Kirim'}
+//         </Text>
+//       </TouchableOpacity>
+//     </View>
   );
 }
 
@@ -411,5 +472,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 4,
     color: "white",
+  },
+  header: {
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    marginTop: 45,
   },
 });

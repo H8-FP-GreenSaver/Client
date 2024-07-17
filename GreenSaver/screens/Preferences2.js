@@ -56,7 +56,7 @@ export default function Preferences2({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/headbar2.png")} style={styles.logo} />
+      <Image source={require("../assets/progress-bar-2.png")} style={styles.logo} />
       <Image
         source={require("../assets/Tanaman 3.png")}
         style={styles.picture}

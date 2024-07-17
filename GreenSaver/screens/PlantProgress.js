@@ -36,7 +36,7 @@ export default function PlantProgress({ route, navigation }) {
     firstLine = "15%";
     secondLine = "70%";
   } else if (todayIndex === 3) {
-    firstLine = "30%%";
+    firstLine = "30%";
     secondLine = "55%";
   } else if (todayIndex === 4) {
     firstLine = "45%";
@@ -261,7 +261,7 @@ export default function PlantProgress({ route, navigation }) {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ fontSize: 24, fontWeight: "500" }}>1x</Text>
               <Text style={{ fontSize: 18, marginTop: 4, color: "#AFAFAF" }}>
-                /{plant.Plant?.wateringTime} hari
+                /1 hari
               </Text>
             </View>
           </View>
@@ -310,7 +310,34 @@ export default function PlantProgress({ route, navigation }) {
               alignItems: "center",
             }}
           >
-            {renderWaterdrops()}
+            <Image
+              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+              source={require("../assets/icon-waterdrop-solid.png")}
+            />
+            <Image
+              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+              source={require("../assets/icon-waterdrop-solid.png")}
+            />
+            <Image
+              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+              source={require("../assets/icon-waterdrop-solid.png")}
+            />
+            <Image
+              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+              source={require("../assets/icon-waterdrop-solid.png")}
+            />
+            <Image
+              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+              source={require("../assets/icon-waterdrop-solid.png")}
+            />
+            <Image
+              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+              source={require("../assets/icon-waterdrop-solid.png")}
+            />
+            <Image
+              style={{ width: 32, height: 32, zIndex: 0, objectFit: "cover" }}
+              source={require("../assets/icon-waterdrop-solid.png")}
+            />
           </View>
           <View
             style={{
@@ -328,7 +355,7 @@ export default function PlantProgress({ route, navigation }) {
                 borderRadius: 8,
               }}
             />
-            <Image source={require("../assets/icons-plant.png")} style={{width: 40, height: 40}}/>
+            <Image source={require("../assets/icons-plant.png")} style={{ width: 40, height: 40 }} />
             {/* <View
               style={{
                 width: 16,

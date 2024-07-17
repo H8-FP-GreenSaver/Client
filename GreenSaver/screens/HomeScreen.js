@@ -218,7 +218,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "#fff",
   },
-
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
