@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "#fff",
   },
-<<<<<<< HEAD
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -208,6 +207,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-=======
-});
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b

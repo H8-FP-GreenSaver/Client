@@ -16,7 +16,6 @@ export default function RegisterScreen({ navigation }) {
   const [password, onChangePassword] = useState(null);
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const handleSubmit = async () => {
     try {
@@ -34,7 +33,6 @@ export default function RegisterScreen({ navigation }) {
         })
 
         if (result) {
-          setLoading(false)
           navigation.navigate("Login")
         }
       }
@@ -52,72 +50,65 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <>
-      {loading ?
-        <View style={[styles.loadingContainer, styles.horizontal]}>
-          <ActivityIndicator size="large" color="#86BA85" />
-        </View>
-        :
-        <View style={styles.container}>
-          <Image
-            source={require("../assets/GreenSaver-logo.png")}
-            style={styles.logo}
-          />
-          {error && <Text style={styles.errorText}>{error}</Text>}
-          {/* <Text style={styles.masuk}>Daftar</Text> */}
-          <Text style={styles.label}>Nama</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nama"
-            onChangeText={onChangeName}
-            value={name}
-          />
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            onChangeText={onChangeEmail}
-            value={email}
-          />
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            onChangeText={onChangePassword}
-            value={password}
-            secureTextEntry
-          />
-          <View style={styles.checkboxContainer}>
-            <TouchableOpacity
-              style={[styles.checkbox, checked && styles.checkedCheckbox]}
-              onPress={() => setChecked(!checked)}
-            />
-            <Text style={styles.checkboxLabel}>
-              Dengan mendaftar saya menyetujui syarat dan ketentuan privasi keamanan
-            </Text>
-          </View>
+      <View style={styles.container}>
+        <Image
+          source={require("../assets/GreenSaver-logo.png")}
+          style={styles.logo}
+        />
+        {error && <Text style={styles.errorText}>{error}</Text>}
+        <Text style={styles.label}>Nama</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Nama"
+          onChangeText={onChangeName}
+          value={name}
+        />
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          onChangeText={onChangeEmail}
+          value={email}
+        />
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          onChangeText={onChangePassword}
+          value={password}
+          secureTextEntry
+        />
+        <View style={styles.checkboxContainer}>
           <TouchableOpacity
-            onPress={handleSubmit}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Daftar</Text>
-          </TouchableOpacity>
-          <Text style={styles.atau}>atau</Text>
-          <TouchableOpacity style={styles.buttonGoogle}>
-            <Text style={styles.buttonTextGoogle}>Masuk dengan Google</Text>
-          </TouchableOpacity>
-          <View style={styles.registerContainer}>
-            <Text style={styles.akun}>Sudah punya akun?</Text>
-            <TouchableOpacity
-              style={styles.signIn}
-              onPress={() => {
-                navigation.navigate("Login");
-              }}
-            >
-              <Text style={styles.signInText}>Masuk nih</Text>
-            </TouchableOpacity>
-          </View>
+            style={[styles.checkbox, checked && styles.checkedCheckbox]}
+            onPress={() => setChecked(!checked)}
+          />
+          <Text style={styles.checkboxLabel}>
+            Dengan mendaftar saya menyetujui syarat dan ketentuan privasi keamanan
+          </Text>
         </View>
-      }
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Daftar</Text>
+        </TouchableOpacity>
+        {/* <Text style={styles.atau}>atau</Text>
+        <TouchableOpacity style={styles.buttonGoogle}>
+          <Text style={styles.buttonTextGoogle}>Masuk dengan Google</Text>
+        </TouchableOpacity> */}
+        <View style={styles.registerContainer}>
+          <Text style={styles.akun}>Sudah punya akun?</Text>
+          <TouchableOpacity
+            style={styles.signIn}
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
+          >
+            <Text style={styles.signInText}>Masuk</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </>
   );
 }
@@ -125,8 +116,9 @@ export default function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 16,
+    // justifyContent: "center",
+    paddingHorizontal: 24,
+    paddingTop: 56,
     backgroundColor: "#fff",
     width: "100%",
   },
@@ -187,7 +179,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#86BA85",
-    marginBottom: 10,
+    marginBottom: 24,
+    marginTop: 16
   },
   akun: {
     textAlign: "center",

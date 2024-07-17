@@ -18,17 +18,6 @@ export default function Preferences2({ navigation }) {
     { id: 5, label: "Buah" },
   ];
 
-<<<<<<< HEAD
-=======
-  const buttonData = [
-    { id: 1, label: "Hias" },
-    { id: 2, label: "Sayur" },
-    { id: 3, label: "Rumput" },
-    { id: 4, label: "Obat" },
-    { id: 5, label: "Buah" },
-  ];
-
->>>>>>> 44dd602363eb8136a89f1cfb25cb841469766a1b
   const handleButtonPress = (id) => {
     setSelectedButtons((prevSelectedButtons) => {
       if (prevSelectedButtons.includes(id)) {
@@ -67,7 +56,7 @@ export default function Preferences2({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/headbar2.png")} style={styles.logo} />
+      <Image source={require("../assets/progress-bar-2.png")} style={styles.logo} />
       <Image
         source={require("../assets/Tanaman 3.png")}
         style={styles.picture}

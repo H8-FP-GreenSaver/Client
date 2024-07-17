@@ -7,6 +7,7 @@ import * as SecureStore from "expo-secure-store";
 
 export default function Preferences1({ navigation }) {
   const [selectedButton, setSelectedButton] = useState(null);
+  const [error, setError] = useState(null)
 
   const handleButtonPress = (button) => {
     setSelectedButton(button);
@@ -15,9 +16,9 @@ export default function Preferences1({ navigation }) {
   const handleUpdateSkill = async () => {
     try {
       if (!selectedButton) {
-        alert("Please select an option");
+        return setError("Silahkan memilih salah satu");
       } else {
-        await Axios({
+        let response = await Axios({
           url: "/users/user-profile/update-skill",
           method: "PATCH",
           data: {
@@ -27,69 +28,81 @@ export default function Preferences1({ navigation }) {
             Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`
           }
         })
-  
+
         navigation.navigate("Preferences2");
       }
     } catch (error) {
-      console.log(error)
+      if (error.response) {
+        const errorMessage = error.response.data.message;
+        setError(errorMessage);
+      } else if (error.request) {
+        setError("Network error. Please try again.");
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+      }
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={require("../assets/headbar.png")} style={styles.logo} />
-      <Image
-        source={require("../assets/Ideation Tanaman5.png")}
-        style={styles.picture}
-      />
-      <View style={styles.boxUser}>
-        <Text style={styles.name}>Halo, Alyssa!</Text>
-        <Text style={styles.greetings}>Sudah sejauh mana anda berkebun?</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={[
-              styles.buttonChecked,
-              selectedButton === "Pemula" && styles.buttonSelected,
-            ]}
-            onPress={() => handleButtonPress("Pemula")}
-          >
-            <AntDesign name="smileo" size={32} color="#86BA85" />
-          </TouchableOpacity>
-          <Text style={styles.label}>Pemula</Text>
+    <>
+      <View style={styles.container}>
+        <Image source={require("../assets/progress-bar-1.png")} style={styles.logo} />
+        <Image
+          source={require("../assets/Ideation Tanaman5.png")}
+          style={styles.picture}
+        />
+        <View style={styles.boxUser}>
+          <Text style={styles.name}>Halo!</Text>
+          <Text style={styles.greetings}>Sudah sejauh mana anda berkebun?</Text>
         </View>
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={[
-              styles.buttonChecked,
-              selectedButton === "Menengah" && styles.buttonSelected,
-            ]}
-            onPress={() => handleButtonPress("Menengah")}
-          >
-            <FontAwesome6 name="face-smile-beam" size={32} color="#86BA85" />
-          </TouchableOpacity>
-          <Text style={styles.label}>Menengah</Text>
+        {error &&
+          <Text style={{ color: "red", fontSize: 16, marginBottom: 16, marginLeft: 40 }}>Silahkan memilih salah satu</Text>
+        }
+        <View style={styles.buttonContainer}>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity
+              style={[
+                styles.buttonChecked,
+                selectedButton === "Pemula" && styles.buttonSelected,
+              ]}
+              onPress={() => handleButtonPress("Pemula")}
+            >
+              <AntDesign name="smileo" size={32} color="#86BA85" />
+            </TouchableOpacity>
+            <Text style={styles.label}>Pemula</Text>
+          </View>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity
+              style={[
+                styles.buttonChecked,
+                selectedButton === "Menengah" && styles.buttonSelected,
+              ]}
+              onPress={() => handleButtonPress("Menengah")}
+            >
+              <FontAwesome6 name="face-smile-beam" size={32} color="#86BA85" />
+            </TouchableOpacity>
+            <Text style={styles.label}>Menengah</Text>
+          </View>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity
+              style={[
+                styles.buttonChecked,
+                selectedButton === "Ahli" && styles.buttonSelected,
+              ]}
+              onPress={() => handleButtonPress("Ahli")}
+            >
+              <Fontisto name="smiley" size={32} color="#86BA85" />
+            </TouchableOpacity>
+            <Text style={styles.label}>Ahli</Text>
+          </View>
         </View>
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={[
-              styles.buttonChecked,
-              selectedButton === "Ahli" && styles.buttonSelected,
-            ]}
-            onPress={() => handleButtonPress("Ahli")}
-          >
-            <Fontisto name="smiley" size={32} color="#86BA85" />
+        <View style={styles.nextContainer}>
+          <TouchableOpacity style={styles.buttonNext} onPress={handleUpdateSkill}>
+            <AntDesign name="right" size={24} color="#fff" />
           </TouchableOpacity>
-          <Text style={styles.label}>Ahli</Text>
         </View>
       </View>
-      <View style={styles.nextContainer}>
-        <TouchableOpacity style={styles.buttonNext} onPress={handleUpdateSkill}>
-          <AntDesign name="right" size={24} color="#fff" />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </>
   );
 }
 
@@ -107,20 +120,22 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     alignSelf: "center",
     marginBottom: 20,
+    backgroundColor: "#FFFFFF"
   },
   picture: {
     alignSelf: "center",
     marginBottom: 20,
   },
   boxUser: {
-    width: "50%",
+    width: "75%",
     justifyContent: "center",
     alignSelf: "center",
   },
   name: {
     fontSize: 20,
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 8,
+    fontWeight: "500",
     marginTop: 10,
   },
   greetings: {

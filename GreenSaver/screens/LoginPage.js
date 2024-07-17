@@ -16,14 +16,18 @@ export default function LoginScreen({ navigation }) {
   const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true)
-  
+  const [loading, setLoading] = useState(false)
+
+  const authContext = useContext(AuthContext)
+
   const handleSubmit = async () => {
     try {
+      setLoading(true)
       if (!email || !password) {
-        setError("Email / Password is required")
+        setError("Email / Password is required");
+        return;
       }
-      
+
       const response = await Axios({
         url: "/users/login",
         method: "POST",
@@ -32,16 +36,23 @@ export default function LoginScreen({ navigation }) {
           password: password,
         },
       });
-      
+
       if (response) {
         await SecureStore.setItemAsync(
           "access_token",
           response.data.access_token
         );
-        
+
         setLoading(false)
-        navigation.navigate("Preferences1")
-        // authContext.setIsSignedIn(true);
+        const skill = response.data.skill
+
+        if (skill) {
+          authContext.setIsSignedIn(true);
+          // navigation.navigate("Preferences1")
+        } else {
+          // await SecureStore.setItemAsync('temporary_access_token', response.data.access_token); 
+          navigation.navigate("Preferences1"); 
+        }
       }
     } catch (error) {
       if (error.response) {
@@ -57,8 +68,8 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <>
-      {!loading ?
-        <View style={[styles.container, styles.horizontal]}>
+      {loading ?
+        <View style={[styles.loadingContainer, styles.horizontal]}>
           <ActivityIndicator size="large" color="#86BA85" />
         </View>
         :
@@ -84,16 +95,16 @@ export default function LoginScreen({ navigation }) {
             value={password}
             secureTextEntry
           />
-          <TouchableOpacity style={styles.lupaPassword}>
+          {/* <TouchableOpacity style={styles.lupaPassword}>
             <Text style={styles.lupaPasswordText}>Lupa Password?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Masuk</Text>
           </TouchableOpacity>
-          <Text style={styles.atau}>atau</Text>
+          {/* <Text style={styles.atau}>atau</Text>
           <TouchableOpacity style={styles.buttonGoogle}>
             <Text style={styles.buttonTextGoogle}>Masuk dengan Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <View style={styles.registerContainer}>
             <Text style={styles.akun}>Belum punya akun?</Text>
             <TouchableOpacity
@@ -114,8 +125,9 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 16,
+    // justifyContent: "center",
+    paddingTop: 88,
+    paddingHorizontal: 24,
     backgroundColor: "#fff",
     width: "100%",
   },
@@ -158,9 +170,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: "100%",
     alignItems: "center",
+    marginTop: 16,
     justifyContent: "center",
     backgroundColor: "#86BA85",
-    marginBottom: 10,
+    marginBottom: 24,
   },
   akun: {
     textAlign: "center",

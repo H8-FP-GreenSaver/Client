@@ -17,6 +17,8 @@ import * as SecureStore from "expo-secure-store";
 import PostDetailScreen from "../screens/PostDetail";
 import AddPost from "../screens/AddPost";
 import EditProfileUser from "../screens/EditProfileUser";
+import MeetDevelopers from "../screens/MeetDevelopers";
+import FAQ from "../screens/Faq";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,22 +26,21 @@ export default function MainStack() {
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    async function check(params) {
+    async function check() {
       const result = await SecureStore.getItemAsync("access_token");
-      const skill = await SecureStore.getItemAsync('skill');
-      // console.log(skill, "<<<")
+      // const skill = await SecureStore.getItemAsync('skill');
+
       if (result) {
         authContext.setIsSignedIn(true);
       }
     }
-
     check();
   }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        
+
         {authContext.isSignedIn ? (
           <>
             <Stack.Screen name="GreenSaver" component={BottomTab} />
@@ -52,6 +53,8 @@ export default function MainStack() {
             <Stack.Screen name="PostDetail" component={PostDetailScreen} />
             <Stack.Screen name="PlantProgress" component={PlantProgress} />
             <Stack.Screen name="EditProfileUser" component={EditProfileUser} />
+            <Stack.Screen name="MeetDevelopers" component={MeetDevelopers} />
+            <Stack.Screen name="FAQ" component={FAQ} />
           </>
         ) : (
           <>

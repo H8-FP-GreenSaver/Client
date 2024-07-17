@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons';
 import { AuthContext } from "../contexts/Auth";
 import { useContext, useCallback, useState } from "react";
 import * as SecureStore from "expo-secure-store";
@@ -50,20 +51,24 @@ export default function ProfileScreen({ navigation }) {
 
   async function handleLogout() {
     await SecureStore.deleteItemAsync("access_token");
+    // await SecureStore.deleteItemAsync("skill");
+    await SecureStore.deleteItemAsync("temporary_access_token");
     authContext.setIsSignedIn(false);
   }
 
   return (
     <>
       <View style={styles.mainContainer}>
-        <View style={styles.headContainer}>
+        <View>
           <View style={styles.containerWave}>
             <Skeleton colorMode="light" width={80} height={80} radius={"round"}>
               {loading ? null : (
-                <Image
-                  source={{ uri: user.avatar }}
-                  style={styles.profileImage}
-                />
+                <View style={{ marginBottom: 16 }}>
+                  <Image
+                    source={{ uri: user.avatar }}
+                    style={styles.profileImage}
+                  />
+                </View>
               )}
             </Skeleton>
             <View style={styles.userInfo}>
@@ -83,29 +88,51 @@ export default function ProfileScreen({ navigation }) {
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 88, backgroundColor: "white", flex: 1, paddingHorizontal: 24 }}>
-          {/* <View style={styles.statsContainer}>
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>2</Text>
-              <Text style={styles.statLabel}>Tanaman</Text>
-            </View>
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>3</Text>
-              <Text style={styles.statLabel}>Forum</Text>
-            </View>
-
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>3</Text>
-              <Text style={styles.statLabel}>Unggahan</Text>
-            </View>
-          </View> */}
-          {/* <View style={styles.horizontalLine} /> */}
+        <View style={{ marginTop: 40, backgroundColor: "white", flex: 1, paddingHorizontal: 24 }}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("EditProfileUser");
             }}
+            style={{
+              flexDirection: "row",
+              marginTop: 24,
+              padding: 16,
+              backgroundColor: "#f7f7f7",
+              borderRadius: 8,
+            }}
           >
             <Text>Edit Profile</Text>
+            <Entypo name="chevron-small-right" size={24} color="black" style={{ marginLeft: "auto" }} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("FAQ");
+            }}
+            style={{
+              flexDirection: "row",
+              marginTop: 16,
+              padding: 16,
+              backgroundColor: "#f7f7f7",
+              borderRadius: 8,
+            }}
+          >
+            <Text>FAQ</Text>
+            <Entypo name="chevron-small-right" size={24} color="black" style={{ marginLeft: "auto" }} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              marginTop: 16,
+              padding: 16,
+              backgroundColor: "#f7f7f7",
+              borderRadius: 8,
+            }}
+            onPress={() => {
+              navigation.navigate("MeetDevelopers");
+            }}
+          >
+            <Text>Meet the Developers</Text>
+            <Entypo name="chevron-small-right" size={24} color="black" style={{ marginLeft: "auto" }} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleLogout}>
             <View
@@ -120,6 +147,9 @@ export default function ProfileScreen({ navigation }) {
                 overflow: "hidden",
                 alignItems: "center",
               }}
+              onPress={() => {
+                navigation.navigate("EditProfileUser");
+              }}
             >
               <MaterialIcons name="logout" size={24} color="white" />
               <Text style={{ color: "white" }}>Logout</Text>
@@ -130,6 +160,7 @@ export default function ProfileScreen({ navigation }) {
             <Image source={require("../assets/Ideation Rectangle 39.png")} />
             <Image source={require("../assets/Ideation Rectangle 40.png")} />
           </View> */}
+          <Text style={{ textAlign: "center", marginTop: 24, color: "#CDCDCD", fontWeight: "500" }}>App Version 1.0.0</Text>
         </View>
       </View>
       {/* <ImageBackground
@@ -143,52 +174,42 @@ export default function ProfileScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    zIndex: 1,
+    // zIndex: 1,
     flex: 4,
     width: "100%",
     // paddingHorizontal: 24,
     paddingTop: 40,
     backgroundColor: "#94C593",
   },
-  backgroundImage: {
-    zIndex: 0,
-    // flex: 12,
-    height: 560,
-    width: "100%",
-    backgroundColor: "#94C593",
-    // position: 'relative'
-  },
-  headContainer: {
-    flexDirection: "row",
-    paddingHorizontal: 24,
-    // marginTop: 24,
-  },
   containerWave: {
-    flexDirection: "row",
     alignItems: "center",
-    marginLeft: 20,
+    width: "100%"
   },
   profileImage: {
     width: 80,
     height: 80,
     borderRadius: 40,
     borderWidth: 3,
+    alignSelf: "center",
     borderColor: "#fff",
-    objectFit: "contain",
+    objectFit: "cover",
   },
   userInfo: {
-    marginLeft: 20,
+    justifyContent: "center",
+    alignItems: "center",
     gap: 8,
   },
   name: {
     fontSize: 20,
     fontWeight: "600",
     color: "#fff",
+    textAlign: "center"
     // marginBottom: 5,
   },
   username: {
     fontSize: 16,
     color: "#fff",
+    textAlign: "center"
     // marginBottom: 5,
   },
   role: {
@@ -201,6 +222,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     overflow: "hidden",
     borderRadius: 5,
+    alignSelf: "center"
   },
   statsContainer: {
     flexDirection: "row",
