@@ -33,6 +33,7 @@ export default function AddPost({ navigation }) {
     name: "",
   });
   const [convertedImage, setConvertedImage] = useState(null);
+
   const authContext = useContext(AuthContext);
 
   const fetchUser = async () => {
@@ -398,6 +399,24 @@ export default function AddPost({ navigation }) {
         </TouchableOpacity>
       </View>
     </>
+//       <TouchableOpacity
+
+//         style={{
+//           backgroundColor: '#86BA85',
+//           paddingVertical: 16,
+//           borderRadius: 8,
+//           alignItems: 'center',
+//           marginBottom: 32,
+//         }}
+//         // style={styles.button}
+//         onPress={handleSubmitPost}
+//         disabled={uploading}
+//       >
+//         <Text style={{ color: 'white', fontWeight: 'bold' }}>
+//           {uploading ? 'Uploading...' : 'Kirim'}
+//         </Text>
+//       </TouchableOpacity>
+//     </View>
   );
 }
 
